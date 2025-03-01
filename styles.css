@@ -1,0 +1,152 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffd240a7;
+}
+
+header {
+    background-color: #00aaff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.notification {
+    background-color: #ffffff;
+    color: #00aaff;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.service-item {
+    background-color: #6a8dffaa;
+    border: 1px solid #00aaff;
+    text-align: center;
+    padding: 30px;
+    border-radius: 08px;
+    transition: background-color 0.3s;
+}
+
+.service-item:hover {
+    background-color: #e0f7fa;
+}
+
+.new {
+    color: red;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #00aaff;
+    color: white;
+}
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color:#f0f0f0 ;
+    background-size: true;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    max-width: 350px;
+    margin: 30px;
+    padding: 10px;
+    background-color: rgba(255, 165, 0, 0.8);
+    border-radius: 15px;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+.converter {
+    margin: 40px 0;
+}
+
+.currency-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    width: 100px;
+    padding: 10px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: orange;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkorange;
+}
+
+.arrow {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+#result-message {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #f44336; /* Color de fondo rojo */
+    color: white;
+    margin-bottom: 15px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que esté siempre encima */
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+
+
+
+ 

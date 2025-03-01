@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de Bolívares a Dólares</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color:#ffeabf8f;
+}
+
+.container {
+  max-width: 250px;
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #ffc72bd0;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="number"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+button {
+  width: 40%;
+  padding: 10px;
+  background-color: #ffbd40ed;
+  color: white;
+  border: 0px;
+  border-radius: 1px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+button:hover {
+  background-color:#ff8800;
+}
+
+
+
+
+
+
+body {
+            background-image: url('img/foto2.jpeg');
+            background-size: 1080px 900px; /* Ancho x Alto */
+            background-repeat: no-repeat;
+        }
+        
+        
+        
+        
+        
+        body {
+    font-family: Arial, sans-serif;
+    margin: 60;
+    padding: 10;
+    background-color: white;
+}
+
+header {
+    background-color: #00aaff;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+
+.notification {
+    background-color: #ffffff;
+    color: #00aaff;
+    padding: 30px;
+    margin: 30px 10;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.service-item {
+    background-color: #6a8dffaa;
+    border: 1px solid #00aaff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 08px;
+    transition: background-color 10.3s;
+    
+    
+    padding: 10px;
+    margin: 10px 30;
+    
+    
+}
+
+
+.service-item:hover {
+    background-color: #e0f7fa;
+}
+
+.new {
+    color: red;
+}
+
+footer {
+    text-align: center;
+    padding: 60px;
+    background-color: #00aaff;
+    color: yellow;
+}
+        
+        
+
+</style>
+</head>
+<body>
+<div class="container">
+  <h2><center>🇻🇪 🇺🇸</center></h2>
+  
+  <center>
+  <input type="number" id="bolivares" placeholder="Ingrese la cantidad en Bolívares">
+  <button onclick="convertir()">Convertir</button>
+  <button onclick="borrar()">Borrar</button>
+  <p id="resultado"></p>
+
+
+<br>
+
+<div class="service-item" onclick="window.location.href='index.html'">Salir a menu<br></div>
+
+<nav>
+        <a href="index.html"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+    </nav>
+</div>
+</center>
+
+<script>
+function convertir() {
+  var bolivares = document.getElementById("bolivares").value;
+  var dolares = bolivares / 64.24; // Tasa de cambio aproximada
+  document.getElementById("resultado").innerText = "El monto en dólares es: $" + dolares.toFixed(2);
+}
+
+function borrar() {
+  document.getElementById("bolivares").value = "";
+  document.getElementById("resultado").innerText = "";
+}
+</script>
+</body>
+</html>
