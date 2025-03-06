@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de 3 rayitas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .menu a:hover {
+            background-color: #555;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        
+        body {
+            background-image: url('img/foto4.jpeg');
+            background-size: 350px 700px; /* Ancho x Alto */
+            background-repeat: no-repeat;
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <div class="dropdown">
+            <a href="#">Noticias</a>
+            <div class="dropdown-content">
+                <a href="noticias.html">Noticias</a>
+                <a href="#">Noticias 2</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Publicidad</a>
+            <div class="dropdown-content">
+                <a href="publicidad.html">Publicidad</a>
+                <a href="#">.</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Menu</a>
+            <div class="dropdown-content">
+                <a href="index.html">Menu</a>
+                <a href="#">Publicidad 2</a>
+            </div>
+        </div>
+    </div>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias de Periódico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ 
+        <header>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropdowns = document.querySelectorAll(".dropdown");
+
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener("click", function() {
+                    this.querySelector(".dropdown-content").classList.toggle("show");
+                });
+            });
+
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropdown')) {
+                    const dropdowns = document.querySelectorAll(".dropdown-content");
+                    dropdowns.forEach(dropdown => {
+                        if (dropdown.classList.contains('show')) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Dólar a Bolívar</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+    
+    body {
+    background-color: #8a9ae6;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px 0;
+    border: 2px solid blue;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 5px;
+    color: white;
+    background-color: blue;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkblue;
+}
+
+ table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #c5ff957c;
+}
+
+th, td {
+    border: 2px solid black;
+    padding: 10px;
+    text-align: center;
+    background-color: #b0c4de;
+    
+  
+}
+
+
+
+
+.boton {
+  background-color: #6a8dffc0;
+  width: 20em;
+  height: 4em;
+  border: true;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+</style>
+    
+</head>
+<body>
+    <div class="container">
+        
+        
+       <div align="center">
+<canvas id="myCanvas" width="300" height="80" style="border:0px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</div>   
+        
+        
+        
+        <h1></h1>
+        <input type="number" id="dolarInput" placeholder="Ingrese monto en dólares" />
+        <button onclick="convertir()">Convertir</button>
+        <button onclick="borrar()">Borrar</button>
+        
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>dólar</th>
+                    <th>bolivares</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable">
+                <tr>
+                    <td id="dolarOutput">0</td>
+                    <td id="bolivaresOutput">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <center>
+    
+    <button class="boton" onclick="window.location.href='index.html'">Salir al menu</button>
+    
+    </center>
+    
+    <script> const tasaCambio = 64.48; // Tasa de cambio de dólares a bolívares
+
+function convertir() {
+    const dolarInput = document.getElementById("dolarInput").value;
+    const bolivares = (dolarInput * tasaCambio).toFixed(2);
+
+    document.getElementById("dolarOutput").innerText = dolarInput;
+    document.getElementById("bolivaresOutput").innerText = bolivares;
+}
+
+function borrar() {
+    document.getElementById("dolarInput").value = '';
+    limpiar();
+}
+
+function limpiar() {
+    document.getElementById("dolarOutput").innerText = '0';
+    document.getElementById("bolivaresOutput").innerText = '0';
+}
+
+
+var c = document.getElementById("myCanvas")
+var ctx = c.getContext("2d")
+
+ctx.strokeStyle = "white"
+ctx.font = "25px serif"
+ctx.strokeText("Monto en dólar", 60, 50)
+
+ctx.fillStyle = "green"
+ctx.font = "30px serif"
+ctx.fillText("", 75, 170)
+
+</script>
+</body>
+</html>

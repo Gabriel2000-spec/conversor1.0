@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloc de nota</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+body {
+    background-color:#8098ffae;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    background-color: #7a7a7a9f;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 08px rgba(0, 0, 0, 0.8);
+}
+
+
+.container {
+    max-width: 300px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+#notes-container {
+    margin-bottom: 20px;
+}
+
+.note {
+    background-color: #1e1e1e;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-note {
+    display: flex;
+    flex-direction: column;
+}
+
+textarea {
+    width: 90%;
+    height: 60px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: white;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6200ea;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+.delete-btn {
+    background-color: #ff1744;
+}
+
+.delete-btn:hover {
+    background-color: #d50000;
+
+}
+
+
+.boton {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Estilo al pasar el cursor sobre el botón */
+.boton:hover {
+  background-color: #2980b9;
+}
+
+/* Estilo al hacer clic en el botón */
+.boton:active {
+  background-color: #1f618d;
+}    
+
+ @keyframes blink {
+             
+            80% { color: blue; }
+            50% { opacity: 1; }
+            100% { color: yellow; }
+            
+            40% { color: red; }
+            
+              20% { color: white; }
+        }
+
+   .parpadeante {
+            animation: blink 5s infinite;
+        }
+
+</style>
+
+<body>
+    <div class="container">
+        
+        <center>
+
+<a href="index.html" class="boton">Salir al menu</a>
+
+</center>
+        <br>
+        <br>
+        <center>
+            
+            <h2 class="parpadeante">Bloc de nota</h2>
+            
+        <h3></h3>
+        </center>
+        
+        <br>
+        <div>
+            <input type="text" id="search" placeholder="Buscar" />
+            <button id="search-btn">Buscar</button>
+        </div>
+        <div id="notes-container"></div>
+        <div class="add-note">
+            <textarea id="note-input" placeholder="Escribe tu nota aquí..."></textarea>
+            <button id="add-note-btn">Guardar texto</button>
+        </div>
+    </div>
+    <script>
+        const notesContainer = document.getElementById('notes-container');
+        const noteInput = document.getElementById('note-input');
+        const addNoteBtn = document.getElementById('add-note-btn');
+        const searchBtn = document.getElementById('search-btn');
+        const searchInput = document.getElementById('search');
+
+        // Cargar notas desde localStorage
+        document.addEventListener('DOMContentLoaded', loadNotes);
+
+        // Agregar evento al botón de agregar nota
+        addNoteBtn.addEventListener('click', addNote);
+
+        // Agregar evento al botón de buscar
+        searchBtn.addEventListener('click', searchNotes);
+
+        function loadNotes() {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.forEach(note => {
+                displayNote(note);
+            });
+        }
+
+        function addNote() {
+            const noteText = noteInput.value.trim();
+            if (noteText) {
+                const note = {
+                    text: noteText,
+                    date: new Date().toLocaleDateString()
+                };
+                displayNote(note);
+                saveNoteToLocal(note);
+                noteInput.value = ''; // Limpiar el input
+            }
+        }
+
+        function displayNote(note) {
+            const noteDiv = document.createElement('div');
+            noteDiv.classList.add('note');
+            noteDiv.innerHTML = `<p>${note.text}</p><small>${note.date}</small><button class="delete-btn" onclick="deleteNote(this)">Borrar</button>`;
+            notesContainer.appendChild(noteDiv);
+        }
+
+        function saveNoteToLocal(note) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.push(note);
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function deleteNote(button) {
+            const noteDiv = button.parentElement;
+            const noteText = noteDiv.querySelector('p').innerText;
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes = notes.filter(note => note.text !== noteText);
+            localStorage.setItem('notes', JSON.stringify(notes));
+            noteDiv.remove();
+        }
+
+        function searchNotes() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notesContainer.innerHTML = ''; // Limpiar notas actuales
+            notes.forEach(note => {
+                if (note.text.toLowerCase().includes(searchTerm)) {
+                    displayNote(note);
+                }
+            });
+        }
+    </script>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+</body>
+</html>

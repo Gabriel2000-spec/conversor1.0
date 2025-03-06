@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial</title>
+</head>
+<style>
+    	.row{
+		    margin-top:40px;
+		    padding: 0 10px;
+		}
+		.clickable{
+		    cursor: pointer;   
+		}
+
+		.panel-heading div {
+			margin-top: -18px;
+			font-size: 15px;
+		}
+		.panel-heading div span{
+			margin-left:5px;
+		}
+		.panel-body{
+			display: none;
+		}
+		
+		
+		body {
+    font-family: Arial, sans-serif;
+    margin: 60;
+    padding: 10;
+    background-color: white;
+}
+
+header {
+    background-color:#00aaff;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+
+.notification {
+    background-color:#ffffff;
+    color:#00aaff;
+    padding: 30px;
+    margin: 30px 10;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.service-item {
+width: auto%;
+    background-color: #6a8dffaa;
+    border: 0px solid white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 10.
+     3s;
+     
+          padding: 10px;
+    
+    
+     ma
+
+     rgin: 10px 30;   
+}
+.service-item:hover {
+    background-color:white;
+}
+
+.new {
+    color: red;
+}
+
+footer {
+    text-align: center;
+    padding: 60px;
+    background-color:white;
+ 
+    color: yellow;
+}
+
+
+		
+</style>
+<body>
+    
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <h3>Toca el icono y busca la fecha de su preferencia......<small>(<i class="glyphicon glyphicon-filter"></i>)</small></h3>
+    	<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Fuera de rango</h3>
+						<div class="pull-right">
+							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+						</div>
+					</div>
+					<div class="panel-body">
+						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
+					</div>
+					<table class="table table-hover" id="dev-table">
+					
+					
+					
+					
+					
+					
+
+					
+					</table>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Historial</h3>
+						<div class="pull-right">
+							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+						</div>
+					</div>
+					<div class="panel-body">
+						<input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filter Tasks" />
+					</div>
+					<table class="table table-hover" id="task-table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Fecha</th>
+								<th>Moneda</th>
+								<th>Bolivares</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>28-02-2025</td>
+								<td>dólar</td>
+								<td>64,24</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>05-03-2025</td>
+								<td>dólar</td>
+								<td>64,48</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <script> /**
+*   I don't recommend using this plugin on large tables, I just wrote it to make the demo useable. It will work fine for smaller tables 
+*   but will likely encounter performance issues on larger tables.
+*
+*		<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
+*		$(input-element).filterTable()
+*		
+*	The important attributes are 'data-action="filter"' and 'data-filters="#table-selector"'
+*/
+(function(){
+    'use strict';
+	var $ = jQuery;
+	$.fn.extend({
+		filterTable: function(){
+			return this.each(function(){
+				$(this).on('keyup', function(e){
+					$('.filterTable_no_results').remove();
+					var $this = $(this), 
+                        search = $this.val().toLowerCase(), 
+                        target = $this.attr('data-filters'), 
+                        $target = $(target), 
+                        $rows = $target.find('tbody tr');
+                        
+					if(search == '') {
+						$rows.show(); 
+					} else {
+						$rows.each(function(){
+							var $this = $(this);
+							$this.text().toLowerCase().indexOf(search) === -1 ? $this.hide() : $this.show();
+						})
+						if($target.find('tbody tr:visible').size() === 0) {
+							var col_count = $target.find('tr').first().find('td').size();
+							var no_results = $('<tr class="filterTable_no_results"><td colspan="'+col_count+'">No results found</td></tr>')
+							$target.find('tbody').append(no_results);
+						}
+					}
+				});
+			});
+		}
+	});
+	$('[data-action="filter"]').filterTable();
+})(jQuery);
+
+$(function(){
+    // attach table filter plugin to inputs
+	$('[data-action="filter"]').filterTable();
+	
+	$('.container').on('click', '.panel-heading span.filter', function(e){
+		var $this = $(this), 
+			$panel = $this.parents('.panel');
+		
+		$panel.find('.panel-body').slideToggle();
+		if($this.css('display') != 'none') {
+			$panel.find('.panel-body input').focus();
+		}
+	});
+	$('[data-toggle="tooltip"]').tooltip();
+})
+</script>
+    <br>
+<br>
+		<br>
+    
+    <div class="service-item" onclick="window.location.href='index.html'">Salir al menu<br></div>
+    
+    
+</body>
+</html>
