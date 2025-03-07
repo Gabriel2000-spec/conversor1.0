@@ -89,8 +89,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
         <table>
             <tr>
-                <th>Monto en Bolívares</th>
-                <th>Monto en Dólares</th>
+                <th>Monto en bolívares</th>
+                <th>Monto en dólar</th>
             </tr>
             <tr>
                 <td id="bolivares-result"></td>
@@ -121,7 +121,7 @@ const bolivaresInput = document.getElementById('bolivares');
 const bolivaresResult = document.getElementById('bolivares-result');
 const dolaresResult = document.getElementById('dolares-result');
 
-const tasaDeCambio = 64.48; // Ejemplo de tasa de cambio
+const tasaDeCambio = 64.74; // Ejemplo de tasa de cambio
 
 convertirBtn.addEventListener('click', () => {
     const bolivares = parseFloat(bolivaresInput.value);
