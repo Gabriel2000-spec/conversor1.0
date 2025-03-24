@@ -1,119 +1,80 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú de 3 rayitas</title>
+    <title>Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            background-color: #646464bc#ffffffb9;
         }
-
-        .menu {
-            background-color: #333;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .login-container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+        input {
+            width: 95%;
             padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
         }
-
-        .menu a {
-            color: #fff;
-            text-decoration: none;
+        button {
+            width: 100%;
             padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
         }
-
-        .menu a:hover {
-            background-color: #555;
+        button:hover {
+            background-color: #0056b3;
         }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #333;
-            min-width: 160px;
-            z-index: 1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        
-        body {
-            background-image: url('img/foto4.jpeg');
-            background-size: 350px 700px; /* Ancho x Alto */
-            background-repeat: no-repeat;
-        }
-        
-        
-        
     </style>
 </head>
+
+<p><h3>  <p>Estimado usuario,</p>
+    ¡Obtén más funciones con la versión premium de nuestra aplicación!</h1>
+    <p>Al comprar la aplicación, podrás disfrutar de características exclusivas y personalizadas. Además, obtendrás un usuario y una contraseña para acceder a mas contenidos. 
+
+
 <body>
-    <div class="menu">
-        <div class="dropdown">
-            <a href="#">Noticias</a>
-            <div class="dropdown-content">
-                <a href="noticias.html">Noticias</a>
-                <a href="#">Noticias 2</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#">Publicidad</a>
-            <div class="dropdown-content">
-                <a href="publicidad.html">Publicidad</a>
-                <a href="#">.</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <a href="#">Menu</a>
-            <div class="dropdown-content">
-                <a href="index.html">Menu</a>
-                <a href="#">Publicidad 2</a>
-            </div>
-        </div>
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button type="button" onclick="login()">Iniciar sesión</button>
+        </form>
+        <p id="message"></p>
     </div>
 
-
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias de Periódico</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
- 
-        <header>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dropdowns = document.querySelectorAll(".dropdown");
+        let attempts = 0;
 
-            dropdowns.forEach(dropdown => {
-                dropdown.addEventListener("click", function() {
-                    this.querySelector(".dropdown-content").classList.toggle("show");
-                });
-            });
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-            window.onclick = function(event) {
-                if (!event.target.matches('.dropdown')) {
-                    const dropdowns = document.querySelectorAll(".dropdown-content");
-                    dropdowns.forEach(dropdown => {
-                        if (dropdown.classList.contains('show')) {
-                            dropdown.classList.remove('show');
-                        }
-                    });
+            if (username === 'admin' && password === 'admin1234') {
+                alert('¡Inicio de sesión exitoso!');
+                   window.location.href = '###.html';
+            } else {
+                attempts++;
+                document.getElementByIdî('message').innerText = `Credenciales incorrectas. Intentos restantes: ${3 - attempts}`;
+
+                if (attempts === 3) {
+                    document.getElementById('message').innerText = 'Has excedido el número de intentos permitidos. Por favor, inténtalo más tarde.';
+                    document.getElementById('username').disabled = true;
+                    document.getElementById('password').disabled = true;
+                    document.querySelector('button').disabled = true;
                 }
             }
-        });
+        }
     </script>
 </body>
 </html>
