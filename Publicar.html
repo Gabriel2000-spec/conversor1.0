@@ -6,6 +6,8 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #646464bc#ffffffb9;
+            
+            
         }
         .login-container {
             width: 300px;
@@ -21,7 +23,13 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 15px;
+            
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+            
         }
+        
+        
+        
         button {
             width: 100%;
             padding: 10px;
@@ -30,17 +38,49 @@
             border: none;
             border-radius: 15px;
             cursor: pointer;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
         }
         button:hover {
             background-color: #0056b3;
         }
+        
+        
+           .btn-whatsapp {
+  display: inline-block;
+  background-color: #25d366;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+}
+
+.btn-whatsapp:hover {
+  background-color: #128c7e;
+}
+    
+        
+        
+        
+        .ad-button {
+    background-color: #008CBA;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        
     </style>
 </head>
 
 <p><h3>  <p>Estimado usuario,</p>
     ¡Obtén más funciones con la versión premium de nuestra aplicación!</h1>
-    <p>Al comprar la aplicación, podrás disfrutar de características exclusivas y personalizadas. Además, obtendrás un usuario y una contraseña para acceder a mas contenidos. 
-<p> <a href="index.html" class="boton">Salir al menu</a></p>
+    <p>
+
 
 <body>
     <div class="login-container">
@@ -53,8 +93,6 @@
         <p id="message"></p>
     </div>
 
-
-    
     <script>
         let attempts = 0;
 
@@ -64,7 +102,7 @@
 
             if (username === 'admin' && password === 'admin1234') {
                 alert('¡Inicio de sesión exitoso!');
-                   window.location.href = '###.html';
+                   window.location.href = 'menu2.html';
             } else {
                 attempts++;
                 document.getElementByIdî('message').innerText = `Credenciales incorrectas. Intentos restantes: ${3 - attempts}`;
@@ -78,5 +116,19 @@
             }
         }
     </script>
+    
+    <center>
+    <a href="https://wa.me/5904268957207" class="btn-whatsapp" target="_blank">Contactar por WhatsApp</a>
+    
+    <p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <footer>
+        <button class="ad-button" onclick="location.href='index.html'">Salir al menu</button>
+    </footer>
+ </center>
 </body>
 </html>

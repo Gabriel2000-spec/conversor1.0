@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price per Kilogram Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: yellow;
+            
+            
+            
+        }
+        input {
+            padding: 15px;
+            font-size: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color:white
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3115ffa7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        
+        .ad-button {
+    background-color: #008CBA;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+    </style>
+</head>
+<body>
+    <h2>Calculadora de precio por kilogramos </h2>
+    <label for="weight">Ingresar Kg:</label><br>
+    <input type="number" id="weight" required>
+    <br>
+    <label for="price">Ingresar Precio:</label><br>
+    <input type="number" id="price" required>
+    <br>
+    <label for="profit">Ingresar porcentaje de ganancia</label><br>
+    <input type="number" id="profit" value="10" required>
+    <br>
+    <button onclick="calculatePrice()">Calculate Price</button>
+    <p id="result"></p>
+
+    <script>
+        function calculatePrice() {
+            // Retrieve user inputs
+            var weight = parseFloat(document.getElementById("weight").value);
+            var price = parseFloat(document.getElementById("price").value);
+            var profitPercentage = parseFloat(document.getElementById("profit").value);
+
+            // Calculate total price and profit
+            var result = weight * price;
+            var sellerProfit = result * (profitPercentage / 100); // Calculate profit based on user input
+            var totalPrice = result + sellerProfit;
+
+            // Display result
+            document.getElementById("result").innerText = "The total price is: " + totalPrice.toFixed(2) + " bolívares";
+        }
+    </script>
+    
+    
+     <button class="ad-button" onclick="location.href='menu2.html'">Salir</button>
+    
+</body>
+</html>
