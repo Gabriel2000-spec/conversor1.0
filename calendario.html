@@ -55,7 +55,7 @@ h1, h2 {
 }
 
 .holiday-bank {
-    background-color: yellow;
+    background-color: #;
     color: black;
     
 }
@@ -117,7 +117,7 @@ h1, h2 {
         
             <h1 style="color: white;">Calendario 2025</h1>
         
-      <h2 style="color: white;">Marzo</h2>
+      <h2 style="color: white;">Abril</h2>
        
         <div class="calendar">
             <div class="day header">Lun</div>
@@ -130,20 +130,15 @@ h1, h2 {
             
             
             <div class="day"></div>
-            <div class="day"></div>
-            <div class="day"></div>
-            <div class="day"></div>
-            <div class="day"></div>
-            
             <div class="day">1</div>
             <div class="day">2</div>
-            
-            <div class="day holiday-national" data-date="2025-03-03">3</div>
-            <div class="day holiday-national" data-date="2025-03-04">4</div>
+            <div class="day">3</div>
+            <div class="day">4</div>
             
             <div class="day">5</div>
             <div class="day">6</div>
-            <div class="day">7</div>
+
+           <div class="day">7</div>
             <div class="day">8</div>
             <div class="day">9</div>
             <div class="day">10</div>
@@ -154,13 +149,19 @@ h1, h2 {
             <div class="day">15</div>
             <div class="day">16</div>
             
-            <div class="day">17</div>
-            <div class="day">18</div>
-            <div class="day holiday-bank" data-date="2025-03-19">19</div>
+                 <div class="day holiday-national" data-message="Jueves santo">17</div>
+        
+            <div class="day holiday-national" data-message="Viernes santo">18</div>
+     
+            
+            <div class="day holiday-national" data-message="Fin de semana">19</div>
+            
             <div class="day">20</div>
             <div class="day">21</div>
+            
             <div class="day">22</div>
             <div class="day">23</div>
+            
             <div class="day">24</div>
             <div class="day">25</div>
             <div class="day">26</div>
@@ -168,7 +169,11 @@ h1, h2 {
             <div class="day">28</div>
             <div class="day">29</div>
             <div class="day">30</div>
-            <div class="day">31</div>
+            <div class="day"></div>
+            <div class="day"></div>
+            <div class="day"></div>          
+            <div class="day holiday-bank" data-date="2025-03-19"> </div>
+            
         </div>
         
         <br>
@@ -192,6 +197,19 @@ h1, h2 {
         }
     });
 });
+
+
+
+   // Selecciona todos los días festivos
+        const holidays = document.querySelectorAll('.holiday-national');
+
+        // Agrega un evento de clic a cada día festivo
+        holidays.forEach(holiday => {
+            holiday.addEventListener('click', function() {
+                const message = this.getAttribute('data-message');
+                alert(`Celebrando: ${message}`);
+            });
+        });
 </script>
 </body>
 </html>
