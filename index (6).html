@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Green</title>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #00c6ff, #0072ff);
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+        
+
+        header {
+            background-color: #0072ff;
+            padding: 15px;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .menu-button {
+            background-color: #008CBA;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 1.5s;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+
+        .menu-button:hover {
+            background-color: #005f73;
+        }
+
+        footer {
+            background-color: #0072ff;
+            padding: 10px;
+        }
+
+        .ad-button {
+            background-color: #008CBA;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+
+        .ad-button:hover {
+            background-color: #005f73;
+        }
+
+        .notification {
+            font-size: 18px;
+            background-color: #ffffff;
+            color: #00aaff;
+            padding: 10px;
+            margin: 10px 0;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+
+        .boton-transparente {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: red;
+            border: 2px solid white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .publicidad {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #eaffbf9e;
+            padding: 02px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .logo {
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 10px;
+            border: none;
+            background-color: #fffc6a;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 15px;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
+        }
+    </style>
+</head>
+<body>
+<div class="publicidad" id="publicidad">
+    <h3 style="color: blue;">Feliz 1 de mayo. En este día del Trabajador, queremos expresar nuestra gratitud por tu dedicación y compromiso con el trabajo.</h3>
+        <br>
+        <img src="img/publi.jpeg" alt="Publicidad" class="logo" width="290" height="200">
+        <button onclick="quitarPublicidad()">Quitar Publicidad</button>
+    </div>
+
+    <header>
+        <h1>Conversor Green</h1>
+        <div class="notification">MIERCOLES 30 - 04 - 2025 (BCV) 86,84</div>
+    </header>
+
+    <main>
+        <div class="grid-container">
+            <button class="menu-button" onclick="location.href='Dolarbolivar.html'">Dolar a bolivar<p> 🇺🇸🇻🇪</button>
+            <button class="menu-button" onclick="location.href='bolivardolar.html'">Bolivar a dolar <p>🇻🇪🇺🇸</button>
+            <button class="menu-button" onclick="location.href='calculadora.html'">Calculadora<p> 🔢</button>
+            <button class="menu-button" onclick="location.href='calendario.html'">Calendario <p>📅</button>
+            <button class="menu-button" onclick="location.href='bloc.html'">Bloc de nota <p>📝</button>
+            <button class="menu-button" onclick="location.href='historia.html'">Historia<p>📌</button>
+            <button class="menu-button" onclick="location.href='informe.html'">Política y privacidad<p></p> 🔒</button>
+            <button class="menu-button" onclick="location.href='instrucciones.html'">Instrucciones de la App </p>📚</button>
+        </div>
+    </main>
+
+    <footer>
+        <button class="ad-button" onclick="location.href='publicar.html'">Secciones</button>
+    </footer>
+
+    <script>
+        function quitarPublicidad() {
+            document.getElementById("publicidad").style.display = "none";
+        }
+    </script>
+</body>
+</html>
