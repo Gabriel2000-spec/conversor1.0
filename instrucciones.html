@@ -303,10 +303,35 @@
 }
 
 
+   /* Estilos para el botón */
+        .btn-salir {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* Para que parezca un botón */
+            display: inline-block;
+        }
+
+        .btn-salir:hover {
+            background-color: #0056b3;
+        }
+
+
+
 
   </style>
 </head>
 <body>
+    
+    <center>
+    <a href="index.html" class="btn-salir">Salir al Menú</a>
+    </center>
+    
     <center>
     <h2>Guardar contacto </h2>
     </center>
@@ -314,11 +339,20 @@
 
 <button id="settings-btn" aria-label="Configuración" title="Configuración" aria-haspopup="true" aria-expanded="false">⚙</button>
 
+
+ 
+   
+
 <div id="settings-menu" role="menu" aria-labelledby="settings-btn">
   <button role="menuitem" data-action="toggleDarkMode">Modo Oscuro</button>
   <button role="menuitem" data-action="clearStorage">Borrar Configuración</button>
   <button role="menuitem" data-action="showAlert">Mostrar Alerta</button>
 </div>
+
+
+
+
+
 
 
   <form id="contact-form" aria-label="Formulario para agregar contactos" novalidate>
@@ -328,9 +362,12 @@
     <input type="tel" id="phone" name="phone" required pattern="^\+?\d{7,15}$" title="Número de teléfono válido con código de país" autocomplete="off" />
     <button type="submit">Agregar Contacto</button>
   </form>
+  
 
   <div id="contact-list" aria-live="polite" aria-relevant="additions"></div>
-
+  
+  
+  
   <script>
 
 // Función para agregar un contacto a la lista con botón de llamar y eliminar
@@ -524,5 +561,9 @@ contactContainer.appendChild(callButton);
 document.body.appendChild(contactContainer);
 
   </script>
+  
+  
+
+  
 </body>
 </html>
