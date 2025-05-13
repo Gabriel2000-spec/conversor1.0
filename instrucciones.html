@@ -1,147 +1,528 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instrucciones</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: blue;
-            
-      
-                       
-        }
-        
-        
-      
-                background-size: cover;
-            background-position: center;
-            position: relative;
-        
-            
-        }
-       
-        body {
-    font-family: Arial, sans-serif;
-    margin: 60;
-    padding: 10;
-    background-color: blue;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulario de Contactos</title>
+  <style>
+    :root {
+      --color-bg-light: #8098ff;
+      --color-text-light: #222;
+      --color-bg-dark: #121212;
+      --color-text-dark: #eee;
+      --color-primary: #4a90e2;
+      --color-accent: #50e3c2;
+      --transition-speed: 0.3s;
+      --border-radius: 8px;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modo claro por defecto */
+    body {
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+
+    /* Contenedor */
+    #contact-form {
+      max-width: 400px;
+      margin: 0 auto 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 8px var(--shadow);
+      transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      width: 90%;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border: 1.5px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: border-color var(--transition-speed);
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus {
+      border-color: var(--color-primary);
+      outline: none;
+      box-shadow: 0 0 8px var(--color-primary);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      background-color: var(--color-primary);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color var(--transition-speed);
+    }
+
+    button[type="submit"]:hover {
+      background-color: #357ABD;
+    }
+
+    /* Lista de contactos */
+    #contact-list {
+      max-width: 400px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 8px var(--shadow);
+      transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    }
+
+    .contact-item {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contact-item:last-child {
+      border-bottom: none;
+    }
+
+    .contact-info {
+      font-size: 1rem;
+    }
+
+    .contact-name {
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .contact-phone {
+      color: var(--color-primary);
+      font-family: monospace;
+    }
+
+    /* Botón eliminar */
+    .btn-delete {
+      background: transparent;
+      border: none;
+      color: #e74c3c;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: color var(--transition-speed);
+    }
+
+    .btn-delete:hover {
+      color: #c0392b;
+    }
+
+    /* Menú modo oscuro */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--color-primary);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 4px 8px var(--shadow);
+      transition: background-color var(--transition-speed);
+      z-index: 1000;
+    }
+
+    .dark-mode-toggle:hover {
+      background-color: #357ABD;
+    }
+
+    /* Estilos para modo oscuro */
+    body.dark-mode {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+    }
+
+    body.dark-mode #contact-form,
+    body.dark-mode #contact-list {
+      background-color: #1e1e1e;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="tel"] {
+      background-color: #2c2c2c;
+      border-color: #555;
+      color: var(--color-text-dark);
+    }
+
+    body.dark-mode input[type="text"]:focus,
+    body.dark-mode input[type="tel"]:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 8px var(--color-accent);
+    }
+
+    body.dark-mode button[type="submit"] {
+      background-color: var(--color-accent);
+      color: #121212;
+    }
+
+    body.dark-mode button[type="submit"]:hover {
+      background-color: #3ac9b1;
+    }
+
+    body.dark-mode .contact-phone {
+      color: var(--color-accent);
+    }
+
+    body.dark-mode .btn-delete {
+      color: #e57373;
+    }
+
+    body.dark-mode .btn-delete:hover {
+      color: #f44336;
+    }
     
     
-}
-
-header {
-    background-color: #00aaff;
-    color: red;
-    text-align: center;
-    padding: 40px;
-}
-
-.notification {
-    background-color: #ffffff;
-    color: #00aaff;
-    padding: 30px;
-    margin: 30px 10;
-}
-
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 20px;
-}
-
-.service-item {
-    background-color: #6a8dffaa;
-    border: 1px solid #00aaff;
-    text-align: center;
-    padding: 10px;
-    border-radius: 08px;
-    transition: background-color 10.3s;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
     
-    padding: 10px;
-    margin: 10px 30;
-    
-    
-}
+      #settings-btn {
+    background: none;
+    border: none;
+    color: #eee;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+  }
 
+  #settings-menu {
+    display: none;
+    position: absolute;
+    top: 2.5rem;
+    right: 0;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 0.5rem 0;
+    width: 200px;
+    z-index: 1000;
+  }
 
-.service-item:hover {
-    background-color: #e0f7fa;
-    
-    
-}
+  #settings-menu.active {
+    display: block;
+  }
 
-.new {
-    color: red;
-}
+  #settings-menu button {
+    background: none;
+    border: none;
+    color: #eee;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+  }
 
-footer {
-    text-align: center;
-    padding: 60px;
-    background-color: #00aaff;
-    color: yellow;
-}
-
-
-
-
-
-
-
-
-
-
-   
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-        .ad-container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .ad-video {
-            width: 100%;
-            border-radius: 10px;
-        }
+  #settings-menu button:hover {
+    background-color: #555;
+  }
   
-        
-    </style>
+  
+    /* Estilo para modo oscuro */
+  .dark-mode {
+    background-color: #121212;
+    color: #eee;
+  }
+  
+  
+  
+  
+  
+  .delete-button {
+  background-color: #ff5252; /* rojo vibrante */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
+}
+
+.delete-button:hover {
+  background-color: #ff1744; /* rojo más intenso al pasar el ratón */
+  box-shadow: 0 6px 12px rgba(255, 23, 68, 0.5);
+}
+
+.delete-button:focus {
+  outline: 3px solid #ff1744;
+  outline-offset: 2px;
+}
+
+
+
+.call-button {
+  display: inline-block;
+  background-color: #28a745; /* Verde moderno */
+  color: white;
+  padding: 10px 10px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.call-button:hover,
+.call-button:focus {
+  background-color: #218838; /* Verde un poco más oscuro */
+  box-shadow: 0 6px 12px rgba(33, 136, 56, 0.5);
+  outline: none;
+}
+
+.call-button:active {
+  background-color: #1e7e34; /* Verde más oscuro al hacer clic */
+  box-shadow: 0 2px 4px rgba(30, 126, 52, 0.7);
+}
+
+
+
+  </style>
 </head>
 <body>
-     
-  
-    
-        
-    Instrucciones<p>
-   Para utilizar el conversor de monedas, simplemente selecciona la moneda que deseas convertir en el campo introduciendo la cantidad. Haz clic en el botón de "Convertir" y verás el resultado de la conversión.
-    <p>
-    Uso de la calculadora:
-   La calculadora te permite realizar operaciones matemáticas básicas. Introduce los números y operadores en los campos correspondientes y haz clic en el botón de "Calcular" para obtener el resultado.
-    <p>
- Almanaque feriado bancario:
-    El almanaque te proporciona información sobre las actividades bancarias, como horarios de atención, días festivos, y otros datos relevantes.
-    <p>
-        Bloc de nota:
-    Aquí puedes guardar texto y también tienes la opción de borrarlo.Para guardar texto en la nota de blog, simplemente escribe tu contenido en el cuadro de texto a continuación haz clic en el botón "Guardar texto".
-    Si deseas borrar el texto de la nota de blog, simplemente haz clic en el botón "Borrar".
-    <p>
-   Historial del dolar:    En esta sección se muestra la información del dólar al día. Esta información se actualiza automáticamente.
-    
-    
-    
-    
-    <br>
-    <br>
-   <div class="service-item" onclick="window.location.href='index.html'">Salir al menu<br></div>
+    <center>
+    <h2>Guardar contacto </h2>
+    </center>
+<h4>Modo oscuro </h4>
+
+<button id="settings-btn" aria-label="Configuración" title="Configuración" aria-haspopup="true" aria-expanded="false">⚙</button>
+
+<div id="settings-menu" role="menu" aria-labelledby="settings-btn">
+  <button role="menuitem" data-action="toggleDarkMode">Modo Oscuro</button>
+  <button role="menuitem" data-action="clearStorage">Borrar Configuración</button>
+  <button role="menuitem" data-action="showAlert">Mostrar Alerta</button>
+</div>
+
+
+  <form id="contact-form" aria-label="Formulario para agregar contactos" novalidate>
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" required autocomplete="off" />
+    <label for="phone">Teléfono:</label>
+    <input type="tel" id="phone" name="phone" required pattern="^\+?\d{7,15}$" title="Número de teléfono válido con código de país" autocomplete="off" />
+    <button type="submit">Agregar Contacto</button>
+  </form>
+
+  <div id="contact-list" aria-live="polite" aria-relevant="additions"></div>
+
+  <script>
+
+// Función para agregar un contacto a la lista con botón de llamar y eliminar
+function addContactToList(name, phone) {
+  const contactList = document.getElementById('contact-list');
+
+  // Crear contenedor del contacto
+  const contactItem = document.createElement('div');
+  contactItem.className = 'contact-item';
+
+  // Nombre del contacto
+  const contactName = document.createElement('span');
+  contactName.textContent = name;
+  contactName.className = 'contact-name';
+
+  // Botón o enlace para llamar
+  const callButton = document.createElement('a');
+  callButton.href = `tel:${phone}`;
+  callButton.textContent = 'Llamar';
+  callButton.className = 'call-button';
+  callButton.setAttribute('aria-label', `Llamar a ${name}`);
+
+  // Botón para eliminar contacto
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = 'Eliminar';
+  deleteButton.className = 'delete-button';
+  deleteButton.setAttribute('aria-label', `Eliminar contacto ${name}`);
+
+  // Evento para eliminar contacto
+  deleteButton.addEventListener('click', () => {
+    removeContact(name, phone);
+    contactList.removeChild(contactItem);
+  });
+
+  // Añadir elementos al contenedor
+  contactItem.appendChild(contactName);
+  contactItem.appendChild(callButton);
+  contactItem.appendChild(deleteButton);
+
+  // Añadir contacto a la lista
+  contactList.appendChild(contactItem);
+}
+
+// Función para guardar contactos en localStorage
+function saveContacts(contacts) {
+  localStorage.setItem('contacts', JSON.stringify(contacts));
+}
+
+// Función para obtener contactos desde localStorage
+function getContacts() {
+  const contacts = localStorage.getItem('contacts');
+  return contacts ? JSON.parse(contacts) : [];
+}
+
+// Función para agregar un contacto nuevo y actualizar almacenamiento
+function addContact(name, phone) {
+  const contacts = getContacts();
+  contacts.push({ name, phone });
+  saveContacts(contacts);
+  addContactToList(name, phone);
+}
+
+// Función para eliminar un contacto del almacenamiento
+function removeContact(name, phone) {
+  let contacts = getContacts();
+  contacts = contacts.filter(contact => !(contact.name === name && contact.phone === phone));
+  saveContacts(contacts);
+}
+
+// Cargar contactos guardados al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+  const contacts = getContacts();
+  contacts.forEach(contact => {
+    addContactToList(contact.name, contact.phone);
+  });
+});
+
+// Manejar el envío del formulario para agregar contactos dinámicamente
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nameInput = document.getElementById('name');
+  const phoneInput = document.getElementById('phone');
+
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+
+  if (name && phone) {
+    addContact(name, phone);
+    nameInput.value = '';
+    phoneInput.value = '';
+  }
+});
+
+
+
+  const settingsBtn = document.getElementById('settings-btn');
+  const settingsMenu = document.getElementById('settings-menu');
+
+  // Función para alternar la visibilidad del menú
+  function toggleMenu() {
+    const expanded = settingsBtn.getAttribute('aria-expanded') === 'true';
+    settingsBtn.setAttribute('aria-expanded', String(!expanded));
+    settingsMenu.classList.toggle('active');
+  }
+
+  // Cerrar menú si se hace clic fuera
+  document.addEventListener('click', (e) => {
+    if (!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target)) {
+      settingsMenu.classList.remove('active');
+      settingsBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  settingsBtn.addEventListener('click', toggleMenu);
+
+  // Funciones de configuración
+  function toggleDarkMode() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+  }
+
+  function clearStorage() {
+    localStorage.removeItem('darkMode');
+    alert('Configuración borrada');
+  }
+
+  function showAlert() {
+    alert('Función adicional activada!');
+  }
+
+  // Manejo de clicks en el menú
+  settingsMenu.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+      const action = e.target.getAttribute('data-action');
+      if (action && typeof window[action] === 'function') {
+        window[action]();
+      }
+      toggleMenu(); // Cerrar menú después de acción
+    }
+  });
+
+  // Aplicar configuración guardada al cargar
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+
+// Datos de ejemplo
+const phone = ' ';
+const name = 'Digite número de su preferencia';
+
+// Crear contenedor para el contacto
+const contactContainer = document.createElement('div');
+contactContainer.className = 'contact-container';
+
+// Crear elemento para mostrar el nombre
+const nameElement = document.createElement('p');
+nameElement.textContent = `Nombre: ${name}`;
+nameElement.className = 'contact-name';
+
+// Crear elemento para mostrar el número de teléfono
+const phoneElement = document.createElement('p');
+phoneElement.textContent = `Número: ${phone}`;
+phoneElement.className = 'contact-phone';
+
+// Crear botón/enlace para llamar
+const callButton = document.createElement('a');
+callButton.href = `tel:${phone}`;
+callButton.textContent = 'Llamar';
+callButton.className = 'call-button';
+callButton.setAttribute('aria-label', `Llamar a ${name}`);
+
+// Añadir elementos al contenedor
+contactContainer.appendChild(nameElement);
+contactContainer.appendChild(phoneElement);
+contactContainer.appendChild(callButton);
+
+// Añadir el contenedor al body o a algún contenedor existente en el DOM
+document.body.appendChild(contactContainer);
+
+  </script>
 </body>
 </html>
