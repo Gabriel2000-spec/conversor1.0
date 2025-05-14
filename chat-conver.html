@@ -286,31 +286,53 @@ body {
             border-radius: 5px;
         }
   
+  
+  
+       /* Estilos para el botón */
+        .btn-salir {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* Para que parezca un botón */
+            display: inline-block;
+        }
+
+        .btn-salir:hover {
+            background-color: #0056b3;
+        }
 </style>
 </head>
 <body>
     
       
+    <br>
     
-    
-    
+     <a href="index.html" class="btn-salir">Salir al Menú</a>
     
 
 
   <div class="welcome">
-        <h1>Chat-Conver</h1>
+        <h1>Chat-Conversor</h1>
         <p>¡Ahora podras enviar mensaje para más información !</p>
     </div>
 <h5>Foto de perfil  </h5>
 <input type="file" id="profilePhotoInput" accept="image/*" style="display:none" />
-<img class="profile-pic" id="profilePhoto" src="https://via.placeholder.com/150" alt="Haz clik aqui" title="Click para cambiar foto" />
+<img class="profile-pic" id="profilePhoto" src="https://via.placeholder.com/150" alt="Foto de perfil" title="Click para cambiar foto" />
 <center>
-<h3>Escribe un texto</h3>
+<h5>Escribe un texto</h5>
 <textarea id="textInput" rows="3" cols="40" placeholder="Escribe un texto..."></textarea><br/>
-<button id="addTextBtn">Agregar Texto</button>
+<button id="addTextBtn">Enviar texto</button>
 </center>
 <h5></h5>
 <div id="itemsContainer" class="items-list"></div>
+
+
+
 
 <script>
   // Referencias a elementos
