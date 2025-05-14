@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recibir Mensajes</title>
+</head>
+
+<style> body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: rgba(240, 248, 255, 0.8); /* color suave con transparencia */
+      color: #333;
+      margin: 20px;
+    }
+
+    h1 {
+      color: #4a90e2; /* azul suave moderno */
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(74, 144, 226, 0.5);
+    }
+
+    #listaMensajes {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.7); /* fondo blanco con transparencia */
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    #listaMensajes li {
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(200, 200, 200, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    #listaMensajes li:hover {
+      background-color: rgba(74, 144, 226, 0.1);
+    }
+
+    .fecha {
+      color: #e74c3c; /* rojo para las fechas */
+      font-weight: 600;
+      font-size: 0.9em;
+      opacity: 0.9;
+      min-width: 100px;
+      text-align: right;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    
+    
+    
+    button[data-id] {
+    background-color: #30d5c8; /* Verde turquesa */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(48, 213, 200, 0.3); /* Sombra suave */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[data-id]:hover {
+    background-color: #27b3a4; /* Verde turquesa más oscuro al pasar el mouse */
+    box-shadow: 0 6px 12px rgba(39, 179, 164, 0.4);
+}
+
+    
+    </style>
+
+<body>
+  
+  
+  
+   <h1>Mensajes Recibidos</h1>
+  <ul id="listaMensajes">
+    <li>
+      <span>Mensaje</span>
+      <span class="fecha">2024-06-01</span>
+    </li>
+    <li>
+      <span>Mensaje</span>
+      <span class="fecha">2024-06-02</span>
+    </li>
+  </ul>
+  
+  
+    <script>
+        const listaMensajes = document.getElementById('listaMensajes');
+
+        function cargarMensajes() {
+            const mensajes = JSON.parse(localStorage.getItem('mensajes')) || [];
+            listaMensajes.innerHTML = '';
+
+            if (mensajes.length === 0) {
+                listaMensajes.innerHTML = '<li>No hay mensajes.</li>';
+                return;
+            }
+
+            mensajes.forEach(({ id, texto, fecha }) => {
+                const li = document.createElement('li');
+                const fechaFormateada = new Date(fecha).toLocaleString();
+
+                li.innerHTML = `
+                    <strong>${fechaFormateada}:</strong> ${texto}
+                    <button data-id="${id}">Eliminar</button>
+                `;
+
+                listaMensajes.appendChild(li);
+            });
+        }
+
+        // Eliminar mensaje
+        listaMensajes.addEventListener('click', e => {
+            if (e.target.tagName === 'BUTTON') {
+                const id = Number(e.target.getAttribute('data-id'));
+                let mensajes = JSON.parse(localStorage.getItem('mensajes')) || [];
+                mensajes = mensajes.filter(m => m.id !== id);
+                localStorage.setItem('mensajes', JSON.stringify(mensajes));
+                cargarMensajes();
+            }
+        });
+
+        // Cargar mensajes al inicio
+        cargarMensajes();
+    </script>
+</body>
+</html>
