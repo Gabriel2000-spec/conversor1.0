@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perfil con fotos y textos</title>
+<style>
+    
+    /* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #0202038d;
+  color: #e1e1e1;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #242526;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #1877f2;
+}
+
+.search-input {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  width: 200px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.cover-photo {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+}
+
+.cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-btn {
+  position: absolute;
+  background-color: #00000080;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+}
+
+.cover-camera {
+  right: 15px;
+  bottom: 15px;
+}
+
+.profile-info {
+  background-color: #242526;
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+  text-align: center;
+}
+
+.profile-pic-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-top: -60px;
+  border: 4px solid #242526;
+  border-radius: 50%;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-camera {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: #1877f2;
+  font-size: 16px;
+  padding: 6px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.profile-info h1 {
+  margin: 15px 0 10px;
+  font-size: 1.5rem;
+}
+
+.followers-info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.followers-list {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.followers-list img,
+.more-followers {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #1877f2;
+  background-color: #444;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  margin: 10px auto;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.professional-panel {
+  background-color: #1877f2;
+}
+
+.add-story {
+  background-color: #3a3b3c;
+}
+
+.challenge-section {
+  background-color: #242526;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.challenge-section h2 {
+  margin-bottom: 10px;
+}
+
+.challenge-task {
+  background-color: #18191a;
+  border-radius: 10px;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.go-task {
+  background-color: transparent;
+  color: #1877f2;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+    
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #333;
+    cursor: pointer;
+  }
+  .items-list {
+    margin-top: 20px;
+  }
+  .item {
+    margin-bottom: 10px;
+    border: 1px solid white;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+  }
+  .item img {
+    max-width: 60px;
+    max-height: 60px;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+  .item-text {
+    flex-grow: 1;
+  }
+  .delete-btn {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  
+  #addTextBtn {
+    background-color: #4CAF50; /* Verde */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    padding: 12px 24px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+#addTextBtn:hover {
+    background-color: #45a049; /* Verde más oscuro al pasar el cursor */
+}
+
+#addTextBtn:active {
+    background-color: #3e8e41; /* Verde aún más oscuro al hacer clic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida */
+}
+
+  
+  
+  
+  
+      body {
+            background-color: black;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .welcome {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+  
+</style>
+</head>
+<body>
+    
+      
+    
+    
+    
+    
+
+
+  <div class="welcome">
+        <h1>Chat-Conver</h1>
+        <p>¡Ahora podras enviar mensaje para más información !</p>
+    </div>
+<h5>Foto de perfil  </h5>
+<input type="file" id="profilePhotoInput" accept="image/*" style="display:none" />
+<img class="profile-pic" id="profilePhoto" src="https://via.placeholder.com/150" alt="Foto de perfil" title="Click para cambiar foto" />
+<center>
+<h3>Escribe un texto</h3>
+<textarea id="textInput" rows="3" cols="40" placeholder="Escribe un texto..."></textarea><br/>
+<button id="addTextBtn">Agregar Texto</button>
+</center>
+<h5></h5>
+<div id="itemsContainer" class="items-list"></div>
+
+<script>
+  // Referencias a elementos
+  const profilePhotoInput = document.getElementById('profilePhotoInput');
+  const profilePhoto = document.getElementById('profilePhoto');
+  const textInput = document.getElementById('textInput');
+  const addTextBtn = document.getElementById('addTextBtn');
+  const itemsContainer = document.getElementById('itemsContainer');
+
+  // Clave para almacenamiento local
+  const STORAGE_KEY = 'profileAppItems';
+
+  // Cargar datos guardados
+  function loadItems() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return [];
+    }
+  }
+
+  // Guardar datos
+  function saveItems(items) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }
+
+  // Mostrar elementos guardados (textos o fotos adicionales)
+  function renderItems() {
+    const items = loadItems();
+    itemsContainer.innerHTML = '';
+    items.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+
+      if (item.type === 'image') {
+        const img = document.createElement('img');
+        img.src = item.data;
+        img.alt = 'Foto guardada';
+        div.appendChild(img);
+      }
+      if (item.type === 'text') {
+        const p = document.createElement('p');
+        p.className = 'item-text';
+        p.textContent = item.data;
+        div.appendChild(p);
+      }
+
+      const btn = document.createElement('button');
+      btn.className = 'delete-btn';
+      btn.textContent = 'Borrar';
+      btn.addEventListener('click', () => {
+        deleteItem(index);
+      });
+      div.appendChild(btn);
+
+      itemsContainer.appendChild(div);
+    });
+  }
+
+  // Borrar elemento por índice
+  function deleteItem(index) {
+    const items = loadItems();
+    items.splice(index, 1);
+    saveItems(items);
+    renderItems();
+  }
+
+  // Cambiar foto de perfil
+  profilePhoto.addEventListener('click', () => {
+    profilePhotoInput.click();
+  });
+
+  profilePhotoInput.addEventListener('change', () => {
+    const file = profilePhotoInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      profilePhoto.src = e.target.result;
+      // Guardar la foto de perfil en localStorage
+      localStorage.setItem('profilePhoto', e.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Agregar texto
+  addTextBtn.addEventListener('click', () => {
+    const text = textInput.value.trim();
+    if (!text) {
+      alert('Por favor, escribe un texto antes de agregar.');
+      return;
+    }
+    const items = loadItems();
+    items.push({ type: 'text', data: text });
+    saveItems(items);
+    textInput.value = '';
+    renderItems();
+  });
+
+  // Cargar foto de perfil guardada
+  function loadProfilePhoto() {
+    const savedPhoto = localStorage.getItem('profilePhoto');
+    if (savedPhoto) {
+      profilePhoto.src = savedPhoto;
+    }
+  }
+
+  // Inicialización
+  loadProfilePhoto();
+  renderItems();
+  
+  
+  
+  
+  
+
+</script>
+
+</body>
+</html>
