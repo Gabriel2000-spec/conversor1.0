@@ -221,7 +221,7 @@
       const cotizacionDolar = await obtenerCotizacionDolar();
       const notificacion = document.getElementById('notification');
       if (cotizacionDolar !== null) {
-        notificacion.innerHTML = `JUEVES 15 - 05 - 2025 (BCV) ${cotizacionDolar.toFixed(2)}`;
+        notificacion.innerHTML = `LUNES 19 - 05 - 2025 (BCV) ${cotizacionDolar.toFixed(2)}`;
       } else {
         notificacion.innerHTML = `VIERNES 16 - 05 - 2025 (BCV) 94,32`;
       }
@@ -234,7 +234,7 @@
     setInterval(actualizarNotificacion, 60000);
     
     
-    
+     
     
     
       function actualizarReloj() {
