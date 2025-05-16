@@ -72,15 +72,21 @@
         .notification {
             font-size: 18px;
             background-color: #ffffff;
-            color: #00aaff;
+            color: blue;
             padding: 10px;
             margin: 10px 0;
-            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-        }
+            box-shadow: inset 0 3px 8px rgba(0, 0, 3, 3.4);
+        
+}
+
+
+
+
+
 
         .boton-transparente {
             position: fixed;
-            top: 20px;
+            top: 10px;
             right: 20px;
             background-color: transparent;
             color: red;
@@ -117,11 +123,23 @@
             border-radius: 15px;
             box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
         }
+        
+        
+        
+        
+        
+         .notification {
+      background-color: white;
+      border: 1px solid white;
+      padding: 10px;
+      margin: 10px 10;
+      font-family: Arial, sans-serif;
+    }
     </style>
 </head>
 <body>
 <div class="publicidad" id="publicidad">
-    <h3 style="color: blue;">¨Chat-Conversor¨ Ahora podras enviar tu mensaje para mas informacion..  En estos momentos estamos trabajando a la misma para su mejor funcion.</h3>
+    <h3 style="color: blue;"> ¨Chat-Conversor¨ Ahora podras enviar tu mensaje para mas informacion.. En estos momentos estamos trabajando a la misma para su mejor funcion.</h3>
         <br>
         <img src="img/mensaje.png" alt="Publicidad" class="logo" width="290" height="200">
         <button onclick="quitarPublicidad()">Quitar Publicidad</button>
@@ -129,7 +147,18 @@
 
     <header>
         <h1>Conversor Green</h1>
-        <div class="notification">JUEVES 15 - 05 - 2025 (BCV) 94,15</div>
+        
+        
+          <div id="notification" class="notification">
+    <!-- La fecha y la cotización se insertarán aquí -->
+    </div>
+        
+           <div class="reloj" id="reloj">
+    <span id="hora">00</span> :
+    <span id="minuto">00</span> :
+    <span id="segundo">00</span>
+    <span class="am-pm" id="ampm">AM</span>
+
     </header>
 
     <main>
@@ -146,13 +175,108 @@
     </main>
 
     <footer>
-        <button class="ad-button" onclick="location.href='Publicar.html'">Secciones</button>
+        <button class="ad-button" onclick="location.href='publicar.html'">Secciones</button>
     </footer>
 
     <script>
         function quitarPublicidad() {
             document.getElementById("publicidad").style.display = "none";
         }
+        
+        
+        
+        
+        
+         // Función para obtener la fecha y hora actual
+    function obtenerFechaHora() {
+      const fecha = new Date();
+      const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+      const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+      const diaSemana = dias[fecha.getDay()];
+      const dia = fecha.getDate();
+      const mes = meses[fecha.getMonth()];
+      const anio = fecha.getFullYear();
+      const horas = String(fecha.getHours()).padStart(2, '0');
+      const minutos = String(fecha.getMinutes()).padStart(2, '0');
+      const segundos = String(fecha.getSeconds()).padStart(2, '0');
+      return `${diaSemana.toUpperCase()} ${dia} - ${mes} - ${anio} ${horas}:${minutos}:${segundos}`;
+    }
+
+    // Función para obtener la cotización del dólar BCV
+    async function obtenerCotizacionDolar() {
+      try {
+        const respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+        const datos = await respuesta.json();
+        const cotizacion = datos.compra; // Precio de compra del dólar
+        return cotizacion;
+      } catch (error) {
+        console.error('Error al obtener la cotización del dólar:', error);
+        return null;
+      }
+    }
+
+    // Función para actualizar la notificación
+    async function actualizarNotificacion() {
+      const fechaHora = obtenerFechaHora();
+      const cotizacionDolar = await obtenerCotizacionDolar();
+      const notificacion = document.getElementById('notification');
+      if (cotizacionDolar !== null) {
+        notificacion.innerHTML = `JUEVES 15 - 05 - 2025 (BCV) ${cotizacionDolar.toFixed(2)}`;
+      } else {
+        notificacion.innerHTML = `JUEVES 15 - 05 - 2025 (BCV) 94,32`;
+      }
+    }
+
+    // Actualizar la notificación al cargar la página
+    actualizarNotificacion();
+
+    // Actualizar la notificación cada minuto
+    setInterval(actualizarNotificacion, 60000);
+    
+    
+    
+    
+    
+      function actualizarReloj() {
+    // Crear objeto fecha UTC actual
+    const ahoraUTC = new Date();
+
+    // Obtener la hora en UTC
+    const utcHora = ahoraUTC.getUTCHours();
+    const utcMinuto = ahoraUTC.getUTCMinutes();
+    const utcSegundo = ahoraUTC.getUTCSeconds();
+
+    // Ajustar la hora a Venezuela (UTC -4)
+    let horaVenezuela = utcHora - 4;
+    if (horaVenezuela < 0) {
+      horaVenezuela += 24;
+    }
+
+    // Formatear AM/PM
+    const ampm = horaVenezuela >= 12 ? 'PM' : 'AM';
+
+    // Convertir a formato 12 horas
+    let hora12 = horaVenezuela % 12;
+    if (hora12 === 0) hora12 = 12;
+
+    // Añadir ceros a minutos y segundos si son menores a 10
+    const minutoStr = utcMinuto < 10 ? '0' + utcMinuto : utcMinuto;
+    const segundoStr = utcSegundo < 10 ? '0' + utcSegundo : utcSegundo;
+    const horaStr = hora12 < 10 ? '0' + hora12 : hora12;
+
+    // Actualizar HTML
+    document.getElementById('hora').textContent = horaStr;
+    document.getElementById('minuto').textContent = minutoStr;
+    document.getElementById('segundo').textContent = segundoStr;
+    document.getElementById('ampm').textContent = ampm;
+  }
+
+  // Actualizar reloj cada segundo
+  setInterval(actualizarReloj, 1000);
+
+  // Inicializar reloj al cargar
+  actualizarReloj();
+        
     </script>
 </body>
 </html>

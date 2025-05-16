@@ -1,165 +1,296 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Conversor Bolívar a Dólar</title>
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monto en bolívares</title>
     <style>
-    body {
-    background-color: #8a9ae6;
-    font-family: Arial, sans-serif;
-    
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
-
-.container {
-    text-align: center;
-    margin-top: 50px;
-    
-}
-
-input {
-   width: 35%;
-    padding: 10px;
-    margin: 10px;
-    border: 2px solid blue;
-    border-radius: 10px;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
-}
-
-button {
-    padding: 10px;
-    margin: 10px;
+        body {
+            background-color: #8a9bd1;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
+            
+            
+        }
+        .input-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            
+        }
+        input[type="number"] {
+            border-radius: 10px;
+            border: 3px solid #00106a;
+            padding: 10px;
+            font-size: 1.1rem;
+            width: 100px;
+            outline: none;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
+        }
+        button {
+            border-radius: 10px;
+            border: none;
+            background-color: #00106a;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            
+  }
+        }
+        button:hover {
+            background-color: #0033cc;
+        }
+        table {
+            width: 320px;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
+        }
+        th, td {
+            background-color: #c5d4e1;
+            padding: 10px 15px;
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.25);
+        }
+        th {
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);
+        }
+        #menu-button {
+            background-color: #8a9bd1;
+            border: none;
+            color: white;
+            font-weight: normal;
+            font-size: 1.2rem;
+            padding: 15px 50px;
+            border-radius: 10px;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #menu-button:hover {
+            background-color: #6f7db8;
+        }
+        #update-link {
+            color: #00106a;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        #update-link:hover {
+            color: #0033cc;
+        }
+        
+        
+        
+        
+        
+        button {
     background-color: blue;
-    color: white;
-    border: none;
     border-radius: 10px;
+    border: none;
+    color: white;
     cursor: pointer;
+    font-size: 16px;
+    padding: 6px 18px;
+    box-shadow: 2px 2px 6px #00000088;
+    transition: background-color 0.3s ease;
     box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
-}
-
-button:hover {
-    background-color: darkblue;
-}
-
-table {
-    margin: 20px auto;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 10px;
-    background-color: #b0d4e6;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
-}
-
-
-.boton {
-  background-color: #6a8dffc0;
-  width: 20em;
-  height: 4em;
-  border: true;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 10px;
-  box-shadow: inset 0 5px 8px rgba(0, 0, 1, 1.1);
-}
-</style>
     
+    }
+    
+    .reloj {
+    background-color: #333;
+    padding: 20px 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00ff99;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+  }
+  .reloj span {
+    display: inline-block;
+    min-width: 05px;
+    text-align: center;
+  }
+  .am-pm {
+    font-size: 1.3rem;
+    vertical-align: super;
+    margin-left: 10px;
+    color: #00ff99;
+  }
+  .zona {
+    font-size: 1rem;
+    margin-top: 30px;
+    text-align: center;
+    color: #00ff99;
+  }
+    </style>
 </head>
 <body>
+     <div class="reloj" id="reloj">
+    <span id="hora">00</span> :
+    <span id="minuto">00</span> :
+    <span id="segundo">00</span>
+    <span class="am-pm" id="ampm">AM</span>
+  </div>
+  <div class="zona">Hora Venezuela </div>
     
     
-    <div align="center">
-<canvas id="myCanvas" width="300" height="80" style="border:0px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-</div>   
-    
-    
-    <div class="container">
-        <h1></h1>
-        
-        
-        
-        
-        <input type="number" id="bolivares" placeholder="Ingrese monto en Bs">
-        <button id="convertir">Convertir</button>
-        <button id="borrar">Borrar</button>
+    <h2>Monto en bolívares</h2>
 
-        <table>
+    <!-- Enlace para actualizar el valor del dólar -->
+    
+
+    <div class="input-container">
+        <input type="number" id="montoBs" placeholder="monto en Bs" min="0" step="0.01" />
+        <button id="convertirBtn">Convertir</button>
+        <button id="borrarBtn">Borrar</button>
+    </div>
+
+    <table>
+        <thead>
             <tr>
                 <th>Monto en bolívares</th>
                 <th>Monto en dólares</th>
             </tr>
+        </thead>
+        <tbody>
             <tr>
-                <td id="bolivares-result"></td>
-                <td id="dolares-result"></td>
+                <td id="resultadoBs">&nbsp;</td>
+                <td id="resultadoUsd">&nbsp;</td>
             </tr>
-        </table>
-    </div>
-    
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <center>
-    
-    <button class="boton" onclick="window.location.href='index.html'">Salir al menu</button>
-    
-    
-    <script> const convertirBtn = document.getElementById('convertir');
-const borrarBtn = document.getElementById('borrar');
-const bolivaresInput = document.getElementById('bolivares');
-const bolivaresResult = document.getElementById('bolivares-result');
-const dolaresResult = document.getElementById('dolares-result');
+        </tbody>
+    </table>
 
-const tasaDeCambio = 94.32; //tasa de cambio en venezuela.
+<center>
+  <button class="boton" onclick="window.location.href='index.html'">Salir al menu</button>
+    </center>
 
-convertirBtn.addEventListener('click', () => {
-    const bolivares = parseFloat(bolivaresInput.value);
-    if (!isNaN(bolivares)) {
-        const dolares = bolivares / tasaDeCambio;
-        bolivaresResult.innerText = bolivares.toFixed(2);
-        dolaresResult.innerText = dolares.toFixed(2);
-    } else {
-        alert("Por favor, ingrese un monto válido.");
+
+ <button id="menu-button"></button>
+   
+
+    <script>
+        // Valor actual del dólar, inicializado a un valor por defecto
+        // Puede ser actualizado manualmente o desde una fuente externa
+        let valorDolar = 94.32; // Taza valor: 25,000 Bs por dólar
+
+        // Elementos DOM
+        const inputMonto = document.getElementById('montoBs');
+        const btnConvertir = document.getElementById('convertirBtn');
+        const btnBorrar = document.getElementById('borrarBtn');
+        const resultadoBs = document.getElementById('resultadoBs');
+        const resultadoUsd = document.getElementById('resultadoUsd');
+        const menuBtn = document.getElementById('menu-button');
+
+        // Función para convertir bolívares a dólares
+        function convertir() {
+            const montoBs = parseFloat(inputMonto.value);
+            if (isNaN(montoBs) || montoBs <= 0) {
+                alert('Por favor, ingrese un monto válido en bolívares mayor a cero.');
+                return;
+            }
+            // Cálculo del monto en dólares
+            const montoUsd = montoBs / valorDolar;
+
+            // Mostrar resultados con formato de moneda
+            resultadoBs.textContent = montoBs.toLocaleString('es-VE', { style: 'currency', currency: 'VES' });
+            resultadoUsd.textContent = montoUsd.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        }
+
+        // Función para borrar los campos y resultados
+        function borrar() {
+            inputMonto.value = '';
+            resultadoBs.textContent = '\u00A0'; // espacio no separable
+            resultadoUsd.textContent = '\u00A0';
+            inputMonto.focus();
+        }
+
+        // Evento botón convertir
+        btnConvertir.addEventListener('click', convertir);
+
+        // Evento botón borrar
+        btnBorrar.addEventListener('click', borrar);
+
+        // Evento botón salir al menú (puedes personalizar la acción)
+        menuBtn.addEventListener('click', () => {
+            // Por ejemplo, redirigir a un menú principal
+            window.location.href = 'index.html'; // Cambia la URL al menú principal real
+        });
+
+        // Si quieres actualizar el valor del dólar desde otra aplicación,
+        // puedes implementar aquí la lógica para obtenerlo vía API, localStorage o URL.
+        // Por ejemplo, intentar cargar valorDolar almacenado en localStorage:
+        document.addEventListener('DOMContentLoaded', () => {
+            const dolarGuardado = localStorage.getItem('valorDolar');
+            if (dolarGuardado) {
+                valorDolar = parseFloat(dolarGuardado);
+            }
+        });
+        
+        
+        
+        
+        
+        function actualizarReloj() {
+    // Crear objeto fecha UTC actual
+    const ahoraUTC = new Date();
+
+    // Obtener la hora en UTC
+    const utcHora = ahoraUTC.getUTCHours();
+    const utcMinuto = ahoraUTC.getUTCMinutes();
+    const utcSegundo = ahoraUTC.getUTCSeconds();
+
+    // Ajustar la hora a Venezuela (UTC -4)
+    let horaVenezuela = utcHora - 4;
+    if (horaVenezuela < 0) {
+      horaVenezuela += 24;
     }
-});
 
-borrarBtn.addEventListener('click', () => {
-    bolivaresInput.value = '';
-    bolivaresResult.innerText = '';
-    dolaresResult.innerText = '';
-});
+    // Formatear AM/PM
+    const ampm = horaVenezuela >= 12 ? 'PM' : 'AM';
 
+    // Convertir a formato 12 horas
+    let hora12 = horaVenezuela % 12;
+    if (hora12 === 0) hora12 = 12;
 
+    // Añadir ceros a minutos y segundos si son menores a 10
+    const minutoStr = utcMinuto < 10 ? '0' + utcMinuto : utcMinuto;
+    const segundoStr = utcSegundo < 10 ? '0' + utcSegundo : utcSegundo;
+    const horaStr = hora12 < 10 ? '0' + hora12 : hora12;
 
-var c = document.getElementById("myCanvas")
-var ctx = c.getContext("2d")
+    // Actualizar HTML
+    document.getElementById('hora').textContent = horaStr;
+    document.getElementById('minuto').textContent = minutoStr;
+    document.getElementById('segundo').textContent = segundoStr;
+    document.getElementById('ampm').textContent = ampm;
+  }
 
-ctx.strokeStyle = "white"
-ctx.font = "25px serif"
-ctx.strokeText("Monto en bolivares", 40, 50)
+  // Actualizar reloj cada segundo
+  setInterval(actualizarReloj, 1000);
 
-ctx.fillStyle = "green"
-ctx.font = "30px serif"
-ctx.fillText("", 75, 170)
-
-</script>
+  // Inicializar reloj al cargar
+  actualizarReloj();
+    </script>
 </body>
 </html>
