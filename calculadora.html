@@ -1,151 +1,325 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Básica</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora Moderna</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-body {
+  body {
+    background: #121212;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+  }
 
-.calculadora {
-    background-color: #009688; /* Color verde turquesa */
+  .calculator {
+    background: #1c1c1c;
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 4, 6.9);
-    padding: 20px;
-    width: 300px;
-}
+    box-shadow:
+      0 0 10px #00ff00aa,
+      inset 0 0 15px #00ff0088;
+    width: 360px;
+    padding: 25px;
+    color: #eee;
+  }
 
-#display {
-    width: 100%;
-    height: 80px;
-    font-size: 50px;
+  .display {
+    background: #000;
+    border-radius: 12px;
+    box-shadow: inset 0 0 15px #00ff00cc;
+    color: #00ff00;
+    font-size: 2.5rem;
+    font-weight: 600;
+    padding: 20px 15px;
     text-align: right;
-    margin-bottom: 10px;
-    padding: 5px;
-    border: none;
-    border-radius: 03px;
-    box-shadow: inset 0 5px 8px rgba(4, 4, 8, 5.8);
-}
+    margin-bottom: 20px;
+    min-height: 60px;
+    letter-spacing: 1.5px;
+    user-select: none;
+  }
 
-.botones {
+  .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 05px;
-}
+    gap: 15px;
+  }
 
-button {
-    background-color: #9bff6aac; /* Color azul */
-    color: black;
-    border: true;
-    border-radius: 10px;
-    padding: 15px;
-    font-size: 20px;
+  button {
+    background: rgba(192, 192, 192, 0.7);
+    border: none;
+    border-radius: 12px;
+    box-shadow:
+      0 4px 8px rgba(255, 255, 255, 0.6),
+      inset 0 0 10px rgba(255, 255, 255, 0.3);
+    color: #222;
+    font-size: 1.4rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 1000.9s;
-    
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 2.2);
-    
-}
+    padding: 20px 0;
+    transition: all 0.2s ease;
+    backdrop-filter: saturate(180%) blur(10px);
+  }
 
-button:hover {
-    background-color: #1976D2; /* Color azul más oscuro al pasar el mouse */
-}
+  button:hover {
+    background: rgba(192, 192, 192, 0.9);
+    box-shadow:
+      0 6px 12px rgba(255, 255, 255, 0.9),
+      inset 0 0 15px rgba(255, 255, 255, 0.6);
+    color: #000;
+  }
 
-.salir {
-    margin-top: 10px;
-    background-color: #ff4a2bac; /* Color rojo para el botón salir */
-}
+  button.operator {
+    background: transparent;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-weight: 700;
+    box-shadow: 0 0 12px #00ff00;
+  }
 
-.salir:hover {
-    background-color: #d32f2f; /* Color rojo más oscuro al pasar el mouse */
-}
+  button.operator:hover {
+    background: #00ff00;
+    color: #000;
+    box-shadow: 0 0 20px #00ff00;
+  }
 
+  button.equal {
+    background: #00ff00;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 20px #00ff00;
+  }
 
+  button.equal:hover {
+    background: #00cc00;
+    box-shadow: 0 0 25px #00cc00;
+  }
 
-.service-item {
-    background-color: #6a8dffaa;
-    border: 0px solid #00aaff;
+  .header {
     text-align: center;
-    padding: 10px;
-    border-radius: 08px;
-    transition: background-color 10.3s;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-    
-    padding: 08px;
-    margin: 10px 30;
+    margin-bottom: 25px;
+    color: #00ff00;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #00ff00;
+  }
 
-}
+  .converter-banner {
+    background: #004d00;
+    color: #aaffaa;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 8px 0;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 12px #00ff00aa;
+    user-select: none;
+  }
+
+  button.exit-btn {
+    background: #660000;
+    color: #ff9999;
+    font-weight: 700;
+    box-shadow: 0 0 15px #ff4444;
+  }
+
+  button.exit-btn:hover {
+    background: #990000;
+    box-shadow: 0 0 20px #ff2222;
+    color: #fff;
+  }
 </style>
-
+</head>
 <body>
-    
-    <div class="calculadora">
-      <h3>Juancho43G  
-        
-       <input type="text" id="display" disabled>
-        <div class="botones">
-            <button onclick="clearAll()">C</button>
-            <button onclick="backspace()">⌫</button>
-            <button onclick="appendToDisplay('%')">%</button>
-            <button onclick="appendToDisplay('/')">/</button>
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('*')">*</button>
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('-')">-</button>
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('+')">+</button>
-            <button onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            <button onclick="calculateResult()">=</button>
-        </div>
-        <button class="salir" onclick="exitCalculator()">Salir</button>
-        
-        <p>
-        <div class="service-item" onclick="window.location.href='index.html'">Salir al menu<br></div>
-        
-        
-    </div>
-    <script> function appendToDisplay(value) {
-    document.getElementById('display').value += value;
-}
 
-function clearAll() {
-    document.getElementById('display').value = '';
-}
+<div class="calculator">
+  <div class="converter-banner">Calculadora Conversor Green</div>
+  <div class="header">Calculadora</div>
+  <div id="display" class="display">0</div>
+  <div class="buttons">
+    <button class="operator" data-action="clear">C</button>
+    <button class="operator" data-action="backspace">⌫</button>
+    <button class="operator" data-action="sqrt">√</button>
+    <button class="operator" data-action="percent">%</button>
 
-function backspace() {
-    let display = document.getElementById('display');
-    display.value = display.value.slice(0, -1);
-}
+    <button class="operator" data-action="divide">÷</button>
+    <button data-number="7">7</button>
+    <button data-number="8">8</button>
+    <button data-number="9">9</button>
 
-function calculateResult() {
-    let display = document.getElementById('display');
-    try {
-        display.value = eval(display.value.replace('%', '/100')); // Manejo del porcentaje
-    } catch (error) {
-        display.value = 'Error';
+    <button class="operator" data-action="multiply">×</button>
+    <button data-number="4">4</button>
+    <button data-number="5">5</button>
+    <button data-number="6">6</button>
+
+    <button class="operator" data-action="subtract">−</button>
+    <button data-number="1">1</button>
+    <button data-number="2">2</button>
+    <button data-number="3">3</button>
+
+    <button class="operator" data-action="add">+</button>
+    <button data-number="0" style="grid-column: span 2;">0</button>
+    <button data-number=".">.</button>
+
+    <button class="equal" data-action="equals">=</button>
+    <button class="exit-btn" data-action="exit" style="grid-column: span 1;">Salir</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const display = document.getElementById('display');
+    let currentInput = '0';
+    let operator = null;
+    let previousValue = null;
+    let resetNext = false;
+
+    function updateDisplay() {
+      display.textContent = currentInput;
     }
-}
 
-function exitCalculator() {
-    window.close(); // Cierra la ventana de la calculadora si es posible
-}
+    function clearAll() {
+      currentInput = '0';
+      operator = null;
+      previousValue = null;
+      resetNext = false;
+      updateDisplay();
+    }
+
+    function inputNumber(num) {
+      if (resetNext) {
+        currentInput = num === '.' ? '0.' : num;
+        resetNext = false;
+      } else {
+        if (num === '.' && currentInput.includes('.')) return;
+        currentInput = currentInput === '0' && num !== '.' ? num : currentInput + num;
+      }
+      updateDisplay();
+    }
+
+    function performOperation() {
+      if (operator && previousValue !== null) {
+        const prev = parseFloat(previousValue);
+        const current = parseFloat(currentInput);
+        if (isNaN(prev) || isNaN(current)) return;
+
+        switch(operator) {
+          case 'add':
+            currentInput = (prev + current).toString();
+            break;
+          case 'subtract':
+            currentInput = (prev - current).toString();
+            break;
+          case 'multiply':
+            currentInput = (prev * current).toString();
+            break;
+          case 'divide':
+            if (current === 0) {
+              alert("Error: División por cero");
+              clearAll();
+              return;
+            }
+            currentInput = (prev / current).toString();
+            break;
+        }
+        operator = null;
+        previousValue = null;
+        resetNext = true;
+        updateDisplay();
+      }
+    }
+
+    function handleOperator(op) {
+      if (operator && !resetNext) {
+        performOperation();
+      }
+      operator = op;
+      previousValue = currentInput;
+      resetNext = true;
+    }
+
+    function calculateSquareRoot() {
+      let value = parseFloat(currentInput);
+      if (value < 0) {
+        alert("Error: raíz cuadrada de número negativo");
+        return;
+      }
+      currentInput = Math.sqrt(value).toString();
+      resetNext = true;
+      updateDisplay();
+    }
+
+    function calculatePercent() {
+      let value = parseFloat(currentInput);
+      currentInput = (value / 100).toString();
+      resetNext = true;
+      updateDisplay();
+    }
+
+    function backspace() {
+      if (resetNext) {
+        // Si está en modo reset, borrar pone a cero
+        currentInput = '0';
+        resetNext = false;
+      } else if (currentInput.length > 1) {
+        currentInput = currentInput.slice(0, -1);
+      } else {
+        currentInput = '0';
+      }
+      updateDisplay();
+    }
+
+    function exitToMenu() {
+      window.location.href = 'index.html';
+    }
+
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
+        const num = button.getAttribute('data-number');
+        const action = button.getAttribute('data-action');
+
+        if (num !== null) {
+          inputNumber(num);
+        } else if (action !== null) {
+          switch(action) {
+            case 'clear':
+              clearAll();
+              break;
+            case 'backspace':
+              backspace();
+              break;
+            case 'add':
+            case 'subtract':
+            case 'multiply':
+            case 'divide':
+              handleOperator(action);
+              break;
+            case 'equals':
+              performOperation();
+              break;
+            case 'sqrt':
+              calculateSquareRoot();
+              break;
+            case 'percent':
+              calculatePercent();
+              break;
+            case 'exit':
+              exitToMenu();
+              break;
+          }
+        }
+      });
+    });
+
+    clearAll();
+  })();
 </script>
+
 </body>
 </html>
