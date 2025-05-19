@@ -1,222 +1,245 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario Bancario 2025</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calendario Junio 2025</title>
 <style>
-body {
+  body {
     font-family: Arial, sans-serif;
-    background-color:#8098ffc0;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
-
-.container {
-    max-width: 300px;
-    margin: 0 auto;
-    background-color:#ff0a006e;
+    background: #ffff;
+    margin: 0;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
+  }
 
-h1, h2 {
+  /* Portada */
+  header {
     text-align: center;
-    
-    
-   
-}
+    margin-bottom: 30px;
+  }
 
-.calendar {
+  header h1 {
+    font-size: 3em;
+    color: #00cc44;
+    text-shadow:
+      0 0 5px #00cc44,
+      0 0 10px #00cc44,
+      0 0 20px #00cc44,
+      0 0 40px #00cc44;
+  }
+
+  /* Calendario */
+  .calendar {
+    max-width: 500px;
+    margin: 0 auto;
+    border: 3px solid #a0c4ff;
+    border-radius: 10px;
+    box-shadow:
+      0 0 10px 3px #a0c4ff88;
+    background: white;
+  }
+
+  .month {
+    background: #90caf9;
+    color: #0d47a1;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.8em;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-shadow: 0 0 5px #0d47a1;
+  }
+
+  .weekdays, .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    
-    
-}
-
-.day {
-    padding: 06px;
     text-align: center;
-    background-color: #8b4513;
-    color: white;
-    cursor: pointer;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
+  }
 
-.day:hover {
-    background-color: #d2691e;
-}
+  .weekdays div {
+    background: #e3f2fd;
+    padding: 10px 0;
+    font-weight: bold;
+    border-bottom: 2px solid #90caf9;
+    color: #0d47a1;
+  }
 
-.holiday-national {
-    background-color: blue;
-}
+  .days div {
+    padding: 12px 0;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-top: none;
+    cursor: default;
+    user-select: none;
+    font-weight: 600;
+    position: relative;
+  }
 
-.holiday-bank {
-    background-color: #;
-    color: black;
-    
-}
+  .days div:nth-child(7n) {
+    border-right: 1px solid #ddd;
+  }
 
-.header {
-    background-color: #555;
-}
+  .days div:hover {
+    background: #bbdefb;
+  }
 
-.info {
-    margin-top: 20px;
-}
+  /* Espacios vacíos para días previos y posteriores */
+  .empty {
+    background: #f9f9f9;
+    border: none;
+    cursor: default;
+  }
 
-.menu-button {
+  /* Feriados Nacionales */
+  .feriado-nacional {
+    background-color: #ffcccb; /* rojo suave */
+    color: #990000;
+    font-weight: bold;
+    box-shadow: 0 0 8px 2px #ff6666;
+  }
+
+  /* Feriados Bancarios */
+  .feriado-bancario {
+    background-color: #c8e6c9; /* verde suave */
+    color: #2e7d32;
+    font-weight: bold;
+    box-shadow: 0 0 8px 2px #66bb6a;
+  }
+
+  /* Leyenda */
+  .legend {
+    max-width: 500px;
+    margin: 20px auto 40px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .legend div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .legend .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+  }
+
+  .legend .nacional {
+    background-color: #ffcccb;
+    box-shadow: 0 0 8px 2px #ff6666;
+  }
+
+  .legend .bancario {
+    background-color: #c8e6c9;
+    box-shadow: 0 0 8px 2px #66bb6a;
+  }
+
+  /* Botón salir */
+  .btn-exit {
     display: block;
-    margin: 20px auto;
-    padding: 20px 30px;
-    background-color:#8098ffc0;
+    width: 150px;
+    margin: 0 auto;
+    padding: 12px 0;
+    background: #00cc44;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
     cursor: pointer;
-}
+    box-shadow:
+      0 0 8px 3px #00cc44cc;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+  }
 
-.menu-button:hover {
-    background-color: #6a0dad;
-}
-
-
-
-
-
-.boton {
-  background-color: #3498db;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
-
-/* Estilo al pasar el cursor sobre el botón */
-.boton:hover {
-  background-color: #2980b9;
-}
-
-/* Estilo al hacer clic en el botón */
-.boton:active {
-  background-color: #1f618d;
-}
+  .btn-exit:hover {
+    background: #009933;
+    box-shadow:
+      0 0 12px 4px #009933cc;
+  }
 </style>
+</head>
 <body>
-    <div class="container">
-        
-        
-            <h1 style="color: white;">Calendario 2025</h1>
-        
-      <h2 style="color: white;">Mayo</h2>
-       
-        <div class="calendar">
-            <div class="day header">Lun</div>
-            <div class="day header">Mar</div>
-            <div class="day header">Mié</div>
-            <div class="day header">Jue</div>
-            <div class="day header">Vie</div>
-            <div class="day header">Sab</div>
-            <div class="day header">Dom</div>
-            
-            
-            <div class="day"></div>
-            <div class="day"></div>
-            <div class="day"></div>
-            
-            
-              <div class="day holiday-national" data-message="Feliz dia del trabajador mucho éxito.">1</div>
-            <div class="day">2</div>
-            
-            <div class="day">3</div>
-            <div class="day">4</div>
 
-           <div class="day">5</div>
-            <div class="day">6</div>
-            <div class="day">7</div>
-            <div class="day">8</div>
-            <div class="day">9</div>
-            <div class="day">10</div>
-            <div class="day">11</div>
-            <div class="day">12</div>
-            <div class="day">13</div>
-            <div class="day">14</div>
-            
-          
-            
-            <div class="day">15</div>
-            <div class="day">16</div>
-            
-            <div class="day">17</div>
-            <div class="day">18</div>
-            
-            <div class="day">19</div>
-            <div class="day">20</div>
-            <div class="day">21</div>
-            <div class="day">22</div>
-            <div class="day">23</div>
-            <div class="day">24</div>
-            <div class="day">25</div>
-            <div class="day">26</div>
-            <div class="day">27</div>
-            <div class="day">28</div>
-            <div class="day">29</div>
-            <div class="day">30</div>
-            <div class="day">31</div>
-            
-                      
-     
-            
-            
-        </div>
-        
-        <br>
-        <br> 
-        <h4 style="color: blue;">Feriado nacional</h4> 
-       <h4 style="color: yellow;">Feriado bancario</h4>
-       
-       <center>
-        
-      <!-- Código HTML del botón -->
-<a href="index.html" class="boton">Salir al menu</a>
-     </center>
-    </div>
-    <script> document.querySelectorAll('.day').forEach(day => {
-    day.addEventListener('click', () => {
-        const date = day.getAttribute('data-date');
-        if (date) {
-            console.log(`Has seleccionado la fecha: ${date}`);
-        } else {
-            console.log('Esta fecha no es un feriado.');
-        }
-    });
-});
+<header>
+  <h1>Calendario Conversor</h1>
+</header>
 
+<div class="calendar" role="table" aria-label="Calendario Junio 2025">
+  <div class="month">Junio 2025</div>
+  <div class="weekdays" role="row">
+    <div role="columnheader">Dom</div>
+    <div role="columnheader">Lun</div>
+    <div role="columnheader">Mar</div>
+    <div role="columnheader">Mié</div>
+    <div role="columnheader">Jue</div>
+    <div role="columnheader">Vie</div>
+    <div role="columnheader">Sáb</div>
+  </div>
+  <div class="days" role="rowgroup" id="days-container">
+    <!-- Los días se generarán con JS -->
+  </div>
+</div>
 
+<div class="legend">
+  <div><div class="color-box nacional"></div>Feriado Nacional</div>
+  <div><div class="color-box bancario"></div>Feriado Bancario</div>
+</div>
 
-   // Selecciona todos los días festivos
-        const holidays = document.querySelectorAll('.holiday-national');
+<a href="index.html" class="btn-exit" role="button" aria-label="Salir al menú">Salir al menú</a>
 
-        // Agrega un evento de clic a cada día festivo
-        holidays.forEach(holiday => {
-            holiday.addEventListener('click', function() {
-                const message = this.getAttribute('data-message');
-                alert(`Celebrando: ${message}`);
-            });
-        });
+<script>
+  // Definir feriados para junio 2025
+  // Ejemplo: 1 de junio es feriado nacional y 16 de junio feriado bancario (puedes ajustar según tu país)
+  const feriadosNacionales = [24]; // Ajusta según feriados nacionales reales
+  const feriadosBancarios = [2,16,23,29]; // Ajusta según feriados bancarios reales
+
+  const daysContainer = document.getElementById('days-container');
+
+  // Junio 2025 comienza el domingo 1 y tiene 30 días
+  // Domingo = 0, Lunes = 1, ..., Sábado = 6
+  // Junio 1, 2025 es domingo (día 0)
+
+  // Para colocar los días, necesitamos saber qué día de la semana cae el 1 de junio 2025
+  const year = 2025;
+  const month = 5; // JS meses base 0 (0=Enero, 5=Junio)
+  const firstDay = new Date(year, month, 1).getDay();
+
+  // Crear espacios vacíos para días previos si el mes no comienza en domingo
+  for (let i = 0; i < firstDay; i++) {
+    const emptyDiv = document.createElement('div');
+    emptyDiv.classList.add('empty');
+    daysContainer.appendChild(emptyDiv);
+  }
+
+  // Crear los días del mes
+  for (let day = 1; day <= 30; day++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.textContent = day;
+
+    if (feriadosNacionales.includes(day)) {
+      dayDiv.classList.add('feriado-nacional');
+      dayDiv.setAttribute('title', 'Feriado Nacional');
+      dayDiv.setAttribute('aria-label', `Día ${day}, Feriado Nacional`);
+    } else if (feriadosBancarios.includes(day)) {
+      dayDiv.classList.add('feriado-bancario');
+      dayDiv.setAttribute('title', 'Feriado Bancario');
+      dayDiv.setAttribute('aria-label', `Día ${day}, Feriado Bancario`);
+    } else {
+      dayDiv.setAttribute('aria-label', `Día ${day}`);
+    }
+
+    daysContainer.appendChild(dayDiv);
+  }
 </script>
+
 </body>
 </html>
-
-
-
-       
