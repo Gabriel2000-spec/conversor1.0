@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VIVE FM ONLINE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+  body {
+    margin: 0;
+    background: #121212;
+    font-family: 'Poppins', sans-serif;
+    color: #e0f7fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Borde brillante animado con transparencia */
+  .border-brillante {
+    border-radius: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto;
+    max-width: 400px;
+  }
+  .border-brillante::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      #00fff7,
+      #00ff7f,
+      #00fff7,
+      #00ff7f,
+      #00fff7
+    );
+    animation: rotate 4s linear infinite;
+    filter: blur(8px);
+    opacity: 0.7;
+    z-index: 0;
+    border-radius: 20px;
+  }
+  .border-brillante > * {
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  header {
+    text-align: center;
+    margin: 30px 0 10px 0;
+  }
+  header h1 {
+    font-size: 3rem;
+    color: #00fff7;
+    text-shadow:
+      0 0 8px #00fff7,
+      0 0 20px #00fff7,
+      0 0 30px #00fff7;
+  }
+  header h2 {
+    font-weight: 400;
+    color: #66fff9cc;
+    margin-top: 5px;
+    font-style: italic;
+    text-shadow: 0 0 6px #66fff9cc;
+  }
+
+  /* Reloj estilo brillante */
+  #reloj {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    color: #00ffcc;
+    text-align: center;
+    margin-top: 10px;
+    text-shadow:
+      0 0 10px #00ffcc,
+      0 0 20px #00ffcc,
+      0 0 30px #00ffcc;
+  }
+
+  /* Reproductor play grande */
+  .play-button {
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 255, 204, 0.3);
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    cursor: pointer;
+    box-shadow:
+      0 0 20px #00ffcc,
+      inset 0 0 30px #00ffcc;
+    transition: box-shadow 0.3s ease;
+  }
+  .play-button:hover {
+    box-shadow:
+      0 0 40px #00ffcc,
+      inset 0 0 50px #00ffcc;
+  }
+  .play-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20;
+    height: 20;
+    border-style: solid;
+    border-width: 40px 0 40px 50px;
+    border-color: transparent transparent transparent #00ffcc;
+    transform: translate(-40%, -50%);
+    filter: drop-shadow(0 0 6px #00ffcc);
+  }
+
+  /* Input género */
+  .genre-select {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  select {
+    background: rgba(0, 255, 204, 0.15);
+    border: 2px solid #00ffcc;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #00ffcc;
+    font-size: 1.1rem;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  select:hover, select:focus {
+    background: rgba(0, 255, 204, 0.35);
+  }
+
+  /* Pie de página */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    color: #00ffccaa;
+    text-shadow: 0 0 8px #00ffccaa;
+  }
+</style>
+</head>
+<body>
+
+<div id="reloj"></div>
+
+<header>
+  <h1>VIVE FM ONLINE</h1>
+  <h2>Siempre contigo</h2>
+</header>
+<center>Play</center>
+<div class="border-brillante">
+  <div class="play-button" id="playButton" title="Reproducir / Pausar"></div>
+</div>
+
+<div class="genre-select">
+  <select id="genreSelect" aria-label="Seleccionar género musical">
+    <option value="" disabled selected>Selecciona un género</option>
+    <option value="cristiano">Cristiano</option>
+    <option value="circular">Circular</option>
+    <option value="catolica">Católica</option>
+    <option value="rock">Rock</option>
+    <option value="salsera">Salsera</option>
+    <option value="otros">Otros</option>
+  </select>
+</div>
+
+
+
+<script>
+  // Reloj con hora Venezuela (UTC-4)
+  function actualizarReloj() {
+    const nowUTC = new Date();
+    // Hora Venezuela UTC-4
+    const venezuelaOffset = -0 * 60; // minutos
+    const localTime = new Date(nowUTC.getTime() + venezuelaOffset * 60000);
+    const horas = String(localTime.getHours()).padStart(2, '0');
+    const minutos = String(localTime.getMinutes()).padStart(2, '0');
+    const segundos = String(localTime.getSeconds()).padStart(2, '0');
+    document.getElementById('reloj').textContent = `Hora Venezuela: ${horas}:${minutos}:${segundos}`;
+  }
+  setInterval(actualizarReloj, 1000);
+  actualizarReloj();
+
+  // Reproductor streaming sencillo (simulado)
+  // Aquí puedes poner tu URL de streaming real
+  const streamUrl = "https://stream.zeno.fm/ctv5k5brgpfvv"; // Cambiar por URL real
+  let audio = new Audio(streamUrl);
+  let isPlaying = false;
+
+  const playButton = document.getElementById('playButton');
+  playButton.addEventListener('click', () => {
+    if (!isPlaying) {
+      audio.play().catch(e => alert("Error al reproducir el stream."));
+      isPlaying = true;
+      playButton.style.boxShadow = "0 0 60px #00ffcc, inset 0 0 70px #00ffcc";
+    } else {
+      audio.pause();
+      isPlaying = false;
+      playButton.style.boxShadow = "0 0 20px #00ffcc, inset 0 0 30px #00ffcc";
+    }
+  });
+
+  // Opcional: Acción al cambiar género (puedes personalizar)
+  document.getElementById('genreSelect').addEventListener('change', (e) => {
+    alert(`Género seleccionado: ${e.target.value}`);
+    // Aquí puedes agregar lógica para cambiar stream según género
+  });
+</script>
+
+</body>
+</html>
