@@ -1,282 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor Green</title>
-    <style>
-     body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #00c6ff, #0072ff);
-    color: white;
-    text-align: center;
-    margin: 0;
-}
-        
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conversor Green</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 
-        header {
-            background-color: #0072ff;
-            padding: 15px;
-            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-        h1 {
-            margin: 0;
-        }
+    body {
+      background-color: #0077ff;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px 40px;
+      user-select: none;
+    }
 
-        .grid-container {
+    header {
+      font-size: 1.4rem;
+      font-weight: 700;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      background: #0058cc;
+      padding: 15px 0;
+      border-radius: 6px;
+      box-shadow:
+        0 0 15px #00e5ff,
+        inset 0 0 15px #00b3ff;
+      text-transform: capitalize;
+      letter-spacing: 1.5px;
+      user-select: text;
+      margin-bottom: 20px;
+    }
+
+    .dolar-info {
+      width: 100%;
+      max-width: 480px;
+      background: white;
+      color: #003366;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 15px 15;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 1px 1px 6px #00000080;
+      margin-bottom: 12px;
+      user-select: text;
+      letter-spacing: 0.8px;
+    }
+
+    .time {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-shadow: 0 0 8px #00ccffcc;
+      user-select: text;
+    }
+
+    .next-day-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      background-color: #0088cc;
+      border-radius: 15px;
+      padding: 10px 15px;
+      box-shadow:
+        0 6px 8px #004466,
+        inset 0 0 15px #00ccffaa;
+      margin-bottom: 25px;
+      user-select: none;
+    }
+
+    .next-day-input {
+      flex-grow: 2;
+      background: rgba(255 255 255 / 0.2);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e0f7ff;
+      letter-spacing: 0.6px;
+      box-shadow: 0 0 10px #00ccffcc inset;
+      outline: none;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .next-day-input::placeholder {
+      color: #b0e0ffcc;
+    }
+
+    .next-day-input:focus {
+      background: rgba(255 255 255 / 0.35);
+      box-shadow: 0 0 18px #00e5ff inset;
+      color: #00e5ff;
+    }
+
+    .dollar-icon {
+      width: 36px;
+      height: 36px;
+      margin-left: 12px;
+      filter: drop-shadow(0 0 6px #00e5ff);
+      transition: opacity 0.3s ease;
+      user-select: none;
+      opacity: 0;
+    }
+
+    .dollar-icon.visible {
+      opacity: 1;
+    }
+
+    
+    
+    main {
+      width: 100%;
+      max-width: 580px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    padding: 10px;
+    
+      .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            padding: 20px;
-        }
-
-        .menu-button {
-            background-color: #008CBA;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 1.5s;
-            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-        }
-
-        .menu-button:hover {
-            background-color: #005f73;
-        }
-
-        footer {
-            background-color: #0072ff;
-            padding: 10px;
-        }
-
-        .ad-button {
-            background-color: #008CBA;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-        }
-
-        .ad-button:hover {
-            background-color: #005f73;
-        }
-
-        .notification {
-            font-size: 18px;
-            background-color: #ffffff;
-            color: blue;
-            padding: 10px;
-            margin: 10px 0;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 3, 3.4);
-        
-}
-
-
-
-
-
-
-        .boton-transparente {
-            position: fixed;
-            top: 10px;
-            right: 20px;
-            background-color: transparent;
-            color: red;
-            border: 2px solid white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .publicidad {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #eaffbf9e;
-            padding: 02px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .logo {
-            margin-top: 20px;
-        }
-
-        button {
-            margin-top: 10px;
-            padding: 10px 10px;
-            border: none;
-            background-color: #fffc6a;
-            color: black;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 15px;
-            box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-        }
-        
-        
-        
-        
-        
-         .notification {
-      background-color: white;
-      border: 1px solid white;
-      padding: 10px;
-      margin: 10px 10;
-      font-family: Arial, sans-serif;
+          ;
+           
+      
     }
-    </style>
+
+    .item-btn {
+      background-color: #0099aa;
+      border-radius: 12px;
+      box-shadow: 4px 4px 12px #004d52, inset 0 0 12px #00ccdd;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 30px 10px 20px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition:
+        background-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.15s ease;
+      text-decoration: none;
+    }
+
+    .item-btn:hover,
+    .item-btn:focus {
+      background-color: #00bbbb;
+      box-shadow: 5px 5px 10px #00e5ff, inset 0 0 20px #00ffff;
+      transform: translateY(-3px);
+      outline: none;
+    }
+
+    .item-btn span {
+      margin-top: 9px;
+      font-size: 1.7rem;
+      user-select: none;
+      line-height: 1;
+    }
+
+    footer {
+      margin-top: 32px;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #00d4ffcc;
+      user-select: none;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      letter-spacing: 0.8px;
+      text-shadow: 0 0 6px #00b7e5aa;
+    }
+
+    /* Responsive para pantallas pequeñas */
+    @media (max-width: 460px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .item-btn {
+        padding: 24px 10px 20px;
+        font-size: 1rem;
+      }
+      header {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="publicidad" id="publicidad">
-    <h3 style="color: blue;">¡Hola!. Ahora puedes escuchar radio en linea en la seccion "escuchar radio online". Escucha musica cristiana , reflexiones, noticias, programaciones en vivo.</h3>
-        <br>
-        <img src="img/logovive.jpg" alt="Publicidad" class="logo" width="290" height="200">
-        <button onclick="quitarPublicidad()">Quitar Publicidad</button>
-    </div>
+  <header>CONVERSOR GREEN</header>
 
-    <header>
-        <h1>Conversor Green</h1>
-        
-        
-          <div id="notification" class="notification">
-    <!-- La fecha y la cotización se insertarán aquí -->
-    </div>
-        
-           <div class="reloj" id="reloj">
-    <span id="hora">00</span> :
-    <span id="minuto">00</span> :
-    <span id="segundo">00</span>
-    <span class="am-pm" id="ampm">AM</span>
+  <section class="dolar-info" aria-label="Información del dólar actual"><h4>
+    MARTES 27 - 05 - 2025 BCV 95,23</h4>
+  </section>
 
-    </header>
+  <section class="time" aria-live="polite" aria-atomic="true" aria-label="Hora actual">
+    10 : 21 : 55 PM
+  </section>
 
-    <main>
-        <div class="grid-container">
-            <button class="menu-button" onclick="location.href='Dolarbolivar.html'">Dolar a bolivar<p> 🇺🇸🇻🇪</button>
-            <button class="menu-button" onclick="location.href='bolivardolar.html'">Bolivar a dolar <p>🇻🇪🇺🇸</button>
-            <button class="menu-button" onclick="location.href='calculadora.html'">Calculadora<p> 🔢</button>
-            <button class="menu-button" onclick="location.href='calendario.html'">Calendario <p>📅</button>
-            <button class="menu-button" onclick="location.href='bloc.html'">Bloc de nota <p>📝</button>
-            <button class="menu-button" onclick="location.href='historia.html'">Historia<p>📌</button>
-            <button class="menu-button" onclick="location.href='radio.html'">Escucha radio online<p></p> 📻</button>
-            <button class="menu-button" onclick="location.href='instrucciones.html'">Guardar contactos </p>🧑‍💼🧑‍🦳</button>
-        </div>
-    </main>
+  <section class="next-day-container" aria-label="Entrada para el dólar del día siguiente">
+    <input
+      type="text"
+      class="next-day-input"
+      placeholder="Dólar del día siguiente"
+      aria-label="dolar del día siguiente"
+      aria-describedby="desc-dollar"
+      autocomplete="off"
+      spellcheck="false"
+      pattern="[0-9.,]*"
+      inputmode="decimal"
+    />
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/196/196566.png"
+      alt="Ícono de dólar"
+      class="dollar-icon"
+      aria-hidden="true"
+      loading="lazy"
+    />
+  </section>
 
-    <footer>
-        <button class="ad-button" onclick="location.href='Publicar.html'">Secciones</button>
-    </footer>
+  <main>
+    <a href="Dolarbolivar.html" class="item-btn" role="button" aria-label="Ir a Dólar a Bolívar">
+      Dolar a bolívar
+      <span>🇺🇸🇻🇪</span>
+    </a>
+    <a href="bolivardolar.html" class="item-btn" role="button" aria-label="Ir a Bolívar a Dólar">
+      Bolívar a dólar
+      <span>🇻🇪🇺🇸</span>
+    </a>
+    <a href="calculadora.html" class="item-btn" role="button" aria-label="Ir a Calculadora">
+      Calculadora
+      <span>🔢</span>
+    </a>
+    <a href="calendario.html" class="item-btn" role="button" aria-label="Ir a Calendario">
+      Calendario
+      <span>📅</span>
+    </a>
+    <a href="bloc.html" class="item-btn" role="button" aria-label="Ir a Bloc de nota">
+      Bloc de nota
+      <span>📝</span>
+    </a>
+    <a href="historia.html" class="item-btn" role="button" aria-label="Ir a Historia">
+      Historia
+      <span>📌</span>
+    </a>
+    <a href="radio.html" class="item-btn" role="button" aria-label="Escuchar radio online">
+      Escucha radio online
+      <span>📻</span>
+    </a>
+    <a href="instrucciones.html" class="item-btn" role="button" aria-label="Guardar contactos">
+      Guardar contactos
+      <span>👩‍💼👨‍🦳</span>
+    </a>
+  </main>
 
-    <script>
-        function quitarPublicidad() {
-            document.getElementById("publicidad").style.display = "none";
-        }
-        
-        
-        
-        
-        
-         // Función para obtener la fecha y hora actual
-    function obtenerFechaHora() {
-      const fecha = new Date();
-      const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-      const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-      const diaSemana = dias[fecha.getDay()];
-      const dia = fecha.getDate();
-      const mes = meses[fecha.getMonth()];
-      const anio = fecha.getFullYear();
-      const horas = String(fecha.getHours()).padStart(2, '0');
-      const minutos = String(fecha.getMinutes()).padStart(2, '0');
-      const segundos = String(fecha.getSeconds()).padStart(2, '0');
-      return `${diaSemana.toUpperCase()} ${dia} - ${mes} - ${anio} ${horas}:${minutos}:${segundos}`;
+  <footer>@2025 derecho al autor</footer>
+
+  <script>
+    // Actualización dinámica de la hora cada segundo
+    function updateTime() {
+      const timeEl = document.querySelector('.time');
+      const now = new Date();
+
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+      const formattedTime = [
+        hours.toString().padStart(2, '0'),
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+      ].join(' : ') + ' ' + ampm;
+
+      timeEl.textContent = formattedTime;
     }
+    setInterval(updateTime, 1000);
+    updateTime();
 
-    // Función para obtener la cotización del dólar BCV
-    async function obtenerCotizacionDolar() {
-      try {
-        const respuesta = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-        const datos = await respuesta.json();
-        const cotizacion = datos.compra; // Precio de compra del dólar
-        return cotizacion;
-      } catch (error) {
-        console.error('Error al obtener la cotización del dólar:', error);
-        return null;
-      }
-    }
+    // Mostrar y actualizar ícono dólar al modificar input
+    const inputDollar = document.querySelector('.next-day-input');
+    const dollarIcon = document.querySelector('.dollar-icon');
 
-    // Función para actualizar la notificación
-    async function actualizarNotificacion() {
-      const fechaHora = obtenerFechaHora();
-      const cotizacionDolar = await obtenerCotizacionDolar();
-      const notificacion = document.getElementById('notification');
-      if (cotizacionDolar !== null) {
-        notificacion.innerHTML = `JUEVES 15 - 05 - 2025 (BCV) ${cotizacionDolar.toFixed(2)}`;
+    // Función para mostrar icono si valor cambia y es válido (número > 0)
+    function checkDollarInput() {
+      let val = inputDollar.value.trim().replace(',', '.');
+      let num = parseFloat(val);
+      if (!isNaN(num) && num > 0) {
+        dollarIcon.classList.add('visible');
       } else {
-        notificacion.innerHTML = "MARTES 27 - 05 - 2025 (BCV) 95,23";
+        dollarIcon.classList.remove('visible');
       }
     }
 
-    // Actualizar la notificación al cargar la página
-    actualizarNotificacion();
+    inputDollar.addEventListener('input', checkDollarInput);
 
-    // Actualizar la notificación cada minuto
-    setInterval(actualizarNotificacion, 60000);
-    
-    
-    
-    
-    
-      function actualizarReloj() {
-    // Crear objeto fecha UTC actual
-    const ahoraUTC = new Date();
-
-    // Obtener la hora en UTC
-    const utcHora = ahoraUTC.getUTCHours();
-    const utcMinuto = ahoraUTC.getUTCMinutes();
-    const utcSegundo = ahoraUTC.getUTCSeconds();
-
-    // Ajustar la hora a Venezuela (UTC -4)
-    let horaVenezuela = utcHora - 4;
-    if (horaVenezuela < 0) {
-      horaVenezuela += 24;
-    }
-
-    // Formatear AM/PM
-    const ampm = horaVenezuela >= 12 ? 'PM' : 'AM';
-
-    // Convertir a formato 12 horas
-    let hora12 = horaVenezuela % 12;
-    if (hora12 === 0) hora12 = 12;
-
-    // Añadir ceros a minutos y segundos si son menores a 10
-    const minutoStr = utcMinuto < 10 ? '0' + utcMinuto : utcMinuto;
-    const segundoStr = utcSegundo < 10 ? '0' + utcSegundo : utcSegundo;
-    const horaStr = hora12 < 10 ? '0' + hora12 : hora12;
-
-    // Actualizar HTML
-    document.getElementById('hora').textContent = horaStr;
-    document.getElementById('minuto').textContent = minutoStr;
-    document.getElementById('segundo').textContent = segundoStr;
-    document.getElementById('ampm').textContent = ampm;
-  }
-
-  // Actualizar reloj cada segundo
-  setInterval(actualizarReloj, 1000);
-
-  // Inicializar reloj al cargar
-  actualizarReloj();
-        
-    </script>
+    // Inicializar con valor  y mostrar icono
+    const dolarActual = 95.23;
+    const incrementoDiario = 0;
+    inputDollar.value = (dolarActual + incrementoDiario).toFixed(2).replace('.', ',');
+    checkDollarInput();
+  </script>
 </body>
 </html>
