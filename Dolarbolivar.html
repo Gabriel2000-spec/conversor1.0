@@ -243,7 +243,7 @@
       return;
     }
     const bolivares = dolar * TIPO_CAMBIO;
-    const mensaje = `Hola,al cambio es ${dolar.toFixed(2)} USD a ${formatearBolivares(bolivares)} Bs.`;
+    const mensaje = `Hola, al cambio de ${dolar.toFixed(2)} USD a ${formatearBolivares(bolivares)} Bs.`;
     const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
     window.open(urlWhatsapp, '_blank');
   });
