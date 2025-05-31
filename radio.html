@@ -1,228 +1,287 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VIVE FM ONLINE</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
-
-  body {
-    margin: 0;
-    background: #121212;
-    font-family: 'Poppins', sans-serif;
-    color: #e0f7fa;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  /* Borde brillante animado con transparencia */
-  .border-brillante {
-    border-radius: 20px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-    margin: 20px auto;
-    max-width: 400px;
-  }
-  .border-brillante::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-      from 0deg,
-      #00fff7,
-      #00ff7f,
-      #00fff7,
-      #00ff7f,
-      #00fff7
-    );
-    animation: rotate 4s linear infinite;
-    filter: blur(8px);
-    opacity: 0.7;
-    z-index: 0;
-    border-radius: 20px;
-  }
-  .border-brillante > * {
-    position: relative;
-    z-index: 1;
-  }
-  @keyframes rotate {
-    to {
-      transform: rotate(360deg);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estadísticas - Conversor Green</title>
+  <style>
+      
+      /* Reset básico */
+    * {
+      box-sizing: border-box;
     }
-  }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+    
+    body 
+     {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+   
+.container {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      /* Para dispositivos Android */
+      touch-action: manipulation;
+    }
 
-  header {
-    text-align: center;
-    margin: 30px 0 10px 0;
-  }
-  header h1 {
-    font-size: 3rem;
-    color: #00fff7;
-    text-shadow:
-      0 0 8px #00fff7,
-      0 0 20px #00fff7,
-      0 0 30px #00fff7;
-  }
-  header h2 {
-    font-weight: 400;
-    color: #66fff9cc;
-    margin-top: 5px;
-    font-style: italic;
-    text-shadow: 0 0 6px #66fff9cc;
-  }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 3px #a8edea;
+      font-size: 1.8rem;
+    }
 
-  /* Reloj estilo brillante */
-  #reloj {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.5rem;
-    color: #00ffcc;
-    text-align: center;
-    margin-top: 10px;
-    text-shadow:
-      0 0 10px #00ffcc,
-      0 0 20px #00ffcc,
-      0 0 30px #00ffcc;
-  }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #34495e;
+      gap: 1rem;
+    }
 
-  /* Reproductor play grande */
-  .play-button {
-    width: 100px;
-    height: 100px;
-    background: rgba(0, 255, 204, 0.3);
-    border-radius: 50%;
-    position: relative;
-    margin: 20px auto;
-    cursor: pointer;
-    box-shadow:
-      0 0 20px #00ffcc,
-      inset 0 0 30px #00ffcc;
-    transition: box-shadow 0.3s ease;
-  }
-  .play-button:hover {
-    box-shadow:
-      0 0 40px #00ffcc,
-      inset 0 0 50px #00ffcc;
-  }
-  .play-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20;
-    height: 20;
-    border-style: solid;
-    border-width: 40px 0 40px 50px;
-    border-color: transparent transparent transparent #00ffcc;
-    transform: translate(-40%, -50%);
-    filter: drop-shadow(0 0 6px #00ffcc);
-  }
+    .stat {
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(72, 201, 176, 0.3);
+      min-width: 140px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      /* Aumentar área táctil */
+      cursor: default;
+      user-select: none;
+    }
 
-  /* Input género */
-  .genre-select {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  select {
-    background: rgba(0, 255, 204, 0.15);
-    border: 2px solid #00ffcc;
-    border-radius: 10px;
-    padding: 10px 15px;
-    color: #00ffcc;
-    font-size: 1.1rem;
-    outline: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  select:hover, select:focus {
-    background: rgba(0, 255, 204, 0.35);
-  }
+    .stat:hover,
+    .stat:focus {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(72, 201, 176, 0.5);
+      outline: none;
+    }
 
-  /* Pie de página */
-  footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 15px 0;
-    font-size: 0.9rem;
-    color: #00ffccaa;
-    text-shadow: 0 0 8px #00ffccaa;
-  }
-</style>
+    .stat label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+      color: #27ae60;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(46, 204, 113, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Ajustes para pantallas pequeñas (Android) */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .stat {
+        min-width: 100%;
+        font-size: 1rem;
+        padding: 1rem;
+      }
+    
+     
+    
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Estadísticas - Conversor Green</h1>
+    <div class="stats">
+      <div class="stat">
+        <label>Visitas Totales</label>
+        <div id="visitCount">0</div>
+      </div>
+      <p>
+      <div class="stat">
+        <label>Tiempo Total (s)</label>
+        <div id="totalTime">0</div>
+      </div>
+      <div class="stat">
+        <label>Tiempo Sesión (s)</label>
+        <div id="sessionTime">0</div>
+      </div>
+    </div>
+    <canvas id="usageChart" width="560" height="280"></canvas>
+    <footer>© 2024 Conversor Green</footer>
+  </div>
 
-<div id="reloj"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Variables para almacenar datos
+    let visitCount = 0;
+    let totalTime = 0; // en segundos
+    let sessionStart = Date.now();
+    let sessionTimer = null;
 
-<header>
-  <h1>VIVE FM ONLINE</h1>
-  <h2>Siempre contigo</h2>
-</header>
-<center>Play</center>
-<div class="border-brillante">
-  <div class="play-button" id="playButton" title="Reproducir / Pausar"></div>
-</div>
-
-<div class="genre-select">
-  <select id="genreSelect" aria-label="Seleccionar género musical">
-    <option value="" disabled selected>Selecciona un género</option>
-    <option value="cristiano">Cristiano</option>
-    <option value="circular">Circular</option>
-    <option value="catolica">Católica</option>
-    <option value="rock">Rock</option>
-    <option value="salsera">Salsera</option>
-    <option value="otros">Otros</option>
-  </select>
-</div>
-
-
-
-<script>
-  // Reloj con hora Venezuela (UTC-4)
-  function actualizarReloj() {
-    const nowUTC = new Date();
-    // Hora Venezuela UTC-4
-    const venezuelaOffset = -0 * 60; // minutos
-    const localTime = new Date(nowUTC.getTime() + venezuelaOffset * 60000);
-    const horas = String(localTime.getHours()).padStart(2, '0');
-    const minutos = String(localTime.getMinutes()).padStart(2, '0');
-    const segundos = String(localTime.getSeconds()).padStart(2, '0');
-    document.getElementById('reloj').textContent = `Hora Venezuela: ${horas}:${minutos}:${segundos}`;
-  }
-  setInterval(actualizarReloj, 1000);
-  actualizarReloj();
-
-  // Reproductor streaming sencillo (simulado)
-  // Aquí puedes poner tu URL de streaming real
-  const streamUrl = "https://stream.zeno.fm/ctv5k5brgpfvv"; // Cambiar por URL real
-  let audio = new Audio(streamUrl);
-  let isPlaying = false;
-
-  const playButton = document.getElementById('playButton');
-  playButton.addEventListener('click', () => {
-    if (!isPlaying) {
-      audio.play().catch(e => alert("Error al reproducir el stream."));
-      isPlaying = true;
-      playButton.style.boxShadow = "0 0 60px #00ffcc, inset 0 0 70px #00ffcc";
-    } else {
-      audio.pause();
-      isPlaying = false;
-      playButton.style.boxShadow = "0 0 20px #00ffcc, inset 0 0 30px #00ffcc";
+    // Cargar datos desde localStorage
+    function loadStats() {
+      visitCount = parseInt(localStorage.getItem('cg_visitCount')) || 0;
+      totalTime = parseInt(localStorage.getItem('cg_totalTime')) || 0;
     }
-  });
 
-  // Opcional: Acción al cambiar género (puedes personalizar)
-  document.getElementById('genreSelect').addEventListener('change', (e) => {
-    alert(`Género seleccionado: ${e.target.value}`);
-    // Aquí puedes agregar lógica para cambiar stream según género
-  });
-</script>
+    // Guardar datos en localStorage
+    function saveStats() {
+      localStorage.setItem('cg_visitCount', visitCount);
+      localStorage.setItem('cg_totalTime', totalTime);
+      localStorage.setItem('cg_sessionTimes', JSON.stringify(sessionTimes));
+    }
 
+    // Actualizar la interfaz
+    function updateUI(sessionElapsed) {
+      document.getElementById('visitCount').textContent = visitCount;
+      document.getElementById('totalTime').textContent = totalTime + sessionElapsed;
+      document.getElementById('sessionTime').textContent = sessionElapsed;
+    }
+
+    // Manejo del gráfico
+    let ctx = document.getElementById('usageChart').getContext('2d');
+
+    // Cargar tiempos de sesiones previas
+    let sessionTimes = JSON.parse(localStorage.getItem('cg_sessionTimes')) || [];
+
+    let chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: sessionTimes.map((_, i) => `Sesión ${i + 1}`),
+        datasets: [{
+          label: 'Tiempo de Uso (s)',
+          data: sessionTimes,
+          backgroundColor: 'rgba(46, 204, 113, 0.6)',
+          borderColor: 'rgba(46, 204, 113, 1)',
+          borderWidth: 1,
+          borderRadius: 6,
+          barPercentage: 0.7
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 5
+            },
+            title: {
+              display: true,
+              text: 'Segundos'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Sesiones'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: (context) => context.parsed.y + ' segundos'
+            }
+          }
+        }
+      }
+    });
+
+    // Incrementar visitas al cargar la página
+    function incrementVisits() {
+      visitCount++;
+      saveStats();
+    }
+
+    // Actualizar gráfico con nueva sesión
+    function addSessionTime(time) {
+      sessionTimes.push(time);
+      saveStats();
+
+      chart.data.labels.push(`Sesión ${sessionTimes.length}`);
+      chart.data.datasets[0].data.push(time);
+      chart.update();
+    }
+
+    // Iniciar contador de tiempo de sesión
+    function startSessionTimer() {
+      sessionStart = Date.now();
+
+      sessionTimer = setInterval(() => {
+        let elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+        updateUI(elapsed);
+      }, 1000);
+    }
+
+    // Al salir o cerrar la pestaña, guardar tiempo de sesión y actualizar total
+    function endSession() {
+      clearInterval(sessionTimer);
+      let elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+      totalTime += elapsed;
+      addSessionTime(elapsed);
+      saveStats();
+    }
+
+    // Inicialización
+    function init() {
+      loadStats();
+      incrementVisits();
+      updateUI(0);
+      startSessionTimer();
+
+      // Guardar tiempo cuando el usuario cierre o recargue
+      window.addEventListener('beforeunload', endSession);
+    }
+
+    init();
+  </script>
 </body>
 </html>
