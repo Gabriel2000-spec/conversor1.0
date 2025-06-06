@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Juego Gusanito Clásico</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    background: linear-gradient(135deg, #a0c4ff, #caf0f8);
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  #gameContainer {
+    position: relative;
+    width: 100vw;
+    max-width: 400px;
+    height: 100vh;
+    max-height: 600px;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  canvas {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255 255 255 / 0.6);
+    display: block;
+    margin: 0 auto;
+    width: 90vw;
+    max-width: 360px;
+    height: 90vw;
+    max-height: 360px;
+  }
+  #controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    user-select: none;
+  }
+  .btn {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    box-shadow:
+      inset 0 1px 2px rgba(255 255 255 / 0.8),
+      0 4px 8px rgba(0 0 0 / 0.15);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active {
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 3px 6px rgba(0 0 0 / 0.3);
+  }
+  .btn svg {
+    fill: #4a90e2;
+    filter: drop-shadow(0 0 2px rgba(74, 144, 226, 0.7));
+  }
+  #directionalPad {
+    position: relative;
+    width: 180px;
+    display: grid;
+    grid-template-columns: 60px 60px 60px;
+    grid-template-rows: 60px 60px 60px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  #speedMenu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  #speedMenu label {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 6px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow:
+      inset 0 1px 2px rgba(255 255 255 / 0.8),
+      0 4px 8px rgba(0 0 0 / 0.15);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  #speedMenu input[type="radio"] {
+    display: none;
+  }
+  #speedMenu input[type="radio"]:checked + label {
+    background: rgba(74, 144, 226, 0.8);
+    color: white;
+    box-shadow:
+      0 0 12px rgba(74,144,226,0.8),
+      inset 0 1px 2px rgba(255 255 255 / 0.9);
+  }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+  <div id="speedMenu">
+    <input type="radio" id="speedSlow" name="speed" value="200" />
+    <label for="speedSlow">Lento</label>
+    <input type="radio" id="speedNormal" name="speed" value="120" checked />
+    <label for="speedNormal">Normal</label>
+    <input type="radio" id="speedFast" name="speed" value="70" />
+    <label for="speedFast">Rápido</label>
+  </div>
+  <canvas id="gameCanvas" width="360" height="360"></canvas>
+  <div id="controls">
+    <div id="directionalPad">
+      <div></div>
+      <button class="btn" id="upBtn" aria-label="Arriba">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 14l5-5 5 5z"/></svg>
+      </button>
+      <div></div>
+      <button class="btn" id="leftBtn" aria-label="Izquierda">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14 7l-5 5 5 5z"/></svg>
+      </button>
+      <div></div>
+      <button class="btn" id="rightBtn" aria-label="Derecha">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10 7l5 5-5 5z"/></svg>
+      </button>
+      <div></div>
+      <button class="btn" id="downBtn" aria-label="Abajo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const gridSize = 20;
+  const tileCount = canvas.width / gridSize;
+
+  let snake = [
+    {x: 9, y: 9},
+    {x: 8, y: 9},
+    {x: 7, y: 9}
+  ];
+  let direction = {x: 1, y: 0};
+  let food = {};
+  let gameOver = false;
+  let score = 0;
+
+  let gameInterval = null;
+  let currentSpeed = 120; // Valor por defecto (normal)
+
+  function placeFood() {
+    food = {
+      x: Math.floor(Math.random() * tileCount),
+      y: Math.floor(Math.random() * tileCount)
+    };
+    while (snake.some(segment => segment.x === food.x && segment.y === food.y)) {
+      food = {
+        x: Math.floor(Math.random() * tileCount),
+        y: Math.floor(Math.random() * tileCount)
+      };
+    }
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ff4d6d';
+    ctx.beginPath();
+    ctx.arc(food.x * gridSize + gridSize / 2, food.y * gridSize + gridSize / 2, gridSize / 2 - 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.fillStyle = '#4a90e2';
+    for (let i = 0; i < snake.length; i++) {
+      const s = snake[i];
+      ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 1, gridSize - 1);
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '16px Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
+    ctx.fillText('Puntuación: ' + score, 10, 20);
+  }
+
+  function update() {
+    if (gameOver) return;
+
+    const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+
+    if (head.x < 0) head.x = tileCount - 1;
+    if (head.x >= tileCount) head.x = 0;
+    if (head.y < 0) head.y = tileCount - 1;
+    if (head.y >= tileCount) head.y = 0;
+
+    if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+      gameOver = true;
+      alert('¡Juego terminado! Puntuación final: ' + score);
+      resetGame();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      placeFood();
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function resetGame() {
+    snake = [
+      {x: 9, y: 9},
+      {x: 8, y: 9},
+      {x: 7, y: 9}
+    ];
+    direction = {x: 1, y: 0};
+    score = 0;
+    gameOver = false;
+    placeFood();
+    draw();
+  }
+
+  function startGameLoop() {
+    if (gameInterval) clearInterval(gameInterval);
+    gameInterval = setInterval(update, currentSpeed);
+  }
+
+  // Control eventos teclado
+  document.addEventListener('keydown', e => {
+    switch(e.key) {
+      case 'ArrowUp':
+        if (direction.y === 0) direction = {x: 0, y: -1};
+        break;
+      case 'ArrowDown':
+        if (direction.y === 0) direction = {x: 0, y: 1};
+        break;
+      case 'ArrowLeft':
+        if (direction.x === 0) direction = {x: -1, y: 0};
+        break;
+      case 'ArrowRight':
+        if (direction.x === 0) direction = {x: 1, y: 0};
+        break;
+    }
+  });
+
+  // Botones táctiles
+  document.getElementById('upBtn').addEventListener('click', () => {
+    if (direction.y === 0) direction = {x: 0, y: -1};
+  });
+  document.getElementById('downBtn').addEventListener('click', () => {
+    if (direction.y === 0) direction = {x: 0, y: 1};
+  });
+  document.getElementById('leftBtn').addEventListener('click', () => {
+    if (direction.x === 0) direction = {x: -1, y: 0};
+  });
+  document.getElementById('rightBtn').addEventListener('click', () => {
+    if (direction.x === 0) direction = {x: 1, y: 0};
+  });
+
+  // Cambiar velocidad
+  document.querySelectorAll('input[name="speed"]').forEach(input => {
+    input.addEventListener('change', e => {
+      currentSpeed = parseInt(e.target.value, 10);
+      startGameLoop();
+    });
+  });
+
+  // Inicialización
+  placeFood();
+  draw();
+  startGameLoop();
+</script>
+</body>
+</html>

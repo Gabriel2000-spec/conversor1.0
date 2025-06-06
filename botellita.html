@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juego de la Botellita</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      color: #333;
+      user-select: none;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      color: #444;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem 3rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      text-align: center;
+      width: 320px;
+      max-width: 90vw;
+    }
+
+    .bottle-container {
+      margin: 1rem auto 2rem;
+      width: 160px;
+      height: 160px;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .bottle {
+      width: 100%;
+      height: 100%;
+      background: url('https://cdn-icons-png.flaticon.com/512/415/415733.png') no-repeat center / contain;
+      cursor: pointer;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.2));
+      will-change: transform;
+    }
+
+    .bottle:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      background: rgba(255, 255, 255, 0.25);
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+      user-select: none;
+      margin-bottom: 1.5rem;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .players-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .player {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      color: #222;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      transition: background 0.3s ease;
+      cursor: default;
+      user-select: none;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .player.selected {
+      background: #a3cef1;
+      color: #073763;
+      box-shadow: 0 4px 15px rgba(10, 70, 110, 0.4);
+      font-weight: 700;
+    }
+
+    .result {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #222;
+      min-height: 2rem;
+      user-select: none;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+      margin-top: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: #222;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: #555;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .add-player-btn {
+      background: #6fa8dc;
+      color: white;
+      border-radius: 12px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(111, 168, 220, 0.6);
+      transition: background 0.3s ease;
+      user-select: none;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .add-player-btn:hover {
+      background: #5a8ac6;
+      box-shadow: 0 6px 20px rgba(90, 138, 198, 0.8);
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        width: 90vw;
+        padding: 1.5rem 2rem;
+      }
+      .bottle-container {
+        width: 140px;
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Juego de la Botellita</h1>
+  <div class="container" role="main" aria-label="Juego de la botellita">
+    <div class="bottle-container" aria-live="polite" aria-atomic="true">
+      <div class="bottle" id="bottle" role="button" tabindex="0" aria-label="Girar la botella"></div>
+    </div>
+
+    <button id="spinBtn" aria-describedby="instructions">Girar Botella</button>
+
+    <div id="instructions" style="font-size:0.85rem; color:#555; margin-bottom: 1rem;">
+      Añade jugadores y luego gira la botella para seleccionar quién debe hacer una acción.
+    </div>
+
+    <input type="text" id="playerName" placeholder="Nombre del jugador" aria-label="Nombre del jugador" />
+    <button class="add-player-btn" id="addPlayerBtn">Agregar Jugador</button>
+
+    <div class="players-list" id="playersList" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="result" id="result" aria-live="assertive" aria-atomic="true"></div>
+  </div>
+
+  <script>
+    (() => {
+      const bottle = document.getElementById('bottle');
+      const spinBtn = document.getElementById('spinBtn');
+      const playersList = document.getElementById('playersList');
+      const addPlayerBtn = document.getElementById('addPlayerBtn');
+      const playerNameInput = document.getElementById('playerName');
+      const result = document.getElementById('result');
+
+      let players = [];
+      let isSpinning = false;
+      let currentRotation = 0;
+
+      // Añadir jugador
+      function addPlayer(name) {
+        if (!name.trim()) return false;
+        if (players.some(p => p.toLowerCase() === name.toLowerCase())) return false; // evitar duplicados
+        players.push(name.trim());
+        renderPlayers();
+        return true;
+      }
+
+      // Renderizar lista de jugadores
+      function renderPlayers() {
+        playersList.innerHTML = '';
+        players.forEach((player, i) => {
+          const div = document.createElement('div');
+          div.classList.add('player');
+          div.textContent = player;
+          div.dataset.index = i;
+          playersList.appendChild(div);
+        });
+      }
+
+      // Seleccionar jugador (mostrar resaltado)
+      function highlightPlayer(index) {
+        const playerDivs = playersList.querySelectorAll('.player');
+        playerDivs.forEach(div => div.classList.remove('selected'));
+        if (index !== null && playerDivs[index]) {
+          playerDivs[index].classList.add('selected');
+        }
+      }
+
+      // Girar la botella
+      function spinBottle() {
+        if (isSpinning) return;
+        if (players.length < 2) {
+          alert('Agrega al menos dos jugadores para girar la botella.');
+          return;
+        }
+        isSpinning = true;
+        result.textContent = '';
+        highlightPlayer(null);
+
+        // Girar entre 3 y 6 vueltas + ángulo random para elegir jugador
+        const minTurns = 3;
+        const maxTurns = 6;
+        const turns = Math.floor(Math.random() * (maxTurns - minTurns + 1)) + minTurns;
+
+        // Ángulo por jugador
+        const anglePerPlayer = 360 / players.length;
+        const randomPlayerIndex = Math.floor(Math.random() * players.length);
+        const finalAngle = turns * 360 + (randomPlayerIndex * anglePerPlayer) + anglePerPlayer / 2;
+
+        // Animar rotación
+        const duration = 4000; // ms
+        const start = performance.now();
+
+        function animate(time) {
+          const elapsed = time - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // rotación con easing (ease out cubic)
+          const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+          const rotation = currentRotation + (finalAngle - currentRotation) * easeOutCubic;
+          bottle.style.transform = `rotate(${rotation}deg)`;
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            currentRotation = rotation % 360;
+            isSpinning = false;
+            highlightPlayer(randomPlayerIndex);
+            result.textContent = `¡Le toca a ${players[randomPlayerIndex]}!`;
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // Eventos
+      spinBtn.addEventListener('click', spinBottle);
+
+      bottle.addEventListener('click', spinBottle);
+
+      bottle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          spinBottle();
+        }
+      });
+
+      addPlayerBtn.addEventListener('click', () => {
+        const name = playerNameInput.value;
+        if (addPlayer(name)) {
+          playerNameInput.value = '';
+          playerNameInput.focus();
+        } else {
+          alert('Nombre inválido o ya agregado.');
+        }
+      });
+
+      playerNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          addPlayerBtn.click();
+        }
+      });
+
+      // Añadir algunos jugadores por defecto para empezar
+      ['', '', '', ''].forEach(addPlayer);
+    })();
+  </script>
+</body>
+</html>

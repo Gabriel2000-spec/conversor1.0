@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ruleta de Números - Juego</title>
+  <style>
+    /* Fuentes y estilos generales */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #8bc6ec, #9599e2);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    }
+
+    /* Contenedor de la ruleta */
+    .roulette-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow:
+        inset 0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    /* La ruleta en sí */
+    .roulette {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+      box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.3),
+        inset 0 0 25px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Divisiones de la ruleta */
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      border-right: 2px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      box-shadow:
+        inset 0 0 5px rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      text-shadow: 0 0 3px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+
+    /* Indicador de ganador */
+    .indicator {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 25px solid #ffeb3b;
+      filter: drop-shadow(0 0 8px #fff);
+      z-index: 10;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px #ffeb3b);
+      }
+      50% {
+        filter: drop-shadow(0 0 15px #fff);
+      }
+    }
+
+    /* Botón girar */
+    button {
+      background: linear-gradient(145deg, #ffeb3b, #fbc02d);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #222;
+      cursor: pointer;
+      box-shadow:
+        0 0 12px #fff,
+        inset 0 0 10px #fff;
+      transition: background 0.3s ease;
+      user-select: none;
+      margin: 1rem 0 0.5rem 0;
+    }
+
+    button:hover {
+      background: linear-gradient(145deg, #fff14f, #f9d423);
+      box-shadow:
+        0 0 20px #fff,
+        inset 0 0 15px #fff;
+    }
+
+    /* Mostrar monedas */
+    .coins {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px 25px;
+      border-radius: 40px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffeb3b;
+      text-shadow: 0 0 8px #ffeb3b;
+      margin-bottom: 1rem;
+    }
+
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffeb3b, #fbc02d);
+      border-radius: 50%;
+      box-shadow:
+        0 0 6px #fff,
+        inset 0 0 6px #fff;
+      position: relative;
+    }
+
+    .coin-icon::before {
+      content: "$";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: 900;
+      color: #a67c00;
+      text-shadow: 0 0 3px #fff;
+      font-size: 16px;
+    }
+
+    /* Entrada de número */
+    #participantInput {
+      width: 80px;
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      box-shadow:
+        0 0 10px rgba(255,255,255,0.5);
+      outline: none;
+      color: #222;
+      margin-bottom: 0.5rem;
+      user-select: text;
+    }
+
+    /* Indicador resultado */
+    .result-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: 15px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      display: inline-block;
+      vertical-align: middle;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .result-indicator.green {
+      background-color: #4caf50;
+      box-shadow: 0 0 12px #4caf50;
+    }
+
+    .result-indicator.red {
+      background-color: #f44336;
+      box-shadow: 0 0 12px #f44336;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ruleta de Números</h1>
+  <input
+    type="number"
+    id="participantInput"
+    min="1"
+    max="12"
+    placeholder="Número (1-12)"
+    title="Introduce un número del 1 al 12"
+  />
+  <div class="result-indicator" id="resultIndicator" style="visibility: hidden;"></div>
+  <div class="roulette-container">
+    <div class="indicator"></div>
+    <div class="roulette" id="roulette"></div>
+  </div>
+  <button id="spinBtn">Girar Ruleta</button>
+  <div class="coins" id="coinsDisplay">
+    <div class="coin-icon"></div> Monedas: <span id="coins">0</span>
+  </div>
+
+  <script>
+    const roulette = document.getElementById('roulette');
+    const spinBtn = document.getElementById('spinBtn');
+    const coinsDisplay = document.getElementById('coins');
+    const participantInput = document.getElementById('participantInput');
+    const resultIndicator = document.getElementById('resultIndicator');
+    const segmentsCount = 12;
+    let coins = 0;
+    let currentRotation = 0;
+
+    // Crear segmentos de la ruleta
+    for(let i = 0; i < segmentsCount; i++) {
+      const segment = document.createElement('div');
+      segment.classList.add('segment');
+      const angle = i * (360 / segmentsCount);
+      segment.style.transform = `rotate(${angle}deg) skewY(-60deg)`;
+      segment.textContent = i + 1;
+      roulette.appendChild(segment);
+    }
+
+    // Función para girar la ruleta
+    function spinRoulette() {
+      let participantNum = parseInt(participantInput.value);
+      if (isNaN(participantNum) || participantNum < 1 || participantNum > segmentsCount) {
+        alert('Por favor, introduce un número válido entre 1 y 12.');
+        return;
+      }
+
+      spinBtn.disabled = true;
+      participantInput.disabled = true;
+      resultIndicator.style.visibility = 'hidden';
+
+      // Vueltas completas entre 4 y 6
+      const spins = Math.floor(Math.random() * 3) + 4;
+      // Número ganador aleatorio 0-index
+      const winningSegment = Math.floor(Math.random() * segmentsCount);
+      const segmentAngle = 360 / segmentsCount;
+      const finalAngle = spins * 360 + (360 - winningSegment * segmentAngle) - (segmentAngle / 2);
+
+      currentRotation = (currentRotation + finalAngle) % 3600;
+      roulette.style.transition = 'transform 4s cubic-bezier(0.33, 1, 0.68, 1)';
+      roulette.style.transform = `rotate(${currentRotation}deg)`;
+
+      roulette.addEventListener('transitionend', function handler() {
+        roulette.style.transition = 'none';
+        currentRotation = currentRotation % 360;
+        roulette.style.transform = `rotate(${currentRotation}deg)`;
+        spinBtn.disabled = false;
+        participantInput.disabled = false;
+
+        // Comprobar si ha ganado
+        const won = (participantNum - 1) === winningSegment;
+
+        if (won) {
+          resultIndicator.className = 'result-indicator green';
+          coins += 10;
+          coinsDisplay.textContent = coins;
+          alert(`¡Felicidades! Ganaste. Número ganador: ${winningSegment + 1}`);
+        } else {
+          resultIndicator.className = 'result-indicator red';
+          alert(`Lo siento, perdiste. Número ganador: ${winningSegment + 1}`);
+        }
+        resultIndicator.style.visibility = 'visible';
+
+        roulette.removeEventListener('transitionend', handler);
+      });
+    }
+
+    spinBtn.addEventListener('click', spinRoulette);
+  </script>
+</body>
+</html>

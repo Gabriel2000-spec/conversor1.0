@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JUEGOS - Menú</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #222;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 2rem;
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.15em;
+            user-select: none;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            padding: 2rem;
+        }
+
+        .game-button {
+            background: rgba(255, 255, 255, 0.25);
+            border: none;
+            border-radius: 15px;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #222;
+            cursor: pointer;
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 0 -3px 6px rgba(255, 255, 255, 0.6),
+                0 0 15px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            user-select: none;
+            min-width: 180px;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .game-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow:
+                0 8px 12px rgba(0, 0, 0, 0.2),
+                inset 0 -3px 6px rgba(255, 255, 255, 0.8),
+                0 0 25px rgba(255, 255, 255, 0.6);
+            transform: translateY(-6px) scale(1.05);
+            color: #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 1rem;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            user-select: none;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Efecto sutil 3D en los botones usando sombra */
+        .game-button:active {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 3px 6px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 600px) {
+            .game-button {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>JUEGOS</header>
+    <main>
+        <!-- Cambia href a las URLs o archivos correspondientes -->
+        <a href="gusanito.html" class="game-button" aria-label="Ir a Juego 1">El gusanito</a>
+        <a href="ruleta.html" class="game-button" aria-label="Ir a Juego 2">La ruleta</a>
+        <a href="botellita.html" class="game-button" aria-label="Ir a Juego 3">La botellita</a>
+        <a href="memoria.html" class="game-button" aria-label="Ir a Juego 4">Memoria</a>
+        <a href="candado.html" class="game-button" aria-label="Ir a Juego 5">El candado</a>
+    </main>
+    <footer>©2025 derecho al autor</footer>
+</body>
+</html>

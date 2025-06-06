@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juego de Memoria con Frutas</title>
+    <style>
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #a0e7e5, #20b2aa);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #004d40;
+            user-select: none;
+            padding: 1rem;
+        }
+        h1 {
+            margin: 1rem 0 0.5rem;
+            text-shadow:
+                0 0 5px #4dd0e1,
+                0 0 10px #26a69a;
+            font-weight: 900;
+            text-align: center;
+        }
+        #status {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #004d40;
+            text-shadow: 0 0 3px #26a69a;
+        }
+        #game {
+            margin: 2rem auto;
+            width: 100%;
+            max-width: 400px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            box-shadow:
+                0 0 15px 3px rgba(38, 166, 154, 0.7),
+                0 8px 16px rgba(0,0,0,0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(38, 166, 154, 0.8);
+            box-sizing: border-box;
+        }
+        .card {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            box-shadow:
+                inset 0 0 8px #4dd0e1,
+                0 4px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+        }
+        .card.revealed {
+            background: white;
+            color: #004d40;
+            cursor: default;
+            box-shadow:
+                0 0 10px 3px #26a69a;
+        }
+        .card.matched {
+            background: #26a69a;
+            color: white;
+            cursor: default;
+            box-shadow:
+                0 0 15px 4px #004d40;
+        }
+        #restartBtn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: #00796b;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #004d40;
+            transition: background-color 0.3s ease;
+            display: none;
+        }
+        #restartBtn:hover {
+            background: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <h1>Juego de Memoria con Frutas</h1>
+    <div id="status">
+        <div>Tiempo: <span id="timer">0</span> s</div>
+        <div>Monedas: <span id="coins">0</span></div>
+    </div>
+    <div id="game"></div>
+    <button id="restartBtn">Reiniciar Juego</button>
+
+    <script>
+        const fruits = ["🍎", "🍌", "🍇", "🍓", "🍍", "🥝", "🍉", "🍒"];
+        let cardsArray = [...fruits, ...fruits];
+
+        const game = document.getElementById("game");
+        const timerDisplay = document.getElementById("timer");
+        const coinsDisplay = document.getElementById("coins");
+        const restartBtn = document.getElementById("restartBtn");
+
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matchedPairs = 0;
+        let coins = 0;
+        let timer = 0;
+        let intervalId = null;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startTimer() {
+            timer = 0;
+            timerDisplay.textContent = timer;
+            intervalId = setInterval(() => {
+                timer++;
+                timerDisplay.textContent = timer;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(intervalId);
+        }
+
+        function resetTurn() {
+            [firstCard, secondCard] = [null, null];
+            lockBoard = false;
+        }
+
+        function createCard(fruit) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.dataset.fruit = fruit;
+            card.textContent = fruit;
+            card.style.color = "transparent";
+
+            card.addEventListener("click", () => {
+                if (lockBoard) return;
+                if (card === firstCard) return;
+
+                card.classList.add("revealed");
+                card.style.color = "inherit";
+
+                if (!firstCard) {
+                    firstCard = card;
+                    return;
+                }
+
+                secondCard = card;
+                lockBoard = true;
+
+                if (firstCard.dataset.fruit === secondCard.dataset.fruit) {
+                    firstCard.classList.add("matched");
+                    secondCard.classList.add("matched");
+                    matchedPairs++;
+                    coins++;
+                    coinsDisplay.textContent = coins;
+                    resetTurn();
+
+                    if (matchedPairs === fruits.length) {
+                        stopTimer();
+                        restartBtn.style.display = "inline-block";
+                        setTimeout(() => alert(`¡Felicidades! Has encontrado todas las parejas en ${timer} segundos y ganado ${coins} monedas.`), 300);
+                    }
+                } else {
+                    setTimeout(() => {
+                        firstCard.classList.remove("revealed");
+                        secondCard.classList.remove("revealed");
+                        firstCard.style.color = "transparent";
+                        secondCard.style.color = "transparent";
+                        resetTurn();
+                    }, 1000);
+                }
+            });
+
+            return card;
+        }
+
+        function initGame() {
+            // Resetear variables y UI
+            matchedPairs = 0;
+            coins = 0;
+            coinsDisplay.textContent = coins;
+            timerDisplay.textContent = 0;
+            restartBtn.style.display = "none";
+            lockBoard = false;
+            firstCard = null;
+            secondCard = null;
+
+            // Limpiar tablero
+            game.innerHTML = "";
+            cardsArray = shuffle([...fruits, ...fruits]);
+
+            // Crear cartas
+            cardsArray.forEach(fruit => {
+                const card = createCard(fruit);
+                game.appendChild(card);
+            });
+
+            startTimer();
+        }
+
+        restartBtn.addEventListener("click", () => {
+            initGame();
+        });
+
+        // Inicializar el juego al cargar la página
+        initGame();
+    </script>
+</body>
+</html>
