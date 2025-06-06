@@ -1,258 +1,445 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloc de nota</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BLOC DE NOTAS</title>
 <style>
-body {
-    background-color:#8098ffae;
-    color: white;
-    font-family: Arial, sans-serif;
+  :root {
+    --color-bg-light: rgba(255, 255, 255, 0.8);
+    --color-bg-dark: rgba(30, 30, 30, 0.8);
+    --color-bg-colorful: rgba(173, 216, 230, 0.8);
+    --color-text-light: #222;
+    --color-text-dark: #ddd;
+    --color-accent: #4a90e2;
+    --color-accent-dark: #6bb3ff;
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
     margin: 0;
-    padding: 20px;
-    
-    
-}
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
 
-.container {
+  header, footer {
     text-align: center;
-    background-color: #7a7a7a9f;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 08px rgba(0, 0, 0, 0.8);
-}
+    padding: 1rem 0;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow);
+    font-weight: 700;
+    user-select: none;
+  }
 
+  header {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: var(--color-accent);
+    position: relative;
+  }
 
-.container {
-    max-width: 300px;
-    margin: auto;
-}
+  footer {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+  }
 
-h1 {
-    text-align: center;
-    
-    
-}
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 1rem auto;
+    background: var(--color-bg-light);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 1rem 1.5rem;
+    backdrop-filter: blur(10px);
+  }
 
-input[type="text"] {
-    width: 50%;
-    padding: 10px;
-    margin-bottom: 20px;
+  /* Menú hamburguesa */
+  .menu-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .menu-btn span {
+    display: block;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  .menu {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    width: 200px;
+    height: 100vh;
+    background: var(--color-bg-light);
+    backdrop-filter: blur(15px);
+    box-shadow: 3px 0 15px rgba(0,0,0,0.1);
+    padding: 2rem 1rem;
+    transition: left 0.3s ease;
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 9;
+  }
+
+  .menu.active {
+    left: 0;
+  }
+
+  .menu button {
+    background: var(--color-accent);
     border: none;
-    border-radius: 5px;
-    background-color: #1e1e1e;
     color: white;
-    
-}
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
 
-#notes-container {
-    margin-bottom: 20px;
-}
+  .menu button:hover {
+    background: var(--color-accent-dark);
+  }
 
-.note {
-    background-color: #1e1e1e;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+  /* Buscador */
+  #searchInput {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--color-accent);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+  }
+
+  #searchInput:focus {
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  /* Área para crear nota */
+  #newNoteContainer {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  #newNoteInput {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--color-accent);
+    font-size: 1rem;
+    outline: none;
+  }
+
+  #newNoteInput:focus {
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  #addNoteBtn {
+    background: var(--color-accent);
+    border: none;
+    color: white;
+    border-radius: 20px;
+    padding: 0 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  #addNoteBtn:hover {
+    background: var(--color-accent-dark);
+  }
+
+  /* Lista de notas */
+  #notesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  #notesList li {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+    box-shadow: var(--shadow);
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+    transition: background 0.3s ease;
+  }
 
-.add-note {
-    display: flex;
-    flex-direction: column;
-}
+  #notesList li:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
 
-textarea {
-    width: 90%;
-    height: 60px;
-    padding: 10px;
+  #notesList li span {
+    word-break: break-word;
+    flex: 1;
+    padding-right: 1rem;
+  }
+
+  .delete-btn {
+    background: transparent;
     border: none;
-    border-radius: 10px;
-    background-color: #1e1e1e;
-    color: white;
-    margin-bottom: 10px;
-}
-
-button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #6200ea;
-    color: white;
+    color: #ff4d4d;
+    font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
+    transition: color 0.3s ease;
+  }
 
-button:hover {
-    background-color: #3700b3;
-}
+  .delete-btn:hover {
+    color: #ff0000;
+  }
 
-.delete-btn {
-    background-color: #ff1744;
-}
+  /* Modos */
+  body.dark {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
 
-.delete-btn:hover {
-    background-color: #d50000;
+  body.dark main {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
 
-}
+  body.dark header,
+  body.dark footer {
+    background: rgba(30, 30, 30, 0.5);
+    color: var(--color-text-dark);
+  }
 
+  body.dark .menu {
+    background: var(--color-bg-dark);
+  }
 
-.boton {
-  background-color: #3498db;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
+  body.colorful {
+    background: var(--color-bg-colorful);
+    color: var(--color-text-light);
+  }
 
-/* Estilo al pasar el cursor sobre el botón */
-.boton:hover {
-  background-color: #2980b9;
-}
+  body.colorful main {
+    background: var(--color-bg-colorful);
+    color: var(--color-text-light);
+  }
 
-/* Estilo al hacer clic en el botón */
-.boton:active {
-  background-color: #1f618d;
-}    
+  body.colorful header,
+  body.colorful footer {
+    background: rgba(173, 216, 230, 0.5);
+    color: var(--color-text-light);
+  }
 
- @keyframes blink {
-             
-            80% { color: blue; }
-            50% { opacity: 1; }
-            100% { color: yellow; }
-            
-            40% { color: red; }
-            
-              20% { color: white; }
-        }
+  body.colorful .menu {
+    background: var(--color-bg-colorful);
+  }
 
-   .parpadeante {
-            animation: blink 5s infinite;
-        }
-
+  /* Scrollbar personalizado para notas */
+  #notesList::-webkit-scrollbar {
+    width: 8px;
+  }
+  #notesList::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 4px;
+  }
+  #notesList::-webkit-scrollbar-track {
+    background: transparent;
+  }
 </style>
-
+</head>
 <body>
-    <div class="container">
-        
-        <center>
 
-<a href="index.html" class="boton">Salir al menu</a>
+<header>
+  <div class="menu-btn" id="menuBtn" title="Abrir menú">
+    <span></span><span></span><span></span>
+  </div>
+  BLOC DE NOTAS
+</header>
 
-</center>
-        <br>
-        <br>
-        <center>
-            
-            <h2 class="parpadeante">Bloc de nota</h2>
-            
-        <h3></h3>
-        </center>
-        
-        <br>
-        <div>
-            <input type="text" id="search" placeholder="Buscar" />
-            <button id="search-btn">Buscar</button>
-        </div>
-        <div id="notes-container"></div>
-        <div class="add-note">
-            <textarea id="note-input" placeholder="Escribe tu nota aquí..."></textarea>
-            <button id="add-note-btn">Guardar texto</button>
-        </div>
-    </div>
-    <script>
-        const notesContainer = document.getElementById('notes-container');
-        const noteInput = document.getElementById('note-input');
-        const addNoteBtn = document.getElementById('add-note-btn');
-        const searchBtn = document.getElementById('search-btn');
-        const searchInput = document.getElementById('search');
+<main>
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Buscar notas..." 
+    aria-label="Buscar notas" 
+  />
+  <div id="newNoteContainer">
+    <input 
+      type="text" 
+      id="newNoteInput" 
+      placeholder="Escribe una nueva nota..." 
+      aria-label="Nueva nota"
+    />
+    <button id="addNoteBtn" aria-label="Agregar nota">+</button>
+  </div>
+  <ul id="notesList" aria-live="polite" aria-relevant="additions removals"></ul>
+</main>
 
-        // Cargar notas desde localStorage
-        document.addEventListener('DOMContentLoaded', loadNotes);
+<footer>© blus-blu 2025 derecho del autor</footer>
 
-        // Agregar evento al botón de agregar nota
-        addNoteBtn.addEventListener('click', addNote);
+<nav class="menu" id="menu" aria-label="Menú principal">
+  <button id="lightModeBtn">Modo Claro</button>
+  <button id="darkModeBtn">Modo Oscuro</button>
+  <button id="colorModeBtn">Modo Color</button>
+  <button id="settingsBtn">Configuración</button>
+</nav>
 
-        // Agregar evento al botón de buscar
-        searchBtn.addEventListener('click', searchNotes);
+<script>
+  // Elementos
+  const menuBtn = document.getElementById('menuBtn');
+  const menu = document.getElementById('menu');
+  const notesList = document.getElementById('notesList');
+  const addNoteBtn = document.getElementById('addNoteBtn');
+  const newNoteInput = document.getElementById('newNoteInput');
+  const searchInput = document.getElementById('searchInput');
+  const lightModeBtn = document.getElementById('lightModeBtn');
+  const darkModeBtn = document.getElementById('darkModeBtn');
+  const colorModeBtn = document.getElementById('colorModeBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
 
-        function loadNotes() {
-            const notes = JSON.parse(localStorage.getItem('notes')) || [];
-            notes.forEach(note => {
-                displayNote(note);
-            });
-        }
+  // Variables
+  let notes = [];
 
-        function addNote() {
-            const noteText = noteInput.value.trim();
-            if (noteText) {
-                const note = {
-                    text: noteText,
-                    date: new Date().toLocaleDateString()
-                };
-                displayNote(note);
-                saveNoteToLocal(note);
-                noteInput.value = ''; // Limpiar el input
-            }
-        }
+  // Función para guardar notas en localStorage
+  function saveNotes() {
+    localStorage.setItem('blocNotasNotes', JSON.stringify(notes));
+  }
 
-        function displayNote(note) {
-            const noteDiv = document.createElement('div');
-            noteDiv.classList.add('note');
-            noteDiv.innerHTML = `<p>${note.text}</p><small>${note.date}</small><button class="delete-btn" onclick="deleteNote(this)">Borrar</button>`;
-            notesContainer.appendChild(noteDiv);
-        }
+  // Función para cargar notas desde localStorage
+  function loadNotes() {
+    const saved = localStorage.getItem('blocNotasNotes');
+    if (saved) {
+      notes = JSON.parse(saved);
+    } else {
+      notes = [];
+    }
+  }
 
-        function saveNoteToLocal(note) {
-            const notes = JSON.parse(localStorage.getItem('notes')) || [];
-            notes.push(note);
-            localStorage.setItem('notes', JSON.stringify(notes));
-        }
+  // Mostrar notas en la lista
+  function renderNotes(filter = '') {
+    notesList.innerHTML = '';
+    const filteredNotes = notes.filter(note => note.toLowerCase().includes(filter.toLowerCase()));
+    if (filteredNotes.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = 'No hay notas que mostrar.';
+      li.style.fontStyle = 'italic';
+      li.style.color = '#666';
+      notesList.appendChild(li);
+      return;
+    }
+    filteredNotes.forEach((note, index) => {
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = note;
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '🗑️';
+      delBtn.classList.add('delete-btn');
+      delBtn.title = 'Borrar nota';
+      delBtn.setAttribute('aria-label', `Borrar nota: ${note}`);
+      delBtn.addEventListener('click', () => {
+        notes.splice(index, 1);
+        saveNotes();
+        renderNotes(searchInput.value);
+      });
+      li.appendChild(span);
+      li.appendChild(delBtn);
+      notesList.appendChild(li);
+    });
+  }
 
-        function deleteNote(button) {
-            const noteDiv = button.parentElement;
-            const noteText = noteDiv.querySelector('p').innerText;
-            let notes = JSON.parse(localStorage.getItem('notes')) || [];
-            notes = notes.filter(note => note.text !== noteText);
-            localStorage.setItem('notes', JSON.stringify(notes));
-            noteDiv.remove();
-        }
+  // Añadir nota
+  function addNote() {
+    const text = newNoteInput.value.trim();
+    if (text === '') return;
+    notes.push(text);
+    newNoteInput.value = '';
+    saveNotes();
+    renderNotes(searchInput.value);
+    newNoteInput.focus();
+  }
 
-        function searchNotes() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            const notes = JSON.parse(localStorage.getItem('notes')) || [];
-            notesContainer.innerHTML = ''; // Limpiar notas actuales
-            notes.forEach(note => {
-                if (note.text.toLowerCase().includes(searchTerm)) {
-                    displayNote(note);
-                }
-            });
-        }
-    </script>
+  // Cambiar modo
+  function changeMode(mode) {
+    document.body.classList.remove('dark', 'colorful');
+    if (mode === 'dark') {
+      document.body.classList.add('dark');
+    } else if (mode === 'colorful') {
+      document.body.classList.add('colorful');
+    }
+    localStorage.setItem('blocNotasMode', mode);
+  }
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  // Cargar modo guardado
+  function loadMode() {
+    const mode = localStorage.getItem('blocNotasMode') || 'light';
+    changeMode(mode);
+  }
 
+  // Eventos
+  menuBtn.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
 
+  addNoteBtn.addEventListener('click', addNote);
+
+  newNoteInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addNote();
+  });
+
+  searchInput.addEventListener('input', () => {
+    renderNotes(searchInput.value);
+  });
+
+  lightModeBtn.addEventListener('click', () => {
+    changeMode('light');
+    menu.classList.remove('active');
+  });
+
+  darkModeBtn.addEventListener('click', () => {
+    changeMode('dark');
+    menu.classList.remove('active');
+  });
+
+  colorModeBtn.addEventListener('click', () => {
+    changeMode('colorful');
+    menu.classList.remove('active');
+  });
+
+  settingsBtn.addEventListener('click', () => {
+    alert('Configuración aún no implementada.');
+    menu.classList.remove('active');
+  });
+
+  // Inicialización
+  loadNotes();
+  loadMode();
+  renderNotes();
+</script>
 
 </body>
 </html>
