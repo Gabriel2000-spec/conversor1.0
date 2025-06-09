@@ -1,781 +1,307 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Historial</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Historial del Dólar</title>
+  <style>
+    /* Reset y base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e0f7f7;
+      color: #004d40;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: rgba(64, 224, 208, 0.3); /* turquesa transparente */
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #00796b;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      user-select: none;
+    }
+
+    main {
+      flex: 1;
+      padding: 1rem 1rem 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Input filtrado */
+    .filter-container {
+      margin-bottom: 1rem;
+    }
+
+    #filterInput {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #4db6ac;
+      border-radius: 8px;
+      outline-offset: 2px;
+      outline-color: #26a69a;
+      box-shadow: 0 0 8px rgba(38, 166, 154, 0.3);
+      transition: border-color 0.3s ease;
+    }
+    #filterInput:focus {
+      border-color: #00796b;
+      box-shadow: 0 0 12px rgba(0, 121, 107, 0.7);
+    }
+
+    /* Tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 121, 107, 0.15);
+    }
+
+    thead {
+      background: rgba(64, 224, 208, 0.3);
+      font-weight: 700;
+      color: #004d40;
+    }
+
+    thead th {
+      padding: 0.8rem 0.6rem;
+      text-align: left;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #b2dfdb;
+      transition: background-color 0.3s ease;
+    }
+
+    tbody tr:hover {
+      background-color: rgba(38, 166, 154, 0.15);
+    }
+
+    tbody td {
+      padding: 0.6rem 0.6rem;
+      font-size: 1rem;
+      color: #004d40;
+    }
+
+    /* Botón regresar */
+    .btn-back {
+      margin: 1rem auto 0;
+      display: block;
+      background: rgba(64, 224, 208, 0.5);
+      border: none;
+      color: #004d40;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 121, 107, 0.4);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-back:hover {
+      background-color: #26a69a;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 105, 92, 0.7);
+    }
+
+    /* Responsividad */
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.5rem;
+        padding: 1rem;
+      }
+      tbody td, thead th {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.4rem;
+      }
+      .btn-back {
+        width: 90%;
+        padding: 0.8rem 0;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
-<style>
-    	.row{
-		    margin-top:40px;
-		    padding: 0 10px;
-		}
-		.clickable{
-		    cursor: pointer;   
-		}
-
-		.panel-heading div {
-			margin-top: -18px;
-			font-size: 15px;
-		}
-		.panel-heading div span{
-			margin-left:5px;
-		}
-		.panel-body{
-			display: none;
-		}
-		
-		
-		body {
-    font-family: Arial, sans-serif;
-    margin: 60;
-    padding: 10;
-    background-color: white;
-    
-    box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-}
-
-header {
-    background-color:#00aaff;
-    color: white;
-    text-align: center;
-    padding: 40px;
-    
-    
-}
-
-.notification {
-    background-color:#ffffff;
-    color:#00aaff;
-    padding: 30px;
-    margin: 30px 10;
-    
-}
-
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 20px;
-}
-
-.service-item {
-width: auto%;
-    background-color: #6a8dffaa;
-    border: 0px solid white;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-    transition: background-color 10.
-     3s;
-     
-          padding: 10px;
-    
-    
-     ma
-
-     rgin: 10px 30;   
-     
-     box-shadow: inset 0 5px 8px rgba(0, 0, 3, 3.4);
-     
-     
-}
-.service-item:hover {
-    background-color:white;
-}
-
-.new {
-    color: red;
-}
-
-footer {
-    text-align: center;
-    padding: 60px;
-    background-color:white;
- 
-    color: yellow;
-}
-
-
-		
-</style>
 <body>
-    
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
 
-<div class="container">
-    <h3>Toca el ícono y busca la fecha de su preferencia...<small>(<i class="glyphicon glyphicon-filter"></i>)</small></h3>
-    	<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">Fuera de rango</h3>
-						<div class="pull-right">
-							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
-								<i class="glyphicon glyphicon-filter"></i>
-							</span>
-						</div>
-					</div>
-					<div class="panel-body">
-						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
-					</div>
-					<table class="table table-hover" id="dev-table">
-					
-					
-					
-					
-					
-					
+  <header>
+    HISTORIA
+  </header>
+
+  <main>
+    <div class="filter-container">
+      <input
+        type="text"
+        id="filterInput"
+        placeholder="Buscar fecha (dd-mm-yyyy) o mes, año..."
+        aria-label="Buscar en historial de dólares"
+      />
+    </div>
+
+    <table aria-label="Historial de cotización del dólar">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Mes</th>
+          <th>Año</th>
+          <th>Moneda</th>
+          <th>Bolívares</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Filas generadas por JS -->
+      </tbody>
+    </table>
+
+    <a href="menu.html" class="btn-back" role="button" aria-label="Regresar al menú">
+      Regresar al menú
+    </a>
+  </main>
+
+  <script>
+    // Datos de ejemplo con fecha, hora, mes, año, moneda y bolívares
+    const historial = [
+      { fecha: '28-02-2025', hora: '00:00', mes: '02', año: '2025', moneda: 'dólar', bolivares: '64,24' },
+      { fecha: '05-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64,48' },
+      { fecha: '06-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64.61' },
+      { fecha: '07-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64.74' },
+      { fecha: '10-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '65.26' },
+      { fecha: '11-03-2024', hora: '00:00', mes: '03', año: '2024', moneda: 'dólar', bolivares: '65.41' },
+      { fecha: '12-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '65.62' },
+      { fecha: '13-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.25' },
+      { fecha: '14-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.43' },
+      { fecha: '17-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.55' },
+      { fecha: '18-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.78' },
+      { fecha: '20-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '67.63' },
+      { fecha: '21-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '67.85' },
+      { fecha: '24-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.31' },
+      { fecha: '25-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.39' },
+       { fecha: '26-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.69' },
+       { fecha: '27-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69,01' }, 
+      { fecha: '28-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69,43' },
+      { fecha: '31-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69.56' },
+     { fecha: '01-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '69.77' },
+     { fecha: '02-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '70.01' },
+     { fecha: '03-04-2024', hora: '00:00', mes: '04', año: '2024', moneda: 'dólar', bolivares: '70.24' },
+      { fecha: '04-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '70.58' },
+      { fecha: '07-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '72.18' },
+      { fecha: '08-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '73.35' }, 
+      { fecha: '09-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '74.27' },
+     { fecha: '10-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '75.80' },
+      { fecha: '11-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '77.26' },
+      { fecha: '14-04-2025', hora: '09:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '78.36' },
+      { fecha: '15-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '78.59' },
+      { fecha: '16-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '79.78' },
+       { fecha: '21-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '80.95' },
+        { fecha: '22-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '81.76' },
+        { fecha: '23-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '82.37' },
+         { fecha: '24-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '83.41' },
+         { fecha: '25-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '84.42' },
+         { fecha: '28-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.11' },    
+         { fecha: '29-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.65' },
+         { fecha: '30-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.84' },
+         { fecha: '02-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '87.56' },
+          { fecha: '05-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '88.64' },
+         { fecha: '06-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '88.72' },
+         { fecha: '07-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '91.21' },
+         { fecha: '08-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '91.91' },
+           { fecha: '09-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '92.83' },
+       { fecha: '12-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.04' }, 
+           { fecha: '13-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.06' },     
+         { fecha: '14-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.57' },
+          { fecha: '15-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.15' },    
+         { fecha: '16-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.32' },
+           { fecha: '19-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.76' },
+         { fecha: '20-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.80' },       
+           { fecha: '21-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.85' },
+         { fecha: '22-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.96' },      
+           { fecha: '23-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.01' }, 
+         { fecha: '26-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.08' },  
+           { fecha: '27-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.23' },     
+         { fecha: '28-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.80' },  
+           { fecha: '29-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '96.53' },
+         { fecha: '30-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '96.85' },
+           { fecha: '03-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.31' }, 
+         { fecha: '04-06-2025', hora: '09:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.41' },
+          { fecha: '05-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.90' },
+         { fecha: '06-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '98.51' },
+         { fecha: '09-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '99.09' },
+      { fecha: '10-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '99.12' },
+        
+         
+         
+         
+        ];
+       
+   
+
+    const tableBody = document.getElementById('tableBody');
+    const filterInput = document.getElementById('filterInput');
+
+    // Función para renderizar tabla según listado dados
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+      if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:1rem; color:#00796b;">No hay resultados</td></tr>';
+        return;
+      }
+      data.forEach((item, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${item.fecha}</td>
+          <td>${item.hora}</td>
+          <td>${item.mes}</td>
+          <td>${item.año}</td>
+          <td>${item.moneda}</td>
+          <td>${item.bolivares}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Función filtro que busca coincidencia parcial en fecha, mes o año
+    function filterTable() {
+      const filterValue = filterInput.value.toLowerCase().trim();
+
+      const filtered = historial.filter(item => {
+        return (
+          item.fecha.toLowerCase().includes(filterValue) ||
+          item.mes.toLowerCase().includes(filterValue) ||
+          item.año.toLowerCase().includes(filterValue)
+        );
+      });
+
+      renderTable(filtered);
+    }
+
+    // Eventos
+    filterInput.addEventListener('input', filterTable);
+
+    // Render inicial
+    renderTable(historial);
+  </script>
 
-					
-					</table>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Historial</h3>
-						<div class="pull-right">
-							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
-								<i class="glyphicon glyphicon-filter"></i>
-							</span>
-						</div>
-					</div>
-					<div class="panel-body">
-						<input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filter Tasks" />
-					</div>
-					<table class="table table-hover" id="task-table">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Fecha</th>
-								<th>Moneda</th>
-								<th>Bolívares</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>28-02-2025</td>
-								<td>dólar</td>
-								<td>64,24</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>05-03-2025</td>
-								<td>dólar</td>
-								<td>64,48</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>06-03-2025</td>
-								<td>dólar</td>
-								<td>64.61</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>07-03-2025</td>
-								<td>dólar</td>
-								<td>64.74</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>10-03-2025</td>
-								<td>dólar</td>
-								<td>65.26</td>
-							</tr>
-                                                          <tr>
-								<td>6</td>
-								<td>11-03-2024</td>
-								<td>dólar</td>
-								<td>65.41</td>
-							</tr>
-							
-							<tr>
-								<td>7</td>
-								<td>12-03-2025</td>
-								<td>dólar</td>
-								<td>65.62</td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>13-03-2025</td>
-								<td>dólar</td>
-								<td>66.25</td>
-							</tr>
-							
-
-                                                          <tr>
-								<td>9</td>
-								<td>14-03-2025</td>
-								<td>dólar</td>
-								<td>66.43</td>
-							</tr>
-
-                                                          <tr>
-								<td>10</td>
-								<td>17-03-2025</td>
-								<td>dólar</td>
-								<td>66.55</td>
-							</tr>
-
-							 <tr>
-								<td>11</td>
-								<td>18-03-2025</td>
-								<td>dólar</td>
-								<td>66.78</td>
-							</tr>
-
-							<tr>
-								<td>12</td>
-								<td>20-03-2025</td>
-								<td>dólar</td>
-								<td>67.63</td>
-							</tr>
-
-							<tr>
-								<td>13</td>
-								<td>21-03-2025</td>
-								<td>dólar</td>
-								<td>67.85</td>
-							</tr>
-
-							<tr>
-								<td>14</td>
-								<td>24-03-2025</td>
-								<td>dólar</td>
-								<td>68.31</td>
-							</tr>
-
-							<tr>
-
-
-							        <td>15</td>
-								<td>25-03-2025</td>
-								<td>dólar</td>
-								<td>68.39</td>
-							</tr>
-
-							<tr>
-								<td>16</td>
-								<td>26-03-2025</td>
-								<td>dólar</td>
-								<td>68.69</td>
-							</tr>
-
-							<tr>
-								<td>17</td>
-								<td>27-03-2025</td>
-								<td>dólar</td>
-								<td>69.01</td>
-							</tr>
-							<tr>
-
-							        <td>18</td>
-								<td>28-03-2025</td>
-								<td>dólar</td>
-								<td>69.43</td>
-							</tr>
-
-							<tr>
-								<td>19</td>
-								<td>31-03-2025</td>
-								<td>dólar</td>
-								<td>69.56</td>
-							</tr>
-
-							<tr>
-								<td>20</td>
-								<td>01-04-2025</td>
-								<td>dólar</td>
-								<td>69.77</td>
-							</tr>
-
-
-
-							<tr>
-								<td>21</td>
-								<td>02-04-2025</td>
-								<td>dólar</td>
-								<td>70.01</td>
-							</tr>
-
-
-							<tr>
-								<td>22</td>
-								<td>03-04-2025</td>
-								<td>dólar</td>
-								<td>70.24</td>
-							</tr>
-
-
-
-							<tr>
-								<td>23</td>
-								<td>04-04-2025</td>
-								<td>dólar</td>
-								<td>70.58</td>
-
-
-							</tr>
-
-
-							<tr>
-								<td>24</td>
-								<td>07-04-2025</td>
-								<td>dólar</td>
-								<td>72.18</td>
-							</tr>
-
-
-
-							<tr>
-								<td>25</td>
-								<td>08-04-2025</td>
-								<td>dólar</td>
-								<td>73.35</td>
-							</tr>
-
-
-							<tr>
-								<td>26</td>
-								<td>09-04-2025</td>
-								<td>dólar</td>
-								<td>74.27</td>
-							</tr>
-
-
-
-							<tr>
-								<td>27</td>
-								<td>10-04-2025</td>
-								<td>dólar</td>
-								<td>75.80</td>
-							</tr>
-
-
-
-							<tr>
-								<td>28</td>
-								<td>11-04-2025</td>
-								<td>dólar</td>
-								<td>77.26</td>
-							</tr>
-
-
-
-							<tr>
-								<td>29</td>
-								<td>14-04-2025</td>
-								<td>dólar</td>
-								<td>78.36</td>
-							</tr>
-
-
-							<tr>
-								<td>30</td>
-								<td>15-04-2025</td>
-								<td>dólar</td>
-								<td>78.59</td>
-							</tr>
-
-
-
-							<tr>
-								<td>31</td>
-								<td>16-04-2025</td>
-								<td>dólar</td>
-								<td>79.78</td>
-
-
-							</tr>
-
-
-							<tr>
-								<td>32</td>
-								<td>21-04-2025</td>
-								<td>dólar</td>
-								<td>80.95</td>
-							</tr>
-
-
-
-							<tr>
-								<td>33</td>
-								<td>22-04-2025</td>
-								<td>dólar</td>
-								<td>81.76</td>
-							</tr>
-
-
-							<tr>
-								<td>34</td>
-								<td>23-04-2025</td>
-								<td>dólar</td>
-								<td>82.37</td>
-							</tr>
-
-
-
-							<tr>
-								<td>35</td>
-								<td>24-04-2025</td>
-								<td>dólar</td>
-								<td>83.41</td>
-							</tr>
-
-							<tr>
-								<td>20</td>
-								<td>25-04-2025</td>
-								<td>dólar</td>
-								<td>84.42</td>
-							</tr>
-
-
-
-							<tr>
-								<td>36</td>
-								<td>28-04-2025</td>
-								<td>dólar</td>
-								<td>86.11</td>
-							</tr>
-
-
-							<tr>
-								<td>37</td>
-								<td>29-04-2025</td>
-								<td>dólar</td>
-								<td>86.65</td>
-							</tr>
-
-
-
-							<tr>
-								<td>38</td>
-								<td>30-04-2025</td>
-								<td>dólar</td>
-								<td>86.84</td>
-
-
-							</tr>
-
-
-							<tr>
-								<td>39</td>
-								<td>02-05-2025</td>
-								<td>dólar</td>
-								<td>87.56</td>
-							</tr>
-
-
-
-							<tr>
-								<td>40</td>
-								<td>05-05-2025</td>
-								<td>dólar</td>
-								<td>88.64</td>
-							</tr>
-
-
-							<tr>
-								<td>41</td>
-								<td>06-05-2025</td>
-								<td>dólar</td>
-								<td>88.72</td>
-							</tr>
-
-
-
-							<tr>
-								<td>42</td>
-								<td>07-05-2025</td>
-								<td>dólar</td>
-								<td>91.21</td>
-							</tr>
-
-
-							<tr>
-								<td>43</td>
-								<td>08-05-2025</td>
-								<td>dólar</td>
-								<td>91.91</td>
-							</tr>
-
-
-							<tr>
-								<td>44</td>
-								<td>09-05-2025</td>
-								<td>dólar</td>
-								<td>92.83</td>
-							</tr>
-
-
-							<tr>
-								<td>45</td>
-								<td>12-05-2025</td>
-								<td>dólar</td>
-								<td>93.04</td>
-							</tr>
-
-
-							<tr>
-								<td>46</td>
-								<td>13-05-2025</td>
-								<td>dólar</td>
-								<td>93.06</td>
-							</tr>
-
-
-							<tr>
-								<td>47</td>
-								<td>14-05-2025</td>
-								<td>dólar</td>
-								<td>93.57</td>
-							</tr>
-
-						         <tr>
-								<td>48</td>
-								<td>15-05-2025</td>
-								<td>dólar</td>
-								<td>94.15</td>
-							</tr>
-
-
-							<tr>
-								<td>49</td>
-								<td>16-05-2025</td>
-								<td>dólar</td>
-								<td>94.32</td>
-							</tr>
-
-
-
-							<tr>
-								<td>50</td>
-								<td>19-05-2025</td>
-								<td>dólar</td>
-								<td>94.76</td>
-							</tr>
-
-
-
-							<tr>
-								<td>51</td>
-								<td>20-05-2025</td>
-								<td>dólar</td>
-								<td>94.80</td>
-							</tr>
-
-
-
-							<tr>
-								<td>52</td>
-								<td>21-05-2025</td>
-								<td>dólar</td>
-								<td>94.85</td>
-							</tr>
-
-
-
-							<tr>
-								<td>53</td>
-								<td>22-05-2025</td>
-								<td>dólar</td>
-								<td>94.96</td>
-							</tr>
-
-
-							<tr>
-								<td>54</td>
-								<td>23-05-2025</td>
-								<td>dólar</td>
-								<td>95.01</td>
-							</tr>
-
-
-							<tr>
-								<td>55</td>
-								<td>26-05-2025</td>
-								<td>dólar</td>
-								<td>95.08</td>
-							</tr>
-
-
-							<tr>
-								<td>56</td>
-								<td>27-05-2025</td>
-								<td>dólar</td>
-								<td>95.23</td>
-							</tr>
-
-
-							<tr>
-								<td>57</td>
-								<td>28-05-2025</td>
-								<td>dólar</td>
-								<td>95.80</td>
-							</tr>
-
-
-							<tr>
-								<td>58</td>
-								<td>29-05-2025</td>
-								<td>dólar</td>
-								<td>96.53</td>
-							</tr>
-
-
-
-							<tr>
-								<td>59</td>
-								<td>30-05-2025</td>
-								<td>dólar</td>
-								<td>96.85</td>
-							</tr>
-
-
-
-							<tr>
-								<td>60</td>
-								<td>03-06-2025</td>
-								<td>dólar</td>
-								<td>97.31</td>
-							</tr>
-
-
-							<tr>
-								<td>61</td>
-								<td>04-06-2025</td>
-								<td>dólar</td>
-								<td>97.41</td>
-							</tr>
-
-
-	
-
-
-	
-
-	
-                                                        <tr>
-								<td>62</td>
-								<td>05-06-2025</td>
-								<td>dólar</td>
-								<td>97.90</td>
-							</tr>
-	
-
-
-
-
-                                                         <tr>
-								<td>63</td>
-								<td>06-06-2025</td>
-								<td>dólar</td>
-								<td>98.51</td>
-							</tr>
-
-
-
-							  <tr>
-								<td>64</td>
-								<td>09-06-2025</td>
-								<td>dólar</td>
-								<td>99.09</td>
-							</tr>
-
-
-
-							
-							  <tr>
-								<td>65</td>
-								<td>10-06-2025</td>
-								<td>dólar</td>
-								<td>99.12</td>
-							</tr>
-
-
-
-
-
-
-
-
-							
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-    <script> /**
-*   I don't recommend using this plugin on large tables, I just wrote it to make the demo useable. It will work fine for smaller tables 
-*   but will likely encounter performance issues on larger tables.
-*
-*		<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
-*		$(input-element).filterTable()
-*		
-*	The important attributes are 'data-action="filter"' and 'data-filters="#table-selector"'
-*/
-(function(){
-    'use strict';
-	var $ = jQuery;
-	$.fn.extend({
-		filterTable: function(){
-			return this.each(function(){
-				$(this).on('keyup', function(e){
-					$('.filterTable_no_results').remove();
-					var $this = $(this), 
-                        search = $this.val().toLowerCase(), 
-                        target = $this.attr('data-filters'), 
-                        $target = $(target), 
-                        $rows = $target.find('tbody tr');
-                        
-					if(search == '') {
-						$rows.show(); 
-					} else {
-						$rows.each(function(){
-							var $this = $(this);
-							$this.text().toLowerCase().indexOf(search) === -1 ? $this.hide() : $this.show();
-						})
-						if($target.find('tbody tr:visible').size() === 0) {
-							var col_count = $target.find('tr').first().find('td').size();
-							var no_results = $('<tr class="filterTable_no_results"><td colspan="'+col_count+'">No results found</td></tr>')
-							$target.find('tbody').append(no_results);
-						}
-					}
-				});
-			});
-		}
-	});
-	$('[data-action="filter"]').filterTable();
-})(jQuery);
-
-$(function(){
-    // attach table filter plugin to inputs
-	$('[data-action="filter"]').filterTable();
-	
-	$('.container').on('click', '.panel-heading span.filter', function(e){
-		var $this = $(this), 
-			$panel = $this.parents('.panel');
-		
-		$panel.find('.panel-body').slideToggle();
-		if($this.css('display') != 'none') {
-			$panel.find('.panel-body input').focus();
-		}
-	});
-	$('[data-toggle="tooltip"]').tooltip();
-})
-</script>
-    <br>
-<br>
-		<br>
-    
-    <div class="service-item" onclick="window.location.href='index.html'">Salir al menu<br></div>
-    
-    
 </body>
 </html>
