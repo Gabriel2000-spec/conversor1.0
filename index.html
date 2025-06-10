@@ -361,53 +361,7 @@ document.addEventListener('keydown', function(e) {
 
 
 
-    Registrar salida del usuario y calcular tiempo de visita
-function registerVisitEnd() {
-  const deviceId = getDeviceId();
-  const visitsData = getVisitsData();
-
-  if (visitsData[deviceId] && visitsData[deviceId].lastVisitStart) {
-    const sessionTime = Date.now() - visitsData[deviceId].lastVisitStart;
-    visitsData[deviceId].totalTime += sessionTime;
-    visitsData[deviceId].lastVisitStart = null;
-    saveVisitsData(visitsData);
-  }
-}
-
-// Mostrar datos en la página
-function showVisitsData() {
-  const visitsData = getVisitsData();
-  const container = document.getElementById('visitsContainer');
-  container.innerHTML = '<h2>Datos de Visitas y Tiempos</h2>';
-
-  let html = '<table><tr><th>Dispositivo</th><th>Visitas</th><th>Tiempo Total (segundos)</th></tr>';
-
-  for (const deviceId in visitsData) {
-    const v = visitsData[deviceId];
-    const totalSeconds = Math.floor(v.totalTime / 1000);
-    html += `<tr>
-      <td>${deviceId}</td>
-      <td>${v.visits}</td>
-      <td>${totalSeconds}</td>
-    </tr>`;
-  }
-
-  html += '</table>';
-
-  container.innerHTML += html;
-}
-
-// Detectar salida del usuario
-window.addEventListener('beforeunload', () => {
-  registerVisitEnd();
-});
-
-// Registrar inicio al cargar la página
-window.addEventListener('load', () => {
-  registerVisitStart();
-  showVisitsData();
-});
-
+  
     
   </script>
 </body>
