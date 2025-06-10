@@ -205,6 +205,32 @@
         font-size: 1.6rem;
       }
     }
+
+
+       /* Estilos para el footer del contador */
+  #contador-visitas {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    color: #00ffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #00ffff88;
+    font-size: 14px;
+    user-select: none;
+    z-index: 9999;
+    transition: background 0.3s ease;
+  }
+  #contador-visitas:hover {
+    background: rgba(0, 255, 255, 0.25);
+    box-shadow: 0 0 18px #00ffffcc;
+    cursor: default;
+  }
+
   </style>
 </head>
 <body>
@@ -274,7 +300,10 @@
     </a>
   </main>
 
-  <footer>@2025 derecho al autor</footer>
+  <footer> 
+
+<!-- Pie de página con el contador -->
+<div id="contador-visitas">Visitas: 0</div></footer>
 
   <script>
     // Actualización dinámica de la hora cada segundo
@@ -358,6 +387,17 @@ document.addEventListener('keydown', function(e) {
 
 
 
+// Función para actualizar el contador en localStorage y en pantalla
+  (function(){
+    const contadorEl = document.getElementById('contador-visitas');
+    // Obtener visitas actuales del almacenamiento local o iniciar en 0
+    let visitas = localStorage.getItem('contadorVisitas');
+    visitas = visitas ? parseInt(visitas) + 1 : 1;
+    // Guardar el nuevo valor
+    localStorage.setItem('contadorVisitas', visitas);
+    // Mostrar en el elemento
+    contadorEl.textContent = `Visitas: ${visitas}`;
+  })();
 
 
 
