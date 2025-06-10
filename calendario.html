@@ -239,6 +239,40 @@
 
     daysContainer.appendChild(dayDiv);
   }
+
+
+
+  // Deshabilitar clic derecho
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Deshabilitar teclas comunes de herramientas de desarrollador
+document.addEventListener('keydown', function(e) {
+    // F12
+    if (e.key === 'F12') {
+        e.preventDefault();
+    }
+    // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
+        e.preventDefault();
+    }
+    // Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+    }
+    // Ctrl+U (ver código fuente)
+    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+        e.preventDefault();
+    }
+});
+
+// Código ofuscado básico
+(function(){
+    var _0x1a2b = ['mensaje secreto', 'log'];
+    console[_0x1a2b[1]](_0x1a2b[0]);
+})();
+
 </script>
 
 </body>
