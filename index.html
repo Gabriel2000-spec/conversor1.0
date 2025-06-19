@@ -231,11 +231,29 @@
     cursor: default;
   }
 
+
+
+       /* Botón transparente */
+    #btnActualizar {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: transparent;
+      width: 100px;
+      height: 40px;
+      cursor: pointer;
+      /* Si quieres que se vea un poco, puedes usar opacity */
+      /* opacity: 0.1; */
+    }
   </style>
 </head>
 <body>
   <header>CONVERSOR GREEN</header>
 
+  <button id="btnActualizar" title="Actualizar">Actualizar</button>
+<br>
   <section class="dolar-info" aria-label="Información del dólar actual">
     VIERNES 20 -06 -2025 BCV 104,54
   </section>
@@ -400,7 +418,13 @@ document.addEventListener('keydown', function(e) {
   })();
 
 
-
+    const btn = document.getElementById('btnActualizar');
+    btn.addEventListener('click', () => {
+      // Desaparece el botón
+      btn.style.display = 'none';
+      // Recarga la página
+      location.reload();
+    });
   
     
   </script>
