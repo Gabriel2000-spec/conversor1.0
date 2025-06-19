@@ -320,8 +320,7 @@
 <br>
   <footer> 
 
-<!-- Pie de página con el contador -->
-<div id="contador-visitas">Visitas: 0</div></footer>
+
 
   <script>
     // Actualización dinámica de la hora cada segundo
@@ -405,17 +404,7 @@ document.addEventListener('keydown', function(e) {
 
 
 
-// Función para actualizar el contador en localStorage y en pantalla
-  (function(){
-    const contadorEl = document.getElementById('contador-visitas');
-    // Obtener visitas actuales del almacenamiento local o iniciar en 0
-    let visitas = localStorage.getItem('contadorVisitas');
-    visitas = visitas ? parseInt(visitas) + 1 : 1;
-    // Guardar el nuevo valor
-    localStorage.setItem('contadorVisitas', visitas);
-    // Mostrar en el elemento
-    contadorEl.textContent = `Visitas: ${visitas}`;
-  })();
+
 
 
     const btn = document.getElementById('btnActualizar');
