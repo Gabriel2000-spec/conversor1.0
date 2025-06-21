@@ -1,23 +1,23 @@
-=========================
+========================
 <br>
-Política de Privacidad - Conversor Green
+PolÃ­tica de Privacidad - Conversor Green
 <p>
-1. Introducción
-Conversor Green es una aplicación diseñada para facilitar la conversión entre dólares y bolívares, además de ofrecer herramientas adicionales como calculadora, calendario, notas, estadísticas, historial del dólar y juegos. La privacidad y la seguridad de los usuarios son nuestra prioridad.
+1. IntroducciÃ³n
+Conversor Green es una aplicaciÃ³n diseÃ±ada para facilitar la conversiÃ³n entre dÃ³lares y bolÃ­vares, ademÃ¡s de ofrecer herramientas adicionales como calculadora, calendario, notas, estadÃ­sticas, historial del dÃ³lar y juegos. La privacidad y la seguridad de los usuarios son nuestra prioridad.
 
 <p>
 =======================
 <p>
-2. Recopilación de Información
-Conversor Green no recopila información personal identificable de los usuarios. Los datos utilizados en la aplicación (como las conversiones o historial) se almacenan localmente en el dispositivo del usuario para garantizar la privacidad y seguridad.
+2. RecopilaciÃ³n de InformaciÃ³n
+Conversor Green no recopila informaciÃ³n personal identificable de los usuarios. Los datos utilizados en la aplicaciÃ³n (como las conversiones o historial) se almacenan localmente en el dispositivo del usuario para garantizar la privacidad y seguridad.
 
 
 <p>
 ========================
 <p>
 
-3. Uso de la Información
-La información generada o almacenada en la aplicación es utilizada exclusivamente para ofrecer las funcionalidades mencionadas y mejorar la experiencia del usuario. No se comparte ni se vende ningún dato a terceros.
+3. Uso de la InformaciÃ³n
+La informaciÃ³n generada o almacenada en la aplicaciÃ³n es utilizada exclusivamente para ofrecer las funcionalidades mencionadas y mejorar la experiencia del usuario. No se comparte ni se vende ningÃºn dato a terceros.
 
 <p>
 
@@ -25,23 +25,23 @@ La información generada o almacenada en la aplicación es utilizada exclusivament
 <p>
 4. Normas y Cumplimiento
 
-Los usuarios deben respetar todas las normas de uso establecidas dentro de la aplicación.
-Está prohibido duplicar, clonar o modificar el código fuente de esta aplicación sin autorización expresa del creador.
-El uso de la aplicación debe cumplir con las leyes vigentes y las políticas de privacidad establecidas.
+Los usuarios deben respetar todas las normas de uso establecidas dentro de la aplicaciÃ³n.
+EstÃ¡ prohibido duplicar, clonar o modificar el cÃ³digo fuente de esta aplicaciÃ³n sin autorizaciÃ³n expresa del creador.
+El uso de la aplicaciÃ³n debe cumplir con las leyes vigentes y las polÃ­ticas de privacidad establecidas.
 5. Licencia
-Esta aplicación está protegida bajo la licencia Conv.909012500. Cualquier uso, reproducción o distribución no autorizada está estrictamente prohibida.
+Esta aplicaciÃ³n estÃ¡ protegida bajo la licencia Conv.909012500. Cualquier uso, reproducciÃ³n o distribuciÃ³n no autorizada estÃ¡ estrictamente prohibida.
 
 <p>
 =============================
 <p>
 
 6. Actualizaciones y Cambios
-Conversor Green se reserva el derecho de actualizar esta política de privacidad para reflejar cambios en la legislación o en las funcionalidades de la aplicación. Se recomienda a los usuarios revisar periódicamente esta sección.
+Conversor Green se reserva el derecho de actualizar esta polÃ­tica de privacidad para reflejar cambios en la legislaciÃ³n o en las funcionalidades de la aplicaciÃ³n. Se recomienda a los usuarios revisar periÃ³dicamente esta secciÃ³n.
 
 <p>
 ===========================
 <p>
 7. Contacto
-Para cualquier duda o consulta sobre la política de privacidad, los usuarios pueden contactar con el desarrollador a través de los medios oficiales proporcionados en la aplicación.
+Para cualquier duda o consulta sobre la polÃ­tica de privacidad, los usuarios pueden contactar con el desarrollador a travÃ©s de los medios oficiales proporcionados en la aplicaciÃ³n.
 
-¿Quieres que te ayude a redactar esta política en un formato más formal o para incluir en la propia aplicación?
+Â¿Quieres que te ayude a redactar esta polÃ­tica en un formato mÃ¡s formal o para incluir en la propia aplicaciÃ³n?
