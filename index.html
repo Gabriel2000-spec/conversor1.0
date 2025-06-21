@@ -230,6 +230,79 @@
       /* Si quieres que se vea un poco, puedes usar opacity */
       /* opacity: 0.1; */
     }
+
+
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  #cookieConsent {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: rgba(0, 123, 255, 0.85);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+    font-size: 16px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    z-index: 9999;
+  }
+
+  #cookieConsent.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #cookieConsent button {
+    background: white;
+    color: #007bff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 15px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.7);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #cookieConsent button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+
+  #cookieConsent a {
+    color: #cce5ff;
+    text-decoration: underline;
+  }
+
+  #cookieConsent button.reject {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    box-shadow: none;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  #cookieConsent button.reject:hover {
+    background-color: white;
+    color: #007bff;
+  }
+
+
+      
   </style>
 </head>
 <body>
@@ -300,8 +373,15 @@
       <span>🎲🎮</span>
     </a>
   </main>
-<br>
-  <footer> 
+
+<div id="cookieConsent" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
+  <span id="cookieMessage"></span>
+  <br />
+  <a href="politica.html" target="_blank" rel="noopener" id="cookieLink" aria-label="Privacy Policy"></a>
+  <br /><br />
+  <button id="rejectCookies" class="reject"></button>
+  <button id="acceptCookies"></button>
+</div>
 
 
 
@@ -397,7 +477,71 @@ document.addEventListener('keydown', function(e) {
       // Recarga la página
       location.reload();
     });
-  
+
+
+
+      document.addEventListener('DOMContentLoaded', () => {
+    const consentKey = 'cookieConsentDecision';
+    const cookieConsent = document.getElementById('cookieConsent');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const rejectBtn = document.getElementById('rejectCookies');
+    const cookieMessage = document.getElementById('cookieMessage');
+    const cookieLink = document.getElementById('cookieLink');
+
+    // Texts in supported languages
+    const texts = {
+      es: {
+        message: 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestras',
+        policy: 'Políticas de Privacidad',
+        accept: 'Aceptar',
+        reject: 'Rechazar'
+      },
+      en: {
+        message: 'We use cookies to improve your experience. By continuing, you accept our',
+        policy: 'Privacy Policy',
+        accept: 'Accept',
+        reject: 'Reject'
+      }
+    };
+
+    // Detect language (default to 'es' if not supported)
+    const userLang = navigator.language || navigator.userLanguage || 'es';
+    const langCode = userLang.toLowerCase().startsWith('en') ? 'en' : 'es';
+    const text = texts[langCode];
+
+    // Set text content
+    cookieMessage.textContent = text.message + ' ';
+    cookieLink.textContent = text.policy;
+    cookieLink.href = '#'; // Cambia a la URL real de la política
+    acceptBtn.textContent = text.accept;
+    rejectBtn.textContent = text.reject;
+
+    // Show banner only if no decision
+    if (!localStorage.getItem(consentKey)) {
+      setTimeout(() => {
+        cookieConsent.classList.add('show');
+      }, 200);
+    }
+
+    function hideBanner() {
+      cookieConsent.style.transform = 'translateX(-50%) translateY(100%)';
+      cookieConsent.style.opacity = '0';
+      cookieConsent.style.pointerEvents = 'none';
+      setTimeout(() => {
+        cookieConsent.remove();
+      }, 500);
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem(consentKey, 'accepted');
+      hideBanner();
+    });
+
+    rejectBtn.addEventListener('click', () => {
+      localStorage.setItem(consentKey, 'rejected');
+      hideBanner();
+    });
+  });
     
   </script>
 </body>
