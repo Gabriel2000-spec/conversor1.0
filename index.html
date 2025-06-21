@@ -1,238 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Conversor Green</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    body {
-      background-color: #0077ff;
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 15px 40px;
-      user-select: none;
-    }
-
-    header {
-      font-size: 1.4rem;
-      font-weight: 700;
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      background: #0058cc;
-      padding: 15px 0;
-      border-radius: 6px;
-      box-shadow:
-        0 0 15px #00e5ff,
-        inset 0 0 15px #00b3ff;
-      text-transform: capitalize;
-      letter-spacing: 1.5px;
-      user-select: text;
-      margin-bottom: 20px;
-    }
-
-    .dolar-info {
-      width: 100%;
-      max-width: 480px;
-      background: white;
-      color: #003366;
-      font-weight: 600;
-      font-size: 1.1rem;
-      padding: 15px 15;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 1px 1px 6px #00000080;
-      margin-bottom: 12px;
-      user-select: text;
-      letter-spacing: 0.8px;
-    }
-
-    .time {
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-shadow: 0 0 8px #00ccffcc;
-      user-select: text;
-    }
-
-    .next-day-container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      align-items: center;
-      background-color: #0088cc;
-      border-radius: 15px;
-      padding: 10px 15px;
-      box-shadow:
-        0 6px 8px #004466,
-        inset 0 0 15px #00ccffaa;
-      margin-bottom: 25px;
-      user-select: none;
-    }
-
-    .next-day-input {
-      flex-grow: 2;
-      background: rgba(255 255 255 / 0.2);
-      border: none;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #e0f7ff;
-      letter-spacing: 0.6px;
-      box-shadow: 0 0 10px #00ccffcc inset;
-      outline: none;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .next-day-input::placeholder {
-      color: #b0e0ffcc;
-    }
-
-    .next-day-input:focus {
-      background: rgba(255 255 255 / 0.35);
-      box-shadow: 0 0 18px #00e5ff inset;
-      color: #00e5ff;
-    }
-
-    .dollar-icon {
-      width: 36px;
-      height: 36px;
-      margin-left: 12px;
-      filter: drop-shadow(0 0 6px #00e5ff);
-      transition: opacity 0.3s ease;
-      user-select: none;
-      opacity: 0;
-    }
-
-    .dollar-icon.visible {
-      opacity: 1;
-    }
-
-    
-    
-    main {
-      width: 100%;
-      max-width: 580px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    padding: 10px;
-    
-      .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-          ;
-           
-      
-    }
-
-    .item-btn {
-      background-color: #0099aa;
-      border-radius: 12px;
-      box-shadow: 4px 4px 12px #004d52, inset 0 0 12px #00ccdd;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      padding: 30px 10px 20px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition:
-        background-color 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.15s ease;
-      text-decoration: none;
-    }
-
-    .item-btn:hover,
-    .item-btn:focus {
-      background-color: #00bbbb;
-      box-shadow: 5px 5px 10px #00e5ff, inset 0 0 20px #00ffff;
-      transform: translateY(-3px);
-      outline: none;
-    }
-
-    .item-btn span {
-      margin-top: 9px;
-      font-size: 1.7rem;
-      user-select: none;
-      line-height: 1;
-    }
-
-    footer {
-      margin-top: 32px;
-      font-weight: 500;
-      font-size: 1rem;
-      color: #00d4ffcc;
-      user-select: none;
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-      letter-spacing: 0.8px;
-      text-shadow: 0 0 6px #00b7e5aa;
-    }
-
-    /* Responsive para pantallas pequeñas */
-    @media (max-width: 460px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-      .item-btn {
-        padding: 24px 10px 20px;
-        font-size: 1rem;
-      }
-      header {
-        font-size: 1.6rem;
-      }
-    }
-
-
-
-  #contador-visitas:hover {
-    background: rgba(0, 255, 255, 0.25);
-    box-shadow: 0 0 18px #00ffffcc;
-    cursor: default;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conversor Green</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #007acc, #00d4ff);
+    color: white;
+    display: flex;
+    justify-content: center;
   }
-
-
-
-       /* Botón transparente */
-    #btnActualizar {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      border: none;
-      color: transparent;
-      width: 100px;
-      height: 40px;
-      cursor: pointer;
-      /* Si quieres que se vea un poco, puedes usar opacity */
-      /* opacity: 0.1; */
-    }
-
-
- font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  .container {
+    max-width: 400px;
+    width: 90vw;
+    background: rgba(0, 128, 128, 0.85);
+    border-radius: 15px;
+    padding: 15px 20px 40px;
+    box-shadow: 0 0 20px #00ffffaa;
+  }
+  header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.8rem;
+    padding: 10px 0;
+    border-bottom: 2px solid #00ffffaa;
+  }
+  .date-time {
+    text-align: center;
+    margin: 10px 0 5px;
+    font-weight: 600;
+    background: rgba(255 255 255 / 0.3);
+    border-radius: 15px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+  .clock {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-shadow:
+      0 0 5px #00ffffaa,
+      0 0 10px #00ffffaa,
+      0 0 15px #00ffffaa;
+  }
+  .input-dolar {
+    background: #009999cc;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    box-shadow: 0 0 10px #00ffffaa;
+  }
+  .input-dolar input {
+    width: 100px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    padding: 6px 10px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .input-dolar .label {
+    margin-left: 15px;
+    flex-grow: 1;
+  }
+  .input-dolar .coin {
+    width: 40px;
+    height: 40px;
+    border-radius: 70%;
+    background: url('https://es.vecteezy.com/png/50779425-dorado-moneda-con-dolar-icono-brillante-aislado-en-transparente-antecedentes-separar') no-repeat center center;
+    background-size: contain;
+    box-shadow: 0 0 8px #ffd700cc;
+  }
+  nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  nav a {
+    background: #009999cc;
+    border-radius: 15px;
+    padding: 18px 10px 40px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 12px #00ffffaa;
+    transition: background 0.3s ease;
+  }
+  nav a:hover {
+    background: #00bbbbcc;
+  }
+  nav a .icon {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.7rem;
+    opacity: 0.8;
+  }
+  .language-select {
+    margin: 10px auto 20px;
+    width: fit-content;
+    background: #00cccccc;
+    border-radius: 10px;
+    padding: 5px 10px;
+    box-shadow: 0 0 8px #00ffffcc;
+  }
+  select {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
   }
@@ -300,141 +196,194 @@
     background-color: white;
     color: #007bff;
   }
-
-
-      
-  </style>
+</style>
 </head>
 <body>
-  <header>CONVERSOR GREEN</header>
+  <div class="container">
+    <header>CONVERSOR GREEN</header>
+    
+    <div class="date-time" id="date-display">VIERNES 20 -06 -2025 BCV 104,54</div>
+    <div class="clock" id="clock">01 : 01 : 53 AM</div>
+    
+    <div class="input-dolar">
+      <input type="number" step="0.01" id="dolar-next" value="105.45" aria-label="Dólar del día siguiente" />
+      <div class="label" id="label-dolar-next">Dólar del día siguiente</div>
+      <div class="coin" title="Moneda Bolívar"></div>
+    </div>
 
-  <button id="btnActualizar" title="Actualizar">Actualizar</button>
-<br>
-  <section class="dolar-info" aria-label="Información del dólar actual">
-    VIERNES 20 -06 -2025 BCV 104,54
-  </section>
+    <div class="language-select">
+      <label for="language" style="margin-right:8px;">Idioma:</label>
+      <select id="language">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="pt">Português</option>
+        <option value="jp">日本語</option>
+      </select>
+    </div>
 
-  <section class="time" aria-live="polite" aria-atomic="true" aria-label="Hora actual">
-    10 : 21 : 55 PM
-  </section>
-
-  <section class="next-day-container" aria-label="Entrada para el dólar del día siguiente">
-    <input
-      type="text"
-      class="next-day-input"
-      placeholder="Dólar del día siguiente"
-      aria-label="dolar del día siguiente"
-      aria-describedby="desc-dollar"
-      autocomplete="off"
-      spellcheck="false"
-      pattern="[0-9.,]*"
-      inputmode="decimal"
-    />
-    <img
-      src="https://cdn-icons-png.flaticon.com/512/196/196566.png"
-      alt="Ícono de dólar"
-      class="dollar-icon"
-      aria-hidden="true"
-      loading="lazy"
-    />
-  </section>
-
-  <main>
-    <a href="Dolarbolivar.html" class="item-btn" role="button" aria-label="Ir a Dólar a Bolívar">
-      Dolar a bolívar
-      <span>🇺🇸🇻🇪</span>
-    </a>
-    <a href="bolivardolar.html" class="item-btn" role="button" aria-label="Ir a Bolívar a Dólar">
-      Bolívar a dólar
-      <span>🇻🇪🇺🇸</span>
-    </a>
-    <a href="calculadora.html" class="item-btn" role="button" aria-label="Ir a Calculadora">
-      Calculadora
-      <span>🔢#️⃣</span>
-    </a>
-    <a href="calendario.html" class="item-btn" role="button" aria-label="Ir a Calendario">
-      Calendario
-      <span>📆🗓️</span>
-    </a>
-    <a href="bloc.html" class="item-btn" role="button" aria-label="Ir a Bloc de nota">
-      Notas
-      <span>📝🅰️</span>
-    </a>
-    <a href="historia.html" class="item-btn" role="button" aria-label="Ir a Historia">
-      Historia
-      <span>📌📌</span>
-    </a>
-    <a href="politica.txt" class="item-btn" role="button" aria-label="Escuchar radio online">
-      politica de privacidad
-      <span></span>
-    </a>
-    <a href="menu.html" class="item-btn" role="button" aria-label="juegos">
-      Juegos 
-      <span>🎲🎮</span>
-    </a>
-  </main>
-
-<div id="cookieConsent" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
+    <nav>
+      <a href="Dolarbolivar.html" id="btn-dolar-bolivar" aria-label="Dólar a bolívar">
+        <span class="text">Dolar a bolívar</span>
+        <div class="icon">🇺🇸🇻🇪</div>
+      </a>
+      <a href="bolivardolar.html" id="btn-bolivar-dolar" aria-label="Bolívar a dólar">
+        <span class="text">Bolívar a dólar</span>
+        <div class="icon">🇻🇪🇺🇸</div>
+      </a>
+      <a href="calculadora.html" id="btn-calculadora" aria-label="Calculadora">
+        <span class="text">Calculadora</span>
+        <div class="icon">🔢#</div>
+      </a>
+      <a href="calendario.html" id="btn-calendario" aria-label="Calendario">
+        <span class="text">Calendario</span>
+        <div class="icon">📅📆</div>
+      </a>
+      <a href="bloc.html" id="btn-notas" aria-label="Notas">
+        <span class="text">Notas</span>
+        <div class="icon">📝🅰️</div>
+      </a>
+      <a href="historia.html" id="btn-historia" aria-label="Historia">
+        <span class="text">Historia</span>
+        <div class="icon">📌📌</div>
+      </a>
+      <a href="politica.txt" id="btn-privacidad" aria-label="Política de privacidad">
+        <span class="text">política de privacidad</span>
+        <div class="icon">🔒</div>
+      </a>
+      <a href="instrucciones.html" id="btn-juegos" aria-label="Juegos">
+        <span class="text">Juegos</span>
+        <div class="icon">🎲🎮</div>
+      </a>
+    </nav>
+  </div>
+  
+  <div id="cookieConsent" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
   <span id="cookieMessage"></span>
   <br />
-  <a href="politica.txt" target="_blank" rel="noopener" id="cookieLink" aria-label="Privacy Policy"></a>
+  <a href="política.html" target="_blank" rel="noopener" id="cookieLink" aria-label="Privacy Policy"></a>
   <br /><br />
   <button id="rejectCookies" class="reject"></button>
   <button id="acceptCookies"></button>
 </div>
 
-
-
-  <script>
-    // Actualización dinámica de la hora cada segundo
-    function updateTime() {
-      const timeEl = document.querySelector('.time');
-      const now = new Date();
-
-      let hours = now.getHours();
-      let minutes = now.getMinutes();
-      let seconds = now.getSeconds();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-
-      const formattedTime = [
-        hours.toString().padStart(2, '0'),
-        minutes.toString().padStart(2, '0'),
-        seconds.toString().padStart(2, '0')
-      ].join(' : ') + ' ' + ampm;
-
-      timeEl.textContent = formattedTime;
+<script>
+  // Idiomas para los textos
+  const translations = {
+    es: {
+      dolarNextLabel: "Dólar del día siguiente",
+      btnDolarBolivar: "Dolar a bolívar",
+      btnBolivarDolar: "Bolívar a dólar",
+      btnCalculadora: "Calculadora",
+      btnCalendario: "Calendario",
+      btnNotas: "Notas",
+      btnHistoria: "Historia",
+      btnPrivacidad: "política de privacidad",
+      btnJuegos: "Juegos",
+      weekday: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
+      bcvRate: "BCV 104,54",
+    },
+    en: {
+      dolarNextLabel: "Dollar next day",
+      btnDolarBolivar: "Dollar to bolivar",
+      btnBolivarDolar: "Bolivar to dollar",
+      btnCalculadora: "Calculator",
+      btnCalendario: "Calendar",
+      btnNotas: "Notes",
+      btnHistoria: "History",
+      btnPrivacidad: "Privacy policy",
+      btnJuegos: "Games",
+      weekday: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
+      bcvRate: "BCV 104.54",
+    },
+    pt: {
+      dolarNextLabel: "Dólar do dia seguinte",
+      btnDolarBolivar: "Dólar para bolívar",
+      btnBolivarDolar: "Bolívar para dólar",
+      btnCalculadora: "Calculadora",
+      btnCalendario: "Calendário",
+      btnNotas: "Notas",
+      btnHistoria: "História",
+      btnPrivacidad: "política de privacidade",
+      btnJuegos: "Jogos",
+      weekday: ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"],
+      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
+      bcvRate: "BCV 104,54",
+    },
+    jp: {
+      dolarNextLabel: "翌日のドル",
+      btnDolarBolivar: "ドルからボリバルへ",
+      btnBolivarDolar: "ボリバルからドルへ",
+      btnCalculadora: "計算機",
+      btnCalendario: "カレンダー",
+      btnNotas: "メモ",
+      btnHistoria: "履歴",
+      btnPrivacidad: "プライバシーポリシー",
+      btnJuegos: "ゲーム",
+      weekday: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
+      bcvRate: "BCV 104.54",
     }
-    setInterval(updateTime, 1000);
-    updateTime();
+  };
 
-    // Mostrar y actualizar ícono dólar al modificar input
-    const inputDollar = document.querySelector('.next-day-input');
-    const dollarIcon = document.querySelector('.dollar-icon');
+  function updateDateTime(language) {
+    const now = new Date();
+    const dayOfWeek = translations[language].weekday[now.getDay()];
+    const day = now.getDate().toString().padStart(2, '0');
+    const month = translations[language].months[now.getMonth()];
+    const year = now.getFullYear();
+    const bcv = translations[language].bcvRate;
+    const dateStr = `${dayOfWeek.toUpperCase()} ${day} -${month} -${year} ${bcv}`;
+    document.getElementById('date-display').textContent = dateStr;
 
-    // Función para mostrar icono si valor cambia y es válido (número > 0)
-    function checkDollarInput() {
-      let val = inputDollar.value.trim().replace(',', '.');
-      let num = parseFloat(val);
-      if (!isNaN(num) && num > 0) {
-        dollarIcon.classList.add('visible');
-      } else {
-        dollarIcon.classList.remove('visible');
-      }
+    let hours = now.getHours();
+    let ampm = 'AM';
+    if (hours >= 12) {
+      ampm = 'PM';
+      if (hours > 12) hours -= 12;
     }
+    if (hours === 0) hours = 12;
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeStr = `${hours.toString().padStart(2,'0')} : ${minutes} : ${seconds} ${ampm}`;
+    document.getElementById('clock').textContent = timeStr;
+  }
 
-    inputDollar.addEventListener('input', checkDollarInput);
+  function changeLanguage() {
+    const lang = document.getElementById('language').value;
+    localStorage.setItem('selectedLanguage', lang); // Guardar idioma en localStorage
+    const t = translations[lang];
 
-    // Inicializar con valor  y mostrar icono
-    const dolarActual =  105.45;
-    const incrementoDiario = 0;
-    inputDollar.value = (dolarActual + incrementoDiario).toFixed(2).replace('.', ',');
-    checkDollarInput();
+    document.getElementById('label-dolar-next').textContent = t.dolarNextLabel;
+    document.getElementById('btn-dolar-bolivar').querySelector('.text').textContent = t.btnDolarBolivar;
+    document.getElementById('btn-bolivar-dolar').querySelector('.text').textContent = t.btnBolivarDolar;
+    document.getElementById('btn-calculadora').querySelector('.text').textContent = t.btnCalculadora;
+    document.getElementById('btn-calendario').querySelector('.text').textContent = t.btnCalendario;
+    document.getElementById('btn-notas').querySelector('.text').textContent = t.btnNotas;
+    document.getElementById('btn-historia').querySelector('.text').textContent = t.btnHistoria;
+    document.getElementById('btn-privacidad').querySelector('.text').textContent = t.btnPrivacidad;
+    document.getElementById('btn-juegos').querySelector('.text').textContent = t.btnJuegos;
 
+    updateDateTime(lang);
+  }
 
-// Deshabilitar clic derecho
+  // Al cargar la página, establecer idioma guardado o por defecto "es"
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'es';
+    document.getElementById('language').value = savedLang;
+    changeLanguage();
+  });
+
+  setInterval(() => {
+    const lang = document.getElementById('language').value;
+    updateDateTime(lang);
+  }, 1000);
+
+  document.getElementById('language').addEventListener('change', changeLanguage);
+  
+  
+  // Deshabilitar clic derecho
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 });
@@ -465,22 +414,7 @@ document.addEventListener('keydown', function(e) {
     console[_0x1a2b[1]](_0x1a2b[0]);
 })();
 
-
-
-
-
-
-    const btn = document.getElementById('btnActualizar');
-    btn.addEventListener('click', () => {
-      // Desaparece el botón
-      btn.style.display = 'none';
-      // Recarga la página
-      location.reload();
-    });
-
-
-
-      document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const consentKey = 'cookieConsentDecision';
     const cookieConsent = document.getElementById('cookieConsent');
     const acceptBtn = document.getElementById('acceptCookies');
@@ -512,7 +446,7 @@ document.addEventListener('keydown', function(e) {
     // Set text content
     cookieMessage.textContent = text.message + ' ';
     cookieLink.textContent = text.policy;
-    cookieLink.href = 'politica.txt'; // Cambia a la URL real de la política
+    cookieLink.href = '#'; // Cambia a la URL real de la política
     acceptBtn.textContent = text.accept;
     rejectBtn.textContent = text.reject;
 
@@ -542,7 +476,6 @@ document.addEventListener('keydown', function(e) {
       hideBanner();
     });
   });
-    
-  </script>
+</script>
 </body>
 </html>
