@@ -21,7 +21,7 @@ El uso de la aplicación debe cumplir con las leyes vigentes y las políticas de
 
 ============================
 5. Licencia
-Esta aplicación está protegida bajo la licencia Conv.909012500. Cualquier uso, reproducción o distribución no autorizada está estrictamente prohibida.
+Esta aplicación está protegida bajo la licencia: CONV202412 Cualquier uso, reproducción o distribución no autorizada está estrictamente prohibida.
 
 =============================
 6. Actualizaciones y Cambios
