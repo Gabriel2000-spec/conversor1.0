@@ -31,4 +31,13 @@ Conversor Green se reserva el derecho de actualizar esta política de privacidad
 7. Contacto
 Para cualquier duda o consulta sobre la política de privacidad, los usuarios pueden contactar con el desarrollador a través de los medios oficiales proporcionados en la aplicación.
 
+==============================
+
+8.  Propiedad intelectual
+La aplicación y todos sus contenidos, codigos, diseños, graficos y marcas son propiedad exclusiva del licenciante y estan protegidos por las leyes de propiedad intelectual vigente.
+
+================================
+
+9.  Esta licencia se terminará automaticamente si el usuario imcumple cualquiera de los terminos aqui establecidos. Al terminar la licencia, el usuario debera eliminar todas las copias de la aplicación.
+
 
