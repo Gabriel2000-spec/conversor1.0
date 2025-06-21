@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Privacidad - Conversor Green</title>
+  <style>
+    :root {
+      --bg-light: #f9f9f9;
+      --text-light: #333;
+      --bg-dark: #121212;
+      --text-dark: #e0e0e0;
+      --border-light: #ccc;
+      --border-dark: #444;
+      --shadow-light: rgba(0,0,0,0.1);
+      --shadow-dark: rgba(255,255,255,0.1);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      font-size: 16px;
+      padding: 6px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 5px;
+      background: white;
+      color: black;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.dark select, body.dark button {
+      background: #222;
+      color: var(--text-dark);
+      border-color: var(--border-dark);
+    }
+
+    select:focus, button:focus {
+      outline: none;
+      box-shadow: 0 0 5px #4a90e2;
+    }
+
+    #policyContainer {
+      background: white;
+      border: 1px solid var(--border-light);
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      box-shadow: 0 0 10px var(--shadow-light);
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      min-height: 400px;
+      overflow-y: auto;
+    }
+
+    body.dark #policyContainer {
+      background: #1e1e1e;
+      border-color: var(--border-dark);
+      box-shadow: 0 0 10px var(--shadow-dark);
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 600px) {
+      #controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      select, button {
+        width: 90%;
+        max-width: 300px;
+      }
+      #policyContainer {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Política de Privacidad - Conversor Green</h2>
+
+  <div id="controls">
+    <select id="languageSelect" aria-label="Selecciona idioma">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+      <option value="pt">Português</option>
+      <option value="ja">日本語</option>
+      <option value="fr">Français</option>
+      <option value="zh">中文</option>
+    </select>
+
+    <button id="toggleThemeBtn" aria-label="Cambiar modo oscuro/claro">Modo Oscuro</button>
+  </div>
+
+  <div id="policyContainer" tabindex="0" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+  // Política de privacidad en varios idiomas
+  const privacyPolicy = {
+    es: `1. Introducción
+Conversor Green es una aplicación diseñada para facilitar la conversión entre dólares y bolívares, además de ofrecer herramientas adicionales como calculadora, calendario, notas, estadísticas, historial del dólar y juegos. La privacidad y la seguridad de los usuarios son nuestra prioridad.
+
+=======================
+
+2. Recopilación de Información
+Conversor Green no recopila información personal identificable de los usuarios. Los datos utilizados en la aplicación (como las conversiones o historial) se almacenan localmente en el dispositivo del usuario para garantizar la privacidad y seguridad.
+
+=======================
+
+3. Uso de la Información
+La información generada o almacenada en la aplicación es utilizada exclusivamente para ofrecer las funcionalidades mencionadas y mejorar la experiencia del usuario. No se comparte ni se vende ningún dato a terceros.
+
+=======================
+
+4. Normas y Cumplimiento
+Los usuarios deben respetar todas las normas de uso establecidas dentro de la aplicación.
+Está prohibido duplicar, clonar o modificar el código fuente de esta aplicación sin autorización expresa del creador.
+El uso de la aplicación debe cumplir con las leyes vigentes y las políticas de privacidad establecidas.
+
+=======================
+
+5. Licencia
+Esta aplicación está protegida bajo la licencia: CONV202412 Cualquier uso, reproducción o distribución no autorizada está estrictamente prohibida.
+
+=======================
+
+6. Actualizaciones y Cambios
+Conversor Green se reserva el derecho de actualizar esta política de privacidad para reflejar cambios en la legislación o en las funcionalidades de la aplicación. Se recomienda a los usuarios revisar periódicamente esta sección.`, // Aquí va el texto completo en español (igual que en el código anterior, lo omití aquí por brevedad)
+    en: `1. Introduction
+Conversor Green is an application designed to facilitate conversion between dollars and bolivars, as well as offering additional tools such as calculator, calendar, notes, statistics, dollar history, and games. User privacy and security are our priority.
+
+=======================
+
+2. Information Collection
+Conversor Green does not collect personally identifiable information from users. Data used in the application (such as conversions or history) is stored locally on the user's device to ensure privacy and security.
+
+=======================
+
+3. Use of Information
+Information generated or stored in the application is used exclusively to provide the mentioned functionalities and improve user experience. No data is shared or sold to third parties.
+
+=======================
+
+4. Rules and Compliance
+Users must respect all usage rules established within the application.
+It is forbidden to duplicate, clone, or modify the source code of this application without the express authorization of the creator.
+The use of the application must comply with current laws and established privacy policies.
+
+=======================
+
+5. License
+This application is protected under license Conv.909012500. Any unauthorized use, reproduction, or distribution is strictly prohibited.
+
+=======================
+
+6. Updates and Changes
+Conversor Green reserves the right to update this privacy policy to reflect changes in legislation or application features. Users are advised to periodically review this section.`, // Igual para inglés, portugués, japonés, francés y chino.
+
+    pt: `... 1. Introdução
+Conversor Green é um aplicativo projetado para facilitar a conversão entre dólares e bolívares, além de oferecer ferramentas adicionais como calculadora, calendário, notas, estatísticas, histórico do dólar e jogos. A privacidade e a segurança dos usuários são nossa prioridade.
+
+=======================
+
+2. Coleta de Informações
+Conversor Green não coleta informações pessoais identificáveis dos usuários. Os dados usados no aplicativo (como conversões ou histórico) são armazenados localmente no dispositivo do usuário para garantir privacidade e segurança.
+
+=======================
+
+3. Uso das Informações
+As informações geradas ou armazenadas no aplicativo são usadas exclusivamente para oferecer as funcionalidades mencionadas e melhorar a experiência do usuário. Nenhum dado é compartilhado ou vendido a terceiros.
+
+=======================
+
+4. Regras e Conformidade
+Os usuários devem respeitar todas as regras de uso estabelecidas no aplicativo.
+É proibido duplicar, clonar ou modificar o código-fonte deste aplicativo sem autorização expressa do criador.
+O uso do aplicativo deve cumprir as leis vigentes e as políticas de privacidade estabelecidas.
+
+=======================
+
+5. Licença
+Este aplicativo está protegido pela licença Conv.909012500. Qualquer uso, reprodução ou distribuição não autorizada é estritamente proibida.
+
+6. Atualizações e Alterações
+Conversor Green reserva-se o direito de atualizar esta política de privacidade para refletir mudanças na legislação ou nas funcionalidades do aplicativo. 
+
+
+
+`,
+    
+    
+    
+    ja: `...No disponible. 
+
+
+`,
+    
+    
+    
+    
+    
+    fr: `...No disponible`,
+    zh: `...No disponible`
+  };
+
+  // Para evitar repetir, copia y pega el contenido completo del código anterior en cada propiedad aquí.
+
+  // Guardar la política en localStorage
+  function savePolicyToLocalStorage() {
+    localStorage.setItem('conversorGreenPrivacyPolicy', JSON.stringify(privacyPolicy));
+  }
+
+  // Cargar política desde localStorage
+  function loadPolicyFromLocalStorage() {
+    const policyStr = localStorage.getItem('conversorGreenPrivacyPolicy');
+    if (!policyStr) return null;
+    try {
+      return JSON.parse(policyStr);
+    } catch {
+      return null;
+    }
+  }
+
+  // Mostrar política en el contenedor
+  function displayPolicy(language) {
+    const policyData = loadPolicyFromLocalStorage() || privacyPolicy;
+    const content = policyData[language] || policyData['es'];
+    const container = document.getElementById('policyContainer');
+    container.textContent = content.trim();
+  }
+
+  // Cambiar tema (claro/oscuro)
+  function toggleTheme() {
+    const body = document.body;
+    const isDark = body.classList.toggle('dark');
+    localStorage.setItem('conversorGreenTheme', isDark ? 'dark' : 'light');
+    updateThemeButtonText(isDark);
+  }
+
+  // Actualizar texto del botón según el tema
+  function updateThemeButtonText(isDark) {
+    const btn = document.getElementById('toggleThemeBtn');
+    btn.textContent = isDark ? 'Modo Claro' : 'Modo Oscuro';
+  }
+
+  // Cargar tema guardado o por defecto (claro)
+  function loadTheme() {
+    const storedTheme = localStorage.getItem('conversorGreenTheme');
+    const body = document.body;
+    const isDark = storedTheme === 'dark';
+    if (isDark) body.classList.add('dark');
+    updateThemeButtonText(isDark);
+  }
+
+  // Inicialización
+  document.addEventListener('DOMContentLoaded', () => {
+    savePolicyToLocalStorage();
+
+    const languageSelect = document.getElementById('languageSelect');
+    languageSelect.addEventListener('change', e => {
+      displayPolicy(e.target.value);
+    });
+
+    document.getElementById('toggleThemeBtn').addEventListener('click', toggleTheme);
+
+    loadTheme();
+
+    // Mostrar español por defecto o el idioma guardado en localStorage si deseas
+    const savedLang = languageSelect.value || 'es';
+    displayPolicy(savedLang);
+  });
+</script>
+</body>
+</html>
