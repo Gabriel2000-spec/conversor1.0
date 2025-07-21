@@ -1,279 +1,257 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calendario Junio 2025</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #ffff;
-    margin: 0;
-    padding: 20px;
-  }
-
-  /* Portada */
-  header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  header h1 {
-    font-size: 3em;
-    color: #00cc44;
-    text-shadow:
-      0 0 5px #00cc44,
-      0 0 10px #00cc44,
-      0 0 20px #00cc44,
-      0 0 40px #00cc44;
-  }
-
-  /* Calendario */
-  .calendar {
-    max-width: 500px;
-    margin: 0 auto;
-    border: 3px solid #a0c4ff;
-    border-radius: 10px;
-    box-shadow:
-      0 0 10px 3px #a0c4ff88;
-    background: white;
-  }
-
-  .month {
-    background: #90caf9;
-    color: #0d47a1;
-    text-align: center;
-    padding: 15px 0;
-    font-size: 1.8em;
-    font-weight: bold;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    text-shadow: 0 0 5px #0d47a1;
-  }
-
-  .weekdays, .days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-  }
-
-  .weekdays div {
-    background: #e3f2fd;
-    padding: 10px 0;
-    font-weight: bold;
-    border-bottom: 2px solid #90caf9;
-    color: #0d47a1;
-  }
-
-  .days div {
-    padding: 12px 0;
-    border: 1px solid #ddd;
-    border-right: none;
-    border-top: none;
-    cursor: default;
-    user-select: none;
-    font-weight: 600;
-    position: relative;
-  }
-
-  .days div:nth-child(7n) {
-    border-right: 1px solid #ddd;
-  }
-
-  .days div:hover {
-    background: #bbdefb;
-  }
-
-  /* Espacios vacíos para días previos y posteriores */
-  .empty {
-    background: #f9f9f9;
-    border: none;
-    cursor: default;
-  }
-
-  /* Feriados Nacionales */
-  .feriado-nacional {
-    background-color: #ffcccb; /* rojo suave */
-    color: #990000;
-    font-weight: bold;
-    box-shadow: 0 0 8px 2px #ff6666;
-  }
-
-  /* Feriados Bancarios */
-  .feriado-bancario {
-    background-color: #c8e6c9; /* verde suave */
-    color: #2e7d32;
-    font-weight: bold;
-    box-shadow: 0 0 8px 2px #66bb6a;
-  }
-
-  /* Leyenda */
-  .legend {
-    max-width: 500px;
-    margin: 20px auto 40px;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    font-weight: 600;
-    color: #333;
-  }
-
-  .legend div {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .legend .color-box {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-  }
-
-  .legend .nacional {
-    background-color: #ffcccb;
-    box-shadow: 0 0 8px 2px #ff6666;
-  }
-
-  .legend .bancario {
-    background-color: #c8e6c9;
-    box-shadow: 0 0 8px 2px #66bb6a;
-  }
-
-  /* Botón salir */
-  .btn-exit {
-    display: block;
-    width: 150px;
-    margin: 0 auto;
-    padding: 12px 0;
-    background: #00cc44;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow:
-      0 0 8px 3px #00cc44cc;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    text-decoration: none;
-  }
-
-  .btn-exit:hover {
-    background: #009933;
-    box-shadow:
-      0 0 12px 4px #009933cc;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendario Mes Actual 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 400px;
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .calendar {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .calendar-header button {
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .calendar-header button:hover {
+      background-color: #0056b3;
+    }
+    .month-year {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    th, td {
+      padding: 8px 0;
+      border: 1px solid #ddd;
+      height: 38px;
+      vertical-align: middle;
+      font-size: 14px;
+    }
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+    .holiday {
+      background-color: #ffcccc;
+      color: #a00;
+      font-weight: bold;
+    }
+    .bank-day {
+      background-color: #ccffcc;
+      color: #060;
+    }
+    .weekend {
+      background-color: #eee;
+      color: #999;
+    }
+    .legend {
+      margin-top: 20px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .legend div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+    }
+    .holiday-box {
+      background-color: #ffcccc;
+      border: 1px solid #a00;
+    }
+    .bank-day-box {
+      background-color: #ccffcc;
+      border: 1px solid #060;
+    }
+    .weekend-box {
+      background-color: #eee;
+      border: 1px solid #999;
+    }
+  </style>
 </head>
 <body>
+  <h1>Calendario 2025</h1>
 
-<header>
-  <h1>Calendario Conversor</h1>
-</header>
-
-<div class="calendar" role="table" aria-label="Calendario Junio 2025">
-  <div class="month">Junio 2025</div>
-  <div class="weekdays" role="row">
-    <div role="columnheader">Dom</div>
-    <div role="columnheader">Lun</div>
-    <div role="columnheader">Mar</div>
-    <div role="columnheader">Mié</div>
-    <div role="columnheader">Jue</div>
-    <div role="columnheader">Vie</div>
-    <div role="columnheader">Sáb</div>
+  <div class="calendar">
+    <div class="calendar-header">
+      <button id="prevMonth">&lt;</button>
+      <div class="month-year" id="monthYear"></div>
+      <button id="nextMonth">&gt;</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Dom</th>
+          <th>Lun</th>
+          <th>Mar</th>
+          <th>Mié</th>
+          <th>Jue</th>
+          <th>Vie</th>
+          <th>Sáb</th>
+        </tr>
+      </thead>
+      <tbody id="calendarBody"></tbody>
+    </table>
   </div>
-  <div class="days" role="rowgroup" id="days-container">
-    <!-- Los días se generarán con JS -->
+
+  <div class="legend">
+    <div><span class="holiday-box"></span> Feriado</div>
+    <div><span class="bank-day-box"></span> Actividad Bancaria</div>
+    <div><span class="weekend-box"></span> Fin de Semana</div>
   </div>
-</div>
 
-<div class="legend">
-  <div><div class="color-box nacional"></div>Feriado Nacional</div>
-  <div><div class="color-box bancario"></div>Feriado Bancario</div>
-</div>
+  <script>
+    const holidays = [
+      '01-01', // Año Nuevo
+      '02-05', // 
+      '07-24', // Natalicio de Simón Bolivar 
+      
+      '05-01', // 
+      '09-16', // 
+      '11-02', // 
+      '11-20', // 
+      '12-25'  // 
+    ];
 
-<a href="index.html" class="btn-exit" role="button" aria-label="Salir al menú">Salir al menú</a>
-
-<script>
-  // Definir feriados para junio 2025
-  // Ejemplo: 1 de junio es feriado nacional y 16 de junio feriado bancario (puedes ajustar según tu país)
-  const feriadosNacionales = [24]; // Ajusta según feriados nacionales reales
-  const feriadosBancarios = [2,16,23,29]; // Ajusta según feriados bancarios reales
-
-  const daysContainer = document.getElementById('days-container');
-
-  // Junio 2025 comienza el domingo 1 y tiene 30 días
-  // Domingo = 0, Lunes = 1, ..., Sábado = 6
-  // Junio 1, 2025 es domingo (día 0)
-
-  // Para colocar los días, necesitamos saber qué día de la semana cae el 1 de junio 2025
-  const year = 2025;
-  const month = 5; // JS meses base 0 (0=Enero, 5=Junio)
-  const firstDay = new Date(year, month, 1).getDay();
-
-  // Crear espacios vacíos para días previos si el mes no comienza en domingo
-  for (let i = 0; i < firstDay; i++) {
-    const emptyDiv = document.createElement('div');
-    emptyDiv.classList.add('empty');
-    daysContainer.appendChild(emptyDiv);
-  }
-
-  // Crear los días del mes
-  for (let day = 1; day <= 30; day++) {
-    const dayDiv = document.createElement('div');
-    dayDiv.textContent = day;
-
-    if (feriadosNacionales.includes(day)) {
-      dayDiv.classList.add('feriado-nacional');
-      dayDiv.setAttribute('title', 'Feriado Nacional');
-      dayDiv.setAttribute('aria-label', `Día ${day}, Feriado Nacional`);
-    } else if (feriadosBancarios.includes(day)) {
-      dayDiv.classList.add('feriado-bancario');
-      dayDiv.setAttribute('title', 'Feriado Bancario');
-      dayDiv.setAttribute('aria-label', `Día ${day}, Feriado Bancario`);
-    } else {
-      dayDiv.setAttribute('aria-label', `Día ${day}`);
+    function isHoliday(date) {
+      const mmdd = (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+      return holidays.includes(mmdd);
     }
 
-    daysContainer.appendChild(dayDiv);
-  }
-
-
-
-  // Deshabilitar clic derecho
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// Deshabilitar teclas comunes de herramientas de desarrollador
-document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
+    function isWeekend(date) {
+      const day = date.getDay();
+      return day === 0 || day === 6;
     }
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-    }
-    // Ctrl+U (ver código fuente)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-    }
-});
 
-// Código ofuscado básico
-(function(){
-    var _0x1a2b = ['mensaje secreto', 'log'];
-    console[_0x1a2b[1]](_0x1a2b[0]);
-})();
+    function isBankDay(date) {
+      return !isWeekend(date) && !isHoliday(date);
+    }
 
-</script>
+    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
+    let currentYear = 2025;
+    let currentMonth = new Date().getMonth(); // Mes actual automático
+
+    const monthYearElem = document.getElementById('monthYear');
+    const calendarBody = document.getElementById('calendarBody');
+    const prevBtn = document.getElementById('prevMonth');
+    const nextBtn = document.getElementById('nextMonth');
+
+    function renderCalendar(year, month) {
+      monthYearElem.textContent = monthNames[month] + ' ' + year;
+      calendarBody.innerHTML = '';
+
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startDayOfWeek = firstDay.getDay();
+
+      let row = document.createElement('tr');
+
+      // Espacios vacíos antes del primer día
+      for(let i = 0; i < startDayOfWeek; i++) {
+        const td = document.createElement('td');
+        row.appendChild(td);
+      }
+
+      for(let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const td = document.createElement('td');
+        td.textContent = day;
+
+        if(isHoliday(date)) {
+          td.classList.add('holiday');
+          td.title = "Feriado";
+        } else if (isWeekend(date)) {
+          td.classList.add('weekend');
+          td.title = "Fin de Semana";
+        } else {
+          td.classList.add('bank-day');
+          td.title = "Día Bancario";
+        }
+
+        row.appendChild(td);
+
+        if(date.getDay() === 6 && day !== daysInMonth) {
+          calendarBody.appendChild(row);
+          row = document.createElement('tr');
+        }
+      }
+
+      // Completar la última fila con celdas vacías si es necesario
+      const lastDayOfWeek = lastDay.getDay();
+      for(let i = lastDayOfWeek + 1; i <= 6; i++) {
+        const td = document.createElement('td');
+        row.appendChild(td);
+      }
+      calendarBody.appendChild(row);
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentMonth === 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else {
+        currentMonth--;
+      }
+      renderCalendar(currentYear, currentMonth);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentMonth === 11) {
+        currentMonth = 0;
+        currentYear++;
+      } else {
+        currentMonth++;
+      }
+      renderCalendar(currentYear, currentMonth);
+    });
+
+    // Renderizar mes actual (automático en 2025)
+    if (new Date().getFullYear() === 2025) {
+      currentMonth = new Date().getMonth();
+    } else { // Si no es 2025, mostrar enero de 2025 por defecto
+      currentMonth = 0;
+      currentYear = 2025;
+    }
+    renderCalendar(currentYear, currentMonth);
+  </script>
 </body>
 </html>
