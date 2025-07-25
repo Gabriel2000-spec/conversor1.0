@@ -1,640 +1,408 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Juego Palabras Venezolanas</title>
-<style>
-  /* Reset y base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to top, #a0d8f7, #e0f0ff);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    color: #333;
-  }
-  /* Contenedor principal */
-  .container {
-    flex: 1;
-    max-width: 480px;
-    margin: auto;
-    background: #f9faff;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-  /* Top barra */
-  header {
-    background: #d0e8ff;
-    border-radius: 20px 20px 0 0;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header .left,
-  header .center,
-  header .right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  header button.home {
-    background: #fff;
-    border: none;
-    border-radius: 50%;
-    padding: 8px 12px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    transition: background 0.3s;
-  }
-  header button.home:hover {
-    background: #b3d1ff;
-  }
-  .coin {
-    background: #f9d342;
-    color: #6a4e00;
-    font-weight: 700;
-    font-size: 16px;
-    border-radius: 12px;
-    padding: 4px 10px;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.7);
-    user-select: none;
-  }
-  .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 0 3px rgba(0,0,0,0.2);
-  }
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  /* Contenido central */
-  main {
-    flex: 1;
-    padding: 20px 30px 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .hint-box {
-    background: #fff;
-    border-radius: 40px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 14px 30px;
-    font-weight: 700;
-    font-size: 20px;
-    color: #555;
-    margin-bottom: 20px;
-    min-width: 280px;
-    text-align: center;
-    user-select: none;
-  }
-  .btn-add-coins {
-    background: #3cb371;
-    color: white;
-    border: none;
-    border-radius: 40px;
-    padding: 10px 30px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(60,179,113,0.5);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0 30px;
-  }
-  .btn-add-coins:hover {
-    background: #2e8b57;
-  }
-  .btn-add-coins .coin-icon {
-    background: #f9d342;
-    color: #6a4e00;
-    border-radius: 50%;
-    padding: 4px 8px;
-    font-weight: 700;
-    font-size: 14px;
-  }
-  /* Casillas letras */
-  .letter-boxes {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 40px;
-  }
-  .letter-box {
-    width: 40px;
-    height: 48px;
-    background: #d9e6f2;
-    border-radius: 10px;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: 700;
-    color: #2c3e50;
-    user-select: none;
-  }
-  .letter-box.empty {
-    background: #5a7d9a;
-  }
-  /* Teclado virtual */
-  .keyboard {
-    padding: 0 15px 20px;
-    background: #f0f6ff;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 -3px 12px rgba(0,0,0,0.07);
-    user-select: none;
-  }
-  .keyboard-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .key {
-    flex: 1 0 32px;
-    max-width: 40px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    font-weight: 700;
-    font-size: 18px;
-    color: #34495e;
-    text-align: center;
-    padding: 8px 0;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.25s;
-  }
-  .key:active {
-    background: #a0c4ff;
-  }
-  .key.disabled {
-    background: #cfd6e4;
-    color: #9aa7bb;
-    cursor: default;
-  }
-  /* Botones especiales */
-  .special-keys {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  .special-btn {
-    flex: 1 0 100px;
-    background: #f9d342;
-    border-radius: 40px;
-    padding: 12px 0;
-    font-weight: 700;
-    font-size: 18px;
-    color: #6a4e00;
-    box-shadow: 0 4px 12px rgba(249,211,66,0.6);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    transition: background 0.3s;
-  }
-  .special-btn:hover {
-    background: #d4b123;
-  }
-  .special-btn.disabled {
-    background: #f0f0f0;
-    color: #aaa;
-    cursor: default;
-    box-shadow: none;
-  }
-  .special-btn.blue {
-    background: #6c8ed9;
-    color: white;
-    box-shadow: 0 4px 12px rgba(108,142,217,0.7);
-  }
-  .special-btn.blue:hover {
-    background: #4a6ac2;
-  }
-  .special-btn.green {
-    background: #3cb371;
-    color: white;
-    box-shadow: 0 4px 12px rgba(60,179,113,0.7);
-  }
-  .special-btn.green:hover {
-    background: #2e8b57;
-  }
-  /* Iconos */
-  .coin-icon {
-    background: #f9d342;
-    border-radius: 50%;
-    padding: 4px 8px;
-    font-weight: 700;
-    font-size: 16px;
-    color: #6a4e00;
-  }
-  /* Animaciones */
-  .shake {
-    animation: shake 0.5s;
-  }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-8px); }
-    40%, 80% { transform: translateX(8px); }
-  }
-  /* Mensajes */
-  .message {
-    text-align: center;
-    margin: 10px 0;
-    font-weight: 600;
-    color: #2c3e50;
-    min-height: 24px;
-    user-select: none;
-  }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juego del Ahorcado - Ejecutivo</title>
+    <style>
+        /* Estilo general */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #f0a500;
+            margin-bottom: 0.2em;
+            font-weight: 700;
+        }
+
+        /* Contenedor principal */
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px 30px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 0 15px #f0a500aa;
+        }
+
+        /* Palabra oculta */
+        #wordDisplay {
+            font-size: 2.5rem;
+            letter-spacing: 0.3em;
+            margin: 20px 0;
+            text-align: center;
+            user-select: none;
+            font-weight: 700;
+        }
+
+        /* Input para agregar palabra */
+        #newWordInput {
+            width: calc(100% - 110px);
+            padding: 8px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #f0a500;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            color: #121212;
+        }
+
+        button:hover {
+            background-color: #cf8e00;
+        }
+
+        /* Letras usadas */
+        #usedLetters {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            min-height: 30px;
+        }
+
+        /* Monedas */
+        #coinsContainer {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            user-select: none;
+            position: relative;
+            height: 50px;
+        }
+
+        #coinCount {
+            margin-left: 10px;
+            color: #f0a500;
+        }
+
+        /* Icono moneda SVG */
+        .coin-icon {
+            width: 32px;
+            height: 32px;
+            fill: #f0a500;
+        }
+
+        /* Animación monedas brincando */
+        .coin-jump {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            height: 30px;
+            animation: jump 8.8s ease forwards;
+            pointer-events: none;
+            z-index: 10;
+            fill: #f0a500;
+            filter: drop-shadow(0 0 3px #f0a500);
+        }
+
+        @keyframes jump {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-60px) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Estado juego */
+        #statusMessage {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 30px;
+        }
+
+        /* Input letra */
+        #letterInput {
+            width: 100%;
+            font-size: 1.5rem;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: none;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
-<div class="container" role="main" aria-label="Juego de palabras venezolanas">
-  <header>
-    <div class="left">
-      <button class="home" aria-label="Inicio" title="Inicio" id="btnHome">🏠</button>
-      <div class="coin" aria-label="Vidas" title="Vidas" id="livesCount">5</div>
+    <h1>Juego del Ahorcado</h1>
+    <div class="container">
+        <div>
+            <label for="newWordInput" style="font-weight:700;">Agregar palabra:</label>
+            
+            <br>
+            <br>
+            
+            <input type="text" id="newWordInput" maxlength="15" placeholder="Nueva palabra" />
+            
+            <br>
+            <br>
+            
+            <button id="addWordBtn" title="Agregar palabra para jugar">Agregar</button>
+        </div>
+
+        <div id="wordDisplay" aria-live="polite" aria-atomic="true">_ _ _ _ _</div>
+
+        <input type="text" id="letterInput" maxlength="1" autocomplete="off" placeholder="Ingrese una letra" aria-label="Ingresar letra para adivinar" />
+
+
+        <div id="usedLetters" aria-live="polite" aria-atomic="true">Letras usadas: </div>
+
+        <div id="statusMessage" role="alert"></div>
+
+        <div id="coinsContainer" aria-label="Monedas ganadas">
+            <svg class="coin-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                <circle cx="32" cy="32" r="30" stroke="#f0a500" stroke-width="4" fill="#f0a500"/>
+                <text x="32" y="40" text-anchor="middle" font-size="28" fill="#121212" font-weight="700">$</text>
+            </svg>
+            <span id="coinCount">0</span>
+        </div>
     </div>
-    <div class="center">
-      <div class="avatar" aria-label="Jugador">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg" alt="Bandera de Venezuela" />
-      </div>
-      <div class="coin" aria-label="Puntuación" title="Puntuación" id="scoreCount">0</div>
-      <div class="coin" aria-label="Monedas" title="Monedas" id="coinsCount">25</div>
-    </div>
-    <div class="right" style="width: 40px;"></div>
-  </header>
-  <main>
-    <div class="hint-box" id="hintBox" aria-live="polite" aria-atomic="true">Delincuente</div>
-    <button class="btn-add-coins" id="btnAddCoins" aria-label="Comprar vidas por 25 monedas" title="Comprar vidas (+25 monedas)">
-      <span>+</span>
-      <span class="coin-icon">25</span>
-    </button>
-    <div class="letter-boxes" id="letterBoxes" aria-label="Casillas de letras para la palabra">
-      <!-- Aquí van las casillas -->
-    </div>
-    <div class="message" id="messageArea" role="alert" aria-live="assertive"></div>
-    <div class="special-keys" aria-label="Funciones especiales">
-      <button class="special-btn yellow" id="btnRevealLetter" aria-label="Revelar letra por 50 monedas" title="Revelar letra (-50 monedas)">
-        A <span class="coin-icon">50</span>
-      </button>
-      <button class="special-btn blue" id="btnHideLetters" aria-label="Ocultar letras por 75 monedas" title="Ocultar letras (-75 monedas)">
-        👁️‍🗨️ <span class="coin-icon">75</span>
-      </button>
-      <button class="special-btn green" id="btnHelp" aria-label="Ayuda" title="Ayuda">
-        ? 
-      </button>
-    </div>
-  </main>
-  <nav class="keyboard" aria-label="Teclado">
-    <div class="keyboard-row" id="row1"></div>
-    <div class="keyboard-row" id="row2"></div>
-    <div class="keyboard-row" id="row3"></div>
-  </nav>
-</div>
 
-<script>
-    const words = [
-  { word: 'CHORO', hint: 'Delincuente' },
-  { word: 'PANA', hint: 'Amigo' },
-  { word: 'AREPA', hint: 'Comida típica' },
-  { word: 'BURRO', hint: 'Animal común' },
-  { word: 'CARACOL', hint: 'Molusco con concha' },
-  { word: 'GUAYO', hint: 'Herramienta para rallar' },
-  { word: 'CHAMO', hint: 'Niño o joven' },
-  { word: 'PATRIA', hint: 'País o nación' },
-  { word: 'TAPAR', hint: 'Cubrir algo' },
-  { word: 'JUEGO', hint: 'Diversión' },
-   { word: 'CAFE', hint: 'Guayoyo' },
-  { word: 'PONCHERA', hint: 'Lavar' },
-   { word: 'ARRECHO', hint: 'Enojado o Genial' },
-  { word: 'VAINA', hint: 'Cosa' },
-   { word: 'GUISO', hint: 'situación o problema' },
-  { word: 'RASPAO', hint: 'bebida refrescante' },
-  { word: 'MAMARRACHO', hint: 'Mal vestido o descuidado' },
-  { word: 'MOSCA', hint: 'Cuidado o alerta' },
-   { word: 'PICHIRRE', hint: 'Tacaño' },
-   { word: 'GUACALA', hint: 'Repugnancia' },
-   { word: 'CAGADO', hint: 'Asustado' }
-  
-  
-  
-  
-  
-];
+    <script>
+        (() => {
+            const wordDisplay = document.getElementById('wordDisplay');
+            const letterInput = document.getElementById('letterInput');
+            const usedLettersDisplay = document.getElementById('usedLetters');
+            const statusMessage = document.getElementById('statusMessage');
+            const coinCountSpan = document.getElementById('coinCount');
+            const coinsContainer = document.getElementById('coinsContainer');
+            const newWordInput = document.getElementById('newWordInput');
+            const addWordBtn = document.getElementById('addWordBtn');
 
-let currentWordIndex = 0;
-let currentWord = '';
-let hint = '';
-let userAnswer = [];
-let lives = 5;
-let score = 0;
-let coins = 25;
-let revealedIndexes = new Set();
-let hiddenLetters = false;
+            // Estado del juego
+            let words = [];
+            let currentWord = '';
+            let guessedLetters = new Set();
+            let correctLetters = new Set();
+            let maxErrors = 6;
+            let errors = 0;
+            let coins = 0;
 
-const livesCount = document.getElementById('livesCount');
-const scoreCount = document.getElementById('scoreCount');
-const coinsCount = document.getElementById('coinsCount');
-const hintBox = document.getElementById('hintBox');
-const letterBoxes = document.getElementById('letterBoxes');
-const messageArea = document.getElementById('messageArea');
-const btnAddCoins = document.getElementById('btnAddCoins');
-const btnRevealLetter = document.getElementById('btnRevealLetter');
-const btnHideLetters = document.getElementById('btnHideLetters');
-const btnHelp = document.getElementById('btnHelp');
-const btnHome = document.getElementById('btnHome');
-const keyboardRows = [
-  document.getElementById('row1'),
-  document.getElementById('row2'),
-  document.getElementById('row3'),
-];
+            // Guardar y cargar desde localStorage
+            function saveState() {
+                localStorage.setItem('ahorcado_words', JSON.stringify(words));
+                localStorage.setItem('ahorcado_coins', coins);
+            }
 
-const keys = [
-  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ñ'],
-  ['Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
-];
+            function loadState() {
+                const storedWords = JSON.parse(localStorage.getItem('ahorcado_words'));
+                if (Array.isArray(storedWords) && storedWords.length > 0) {
+                    words = storedWords;
+                } else {
+                    // Palabras por defecto
+                    words = ['AREPA', 'ARAGUANEY', 'CHAMO', 'ORINOCO', 'ANGOSTURA', 'CACHAPA', 'GUAYOYO'];
+                }
 
-function saveState() {
-  const state = {
-    currentWordIndex,
-    userAnswer,
-    lives,
-    score,
-    coins,
-    revealedIndexes: Array.from(revealedIndexes),
-    hiddenLetters
-  };
-  localStorage.setItem('venezuelanWordGameState', JSON.stringify(state));
-}
+                const storedCoins = parseInt(localStorage.getItem('ahorcado_coins'));
+                coins = isNaN(storedCoins) ? 0 : storedCoins;
+                coinCountSpan.textContent = coins;
+            }
 
-function loadState() {
-  const stateStr = localStorage.getItem('venezuelanWordGameState');
-  if (!stateStr) return false;
-  try {
-    const state = JSON.parse(stateStr);
-    if (state.currentWordIndex !== undefined) currentWordIndex = state.currentWordIndex;
-    if (Array.isArray(state.userAnswer)) userAnswer = state.userAnswer;
-    if (typeof state.lives === 'number') lives = state.lives;
-    if (typeof state.score === 'number') score = state.score;
-    if (typeof state.coins === 'number') coins = state.coins;
-    if (Array.isArray(state.revealedIndexes)) revealedIndexes = new Set(state.revealedIndexes);
-    if (typeof state.hiddenLetters === 'boolean') hiddenLetters = state.hiddenLetters;
-    return true;
-  } catch {
-    return false;
-  }
-}
+            // Escoger palabra aleatoria
+            function selectWord() {
+                const idx = Math.floor(Math.random() * words.length);
+                currentWord = words[idx].toUpperCase();
+            }
 
-function initGame() {
-  if (!loadState()) {
-    currentWordIndex = 0;
-    lives = 5;
-    score = 0;
-    coins = 25;
-    userAnswer = [];
-    revealedIndexes.clear();
-    hiddenLetters = false;
-  }
-  loadWord(currentWordIndex);
-  updateStats();
-  renderKeyboard();
-}
+            // Mostrar palabra oculta
+            function displayWord() {
+                let display = '';
+                for (const ch of currentWord) {
+                    if (correctLetters.has(ch)) {
+                        display += ch + ' ';
+                    } else if (ch === ' ') {
+                        display += '  ';
+                    } else {
+                        display += '_ ';
+                    }
+                }
+                wordDisplay.textContent = display.trim();
+            }
 
-function loadWord(index) {
-  currentWordIndex = index;
-  currentWord = words[index].word.toUpperCase();
-  hint = words[index].hint;
-  userAnswer = Array(currentWord.length).fill('');
-  revealedIndexes.clear();
-  hiddenLetters = false;
-  hintBox.textContent = hint;
-  messageArea.textContent = '';
-  renderLetterBoxes();
-  updateStats();
-  saveState();
-}
+            // Actualizar letras usadas
+            function displayUsedLetters() {
+                if (guessedLetters.size === 0) {
+                    usedLettersDisplay.textContent = 'Letras usadas: ';
+                } else {
+                    usedLettersDisplay.textContent = 'Letras usadas: ' + Array.from(guessedLetters).sort().join(' ');
+                }
+            }
 
-function updateStats() {
-  livesCount.textContent = lives;
-  scoreCount.textContent = score;
-  coinsCount.textContent = coins;
-  btnAddCoins.disabled = coins < 25;
-  btnRevealLetter.disabled = coins < 50;
-  btnHideLetters.disabled = coins < 75;
-}
+            // Comprobar si ganó
+            function checkWin() {
+                for (const ch of currentWord) {
+                    if (ch !== ' ' && !correctLetters.has(ch)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
 
-function renderLetterBoxes() {
-  letterBoxes.innerHTML = '';
-  for (let i = 0; i < currentWord.length; i++) {
-    const box = document.createElement('div');
-    box.classList.add('letter-box');
-    if (userAnswer[i]) {
-      box.textContent = userAnswer[i];
-    } else if (revealedIndexes.has(i)) {
-      box.textContent = currentWord[i];
-    } else {
-      box.textContent = '';
-      box.classList.add('empty');
-    }
-    if (hiddenLetters && !revealedIndexes.has(i)) {
-      box.textContent = '';
-      box.classList.add('empty');
-    }
-    letterBoxes.appendChild(box);
-  }
-}
+            // Mostrar monedas brincando
+            function coinJumpEffect() {
+                const jumpCount = 8;
+                for (let i = 0; i < jumpCount; i++) {
+                    const coin = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    coin.setAttribute('viewBox', '0 0 64 64');
+                    coin.classList.add('coin-jump');
+                    coin.style.left = (i * 30 + 10) + 'px';
+                    coin.style.bottom = '0px';
+                    coin.style.position = 'absolute';
+                    coin.style.fill = '#f0a500';
+                    coin.style.width = '24px';
+                    coin.style.height = '24px';
 
-function renderKeyboard() {
-  keys.forEach((rowKeys, rowIndex) => {
-    const row = keyboardRows[rowIndex];
-    row.innerHTML = '';
-    rowKeys.forEach(key => {
-      const keyBtn = document.createElement('button');
-      keyBtn.classList.add('key');
-      keyBtn.textContent = key;
-      if (key === '⌫') {
-        keyBtn.setAttribute('aria-label', 'Borrar letra');
-        keyBtn.setAttribute('title', 'Borrar letra');
-      } else {
-        keyBtn.setAttribute('aria-label', `Letra ${key}`);
-        keyBtn.setAttribute('title', `Letra ${key}`);
-      }
-      keyBtn.addEventListener('click', () => handleKeyPress(key));
-      row.appendChild(keyBtn);
-    });
-  });
-}
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute('cx', '32');
+                    circle.setAttribute('cy', '32');
+                    circle.setAttribute('r', '30');
+                    circle.setAttribute('stroke', '#f0a500');
+                    circle.setAttribute('stroke-width', '4');
+                    circle.setAttribute('fill', '#f0a500');
 
-function handleKeyPress(key) {
-  if (lives <= 0) {
-    messageArea.style.color = 'red';
-    messageArea.textContent = 'Juego terminado. Pulsa Inicio para reiniciar.';
-    return;
-  }
-  if (key === '⌫') {
-    for (let i = userAnswer.length - 1; i >= 0; i--) {
-      if (userAnswer[i]) {
-        userAnswer[i] = '';
-        break;
-      }
-    }
-    messageArea.textContent = '';
-  } else {
-    for (let i = 0; i < userAnswer.length; i++) {
-      if (!userAnswer[i]) {
-        userAnswer[i] = key;
-        break;
-      }
-    }
-  }
-  renderLetterBoxes();
-  checkAnswer();
-  saveState();
-}
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute('x', '32');
+                    text.setAttribute('y', '40');
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-size', '28');
+                    text.setAttribute('fill', '#121212');
+                    text.setAttribute('font-weight', '700');
+                    text.textContent = '$';
 
-function checkAnswer() {
-  if (userAnswer.includes('')) {
-    messageArea.textContent = '';
-    return;
-  }
-  const attempt = userAnswer.join('');
-  if (attempt === currentWord) {
-    score += 10;
-    coins += 5;
-    messageArea.style.color = 'green';
-    messageArea.textContent = '¡Correcto! Pasando a la siguiente palabra...';
-    updateStats();
-    saveState();
-    setTimeout(() => {
-      if (currentWordIndex < words.length - 1) {
-        loadWord(currentWordIndex + 1);
-      } else {
-        messageArea.textContent = '¡Felicidades! Completaste todas las palabras.';
-      }
-    }, 1500);
-  } else {
-    lives--;
-    messageArea.style.color = 'red';
-    messageArea.textContent = 'Incorrecto, intenta de nuevo.';
-    letterBoxes.classList.add('shake');
-    setTimeout(() => letterBoxes.classList.remove('shake'), 600);
-    userAnswer = Array(currentWord.length).fill('');
-    renderLetterBoxes();
-    updateStats();
-    saveState();
-    if (lives <= 0) {
-      messageArea.textContent = 'Juego terminado. Pulsa Inicio para reiniciar.';
-    }
-  }
-}
+                    coin.appendChild(circle);
+                    coin.appendChild(text);
 
-btnAddCoins.addEventListener('click', () => {
-  if (coins >= 25) {
-    coins -= 25;
-    lives += 3;
-    messageArea.style.color = 'green';
-    messageArea.textContent = 'Compraste 3 vidas.';
-    updateStats();
-    saveState();
-  }
-});
+                    coinsContainer.appendChild(coin);
 
-btnRevealLetter.addEventListener('click', () => {
-  if (coins < 50) {
-    messageArea.style.color = 'red';
-    messageArea.textContent = 'No tienes suficientes monedas para revelar letra.';
-    return;
-  }
-  let idx = -1;
-  for (let i = 0; i < currentWord.length; i++) {
-    if (!revealedIndexes.has(i) && !userAnswer[i]) {
-      idx = i;
-      break;
-    }
-  }
-  if (idx === -1) {
-    messageArea.style.color = 'orange';
-    messageArea.textContent = 'No hay letras para revelar.';
-    return;
-  }
-  coins -= 50;
-  revealedIndexes.add(idx);
-  userAnswer[idx] = currentWord[idx];
-  messageArea.style.color = 'green';
-  messageArea.textContent = `Letra revelada: ${currentWord[idx]}`;
-  renderLetterBoxes();
-  updateStats();
-  checkAnswer();
-  saveState();
-});
+                    // Remover después de animar
+                    coin.addEventListener('animationend', () => {
+                        coin.remove();
+                    });
+                }
+            }
 
-btnHideLetters.addEventListener('click', () => {
-  if (coins < 75) {
-    messageArea.style.color = 'red';
-    messageArea.textContent = 'No tienes suficientes monedas para ocultar letras.';
-    return;
-  }
-  if (hiddenLetters) {
-    messageArea.style.color = 'orange';
-    messageArea.textContent = 'Las letras ya están ocultas.';
-    return;
-  }
-  coins -= 75;
-  hiddenLetters = true;
-  messageArea.style.color = 'green';
-  messageArea.textContent = 'Letras ocultas. ¡Buena suerte!';
-  renderLetterBoxes();
-  updateStats();
-  saveState();
-});
+            // Reiniciar juego
+            function resetGame() {
+                guessedLetters.clear();
+                correctLetters.clear();
+                errors = 0;
+                statusMessage.textContent = '';
+                selectWord();
+                displayWord();
+                displayUsedLetters();
+                letterInput.value = '';
+                letterInput.disabled = false;
+                letterInput.focus();
+            }
 
-btnHelp.addEventListener('click', () => {
-  alert(`Instrucciones:
-- Usa el teclado para formar la palabra según la pista.
-- Puedes borrar letras con la tecla ⌫.
-- Compra vidas con monedas (+3 vidas por 25 monedas).
-- Revela letras por 50 monedas.
-- Oculta letras por 75 monedas para aumentar dificultad.
-- Cada palabra correcta suma puntos y monedas.
-¡Diviértete!`);
-});
+            // Manejar ingreso de letra
+            function handleLetterInput(e) {
+                const letter = e.target.value.toUpperCase();
+                e.target.value = '';
 
-btnHome.addEventListener('click', () => {
-  if (confirm('¿Quieres reiniciar el juego? Se perderá el progreso actual.')) {
-    lives = 5;
-    score = 0;
-    coins = 25;
-    currentWordIndex = 0;
-    userAnswer = [];
-    revealedIndexes.clear();
-    hiddenLetters = false;
-    messageArea.textContent = '';
-    loadWord(currentWordIndex);
-    updateStats();
-    saveState();
-  }
-});
+                if (!letter.match(/^[A-ZÑ]$/)) {
+                    statusMessage.textContent = 'Ingrese solo una letra válida (A-Z, Ñ).';
+                    return;
+                }
 
-window.addEventListener('load', initGame);
+                if (guessedLetters.has(letter)) {
+                    statusMessage.textContent = `Ya usaste la letra "${letter}". Intenta otra.`;
+                    return;
+                }
 
-</script>
-  
+                guessedLetters.add(letter);
+
+                if (currentWord.includes(letter)) {
+                    correctLetters.add(letter);
+                    displayWord();
+                    statusMessage.textContent = `¡Bien! La letra "${letter}" está en la palabra.`;
+
+                    if (checkWin()) {
+                        coins += 10;
+                        coinCountSpan.textContent = coins;
+                        saveState();
+                        statusMessage.textContent = `¡Felicidades! Ganaste 10 monedas.`;
+                        letterInput.disabled = true;
+                        coinJumpEffect();
+                    }
+                } else {
+                    errors++;
+                    statusMessage.textContent = `La letra "${letter}" no está en la palabra. Errores: ${errors} de ${maxErrors}`;
+
+                    if (errors >= maxErrors) {
+                        statusMessage.textContent = `Juego terminado. La palabra era: ${currentWord}`;
+                        displayWord(); // Mostrar palabra completa
+                        letterInput.disabled = true;
+                    }
+                }
+
+                displayUsedLetters();
+            }
+
+            // Agregar nueva palabra
+            function addWord() {
+                const newWord = newWordInput.value.trim().toUpperCase();
+                if (!newWord.match(/^[A-ZÑ\s]{2,15}$/)) {
+                    alert('Ingrese una palabra válida (solo letras A-Z y espacios, 2 a 15 caracteres).');
+                    return;
+                }
+
+                if (words.includes(newWord)) {
+                    alert('La palabra ya existe.');
+                    return;
+                }
+
+                words.push(newWord);
+                saveState();
+                newWordInput.value = '';
+                alert(`Palabra "${newWord}" agregada. Comienza un nuevo juego.`);
+                resetGame();
+            }
+
+            // Eventos
+            letterInput.addEventListener('input', handleLetterInput);
+            addWordBtn.addEventListener('click', addWord);
+            newWordInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    addWord();
+                }
+            });
+
+            // Inicialización
+            loadState();
+            resetGame();
+        })();
+    </script>
+</body>
+</html>
