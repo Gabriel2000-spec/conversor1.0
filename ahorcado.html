@@ -1,408 +1,374 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Juego del Ahorcado - Ejecutivo</title>
-    <style>
-        /* Estilo general */
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Juego del Ahorcado - Ejecutivo</title>
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    h1 {
+        color: #f0a500;
+        margin-bottom: 0.2em;
+        font-weight: 700;
+    }
+    .container {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px 30px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: 0 0 15px #f0a500aa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #wordDisplay {
+        font-size: 2.5rem;
+        letter-spacing: 0.3em;
+        margin: 20px 0;
+        text-align: center;
+        user-select: none;
+        font-weight: 700;
+    }
+    #usedLetters {
+        margin-top: 15px;
+        font-size: 1rem;
+        min-height: 24px;
+        text-align: center;
+    }
+    #scoreDisplay {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #f0a500;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+        user-select: none;
+        position: relative;
+    }
+    #coinIcon {
+        width: 24px;
+        height: 24px;
+        fill: #f0a500;
+        transition: transform 0.3s ease;
+    }
+    /* Animación cuando se suman monedas */
+    .score-bounce {
+        animation: bounce 0.5s ease forwards;
+    }
+    @keyframes bounce {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.5); }
+        100% { transform: scale(1); }
+    }
 
-        h1 {
-            color: #f0a500;
-            margin-bottom: 0.2em;
-            font-weight: 700;
-        }
-
-        /* Contenedor principal */
-        .container {
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            padding: 20px 30px;
-            max-width: 480px;
-            width: 100%;
-            box-shadow: 0 0 15px #f0a500aa;
-        }
-
-        /* Palabra oculta */
-        #wordDisplay {
-            font-size: 2.5rem;
-            letter-spacing: 0.3em;
-            margin: 20px 0;
-            text-align: center;
-            user-select: none;
-            font-weight: 700;
-        }
-
-        /* Input para agregar palabra */
-        #newWordInput {
-            width: calc(100% - 110px);
-            padding: 8px 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            margin-right: 10px;
-        }
-
-        button {
-            background-color: #f0a500;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            color: #121212;
-        }
-
-        button:hover {
-            background-color: #cf8e00;
-        }
-
-        /* Letras usadas */
-        #usedLetters {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            letter-spacing: 0.15em;
-            min-height: 30px;
-        }
-
-        /* Monedas */
-        #coinsContainer {
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            user-select: none;
-            position: relative;
-            height: 50px;
-        }
-
-        #coinCount {
-            margin-left: 10px;
-            color: #f0a500;
-        }
-
-        /* Icono moneda SVG */
-        .coin-icon {
-            width: 32px;
-            height: 32px;
-            fill: #f0a500;
-        }
-
-        /* Animación monedas brincando */
-        .coin-jump {
-            position: absolute;
-            bottom: 0;
-            width: 30px;
-            height: 30px;
-            animation: jump 8.8s ease forwards;
-            pointer-events: none;
-            z-index: 10;
-            fill: #f0a500;
-            filter: drop-shadow(0 0 3px #f0a500);
-        }
-
-        @keyframes jump {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-60px) scale(1.3);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Estado juego */
-        #statusMessage {
-            margin-top: 20px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-align: center;
-            min-height: 30px;
-        }
-
-        /* Input letra */
-        #letterInput {
-            width: 100%;
-            font-size: 1.5rem;
-            padding: 8px 10px;
-            border-radius: 5px;
-            border: none;
-            margin-top: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            background-color: #2a2a2a;
-            color: #e0e0e0;
-            box-sizing: border-box;
-        }
-    </style>
+    #newWordContainer {
+        margin-top: 20px;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        gap: 10px;
+    }
+    #newWordInput {
+        flex: 1;
+        padding: 8px 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    #addWordButton {
+        background-color: #f0a500;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 5px;
+        font-weight: 700;
+        cursor: pointer;
+        color: #121212;
+        transition: background-color 0.3s ease;
+    }
+    #addWordButton:hover {
+        background-color: #cf8e00;
+    }
+    #resetButton {
+        margin-top: 20px;
+        width: 100%;
+    }
+    #keyboard {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(11, 1fr);
+        gap: 8px;
+        width: 100%;
+        max-width: 480px;
+    }
+    .key {
+        background-color: #f0a500;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 0;
+        font-weight: 700;
+        cursor: pointer;
+        color: #121212;
+        user-select: none;
+        transition: background-color 0.3s ease;
+    }
+    .key:disabled {
+        background-color: #555555;
+        cursor: default;
+        color: #999999;
+    }
+    .key:hover:not(:disabled) {
+        background-color: #cf8e00;
+    }
+    /* Botón eliminar especial */
+    #deleteKey {
+        background-color: #d32f2f;
+        color: #fff;
+        font-weight: 900;
+        font-size: 1.1rem;
+    }
+    #deleteKey:hover:not(:disabled) {
+        background-color: #b71c1c;
+    }
+</style>
 </head>
 <body>
+<div class="container">
     <h1>Juego del Ahorcado</h1>
-    <div class="container">
-        <div>
-            <label for="newWordInput" style="font-weight:700;">Agregar palabra:</label>
-            
-            <br>
-            <br>
-            
-            <input type="text" id="newWordInput" maxlength="15" placeholder="Nueva palabra" />
-            
-            <br>
-            <br>
-            
-            <button id="addWordBtn" title="Agregar palabra para jugar">Agregar</button>
-        </div>
-
-        <div id="wordDisplay" aria-live="polite" aria-atomic="true">_ _ _ _ _</div>
-
-        <input type="text" id="letterInput" maxlength="1" autocomplete="off" placeholder="Ingrese una letra" aria-label="Ingresar letra para adivinar" />
-
-
-        <div id="usedLetters" aria-live="polite" aria-atomic="true">Letras usadas: </div>
-
-        <div id="statusMessage" role="alert"></div>
-
-        <div id="coinsContainer" aria-label="Monedas ganadas">
-            <svg class="coin-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                <circle cx="32" cy="32" r="30" stroke="#f0a500" stroke-width="4" fill="#f0a500"/>
-                <text x="32" y="40" text-anchor="middle" font-size="28" fill="#121212" font-weight="700">$</text>
-            </svg>
-            <span id="coinCount">0</span>
-        </div>
+    <div id="wordDisplay">_ _ _ _ _</div>
+    <div id="usedLetters">Letras usadas: </div>
+    <div id="scoreDisplay">
+        <svg id="coinIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="none" />
+            <path d="M12 7v10M9 12h6" stroke="#121212" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span id="scoreText">Puntos: 0</span>
     </div>
 
-    <script>
-        (() => {
-            const wordDisplay = document.getElementById('wordDisplay');
-            const letterInput = document.getElementById('letterInput');
-            const usedLettersDisplay = document.getElementById('usedLetters');
-            const statusMessage = document.getElementById('statusMessage');
-            const coinCountSpan = document.getElementById('coinCount');
-            const coinsContainer = document.getElementById('coinsContainer');
-            const newWordInput = document.getElementById('newWordInput');
-            const addWordBtn = document.getElementById('addWordBtn');
+    <div id="newWordContainer">
+        <input type="text" id="newWordInput" placeholder="Agregar palabras" maxlength="15" />
+        <button id="addWordButton">Agregar palabra</button>
+    </div>
 
-            // Estado del juego
-            let words = [];
-            let currentWord = '';
-            let guessedLetters = new Set();
-            let correctLetters = new Set();
-            let maxErrors = 6;
-            let errors = 0;
-            let coins = 0;
+    <div id="keyboard"></div>
 
-            // Guardar y cargar desde localStorage
-            function saveState() {
-                localStorage.setItem('ahorcado_words', JSON.stringify(words));
-                localStorage.setItem('ahorcado_coins', coins);
-            }
+    <button id="resetButton">Volver a jugar</button>
+</div>
 
-            function loadState() {
-                const storedWords = JSON.parse(localStorage.getItem('ahorcado_words'));
-                if (Array.isArray(storedWords) && storedWords.length > 0) {
-                    words = storedWords;
-                } else {
-                    // Palabras por defecto
-                    words = ['AREPA', 'ARAGUANEY', 'CHAMO', 'ORINOCO', 'ANGOSTURA', 'CACHAPA', 'GUAYOYO'];
-                }
+<script>
+    let words = ['CACHAPA', 'AREPA', 'JUEGO', 'BURRO', 'GUACAMAYA', 'GUAYOYO', 'LLANERO', 'LAVAR', 'SAPOARA', 'ANGOSTURA', 'BIYUYO', 'CHAMO', 'MANGO', 'QUESO', 'CABALLO', 'CANOA', 'MONO', 'GRINGO','DOÑA', 'ABUELO', 'CARAMBA', 'MOLESTO', 'LIBRE', 'VENEZUELA', 'REGIMEN', 'PIPA', 'CALSON', 'ARRECHO', 'DULCE', 'PATILLA', 'SOMBRERO', 'JEVA', 'LUCERITO', 'BOLIVAR', 'DISCO', 'CATALINA', 'CAMBUR', 'NOCHE', 'MAESTRA', 'JUAN', 'VIVE', 'RADIO', 'LECHOSA', 'AMANECER', 'TELEVISOR', 'DEUDA', 'TRISTE', 'HAMBRE', 'CHORO', 'CARTEL', 'FARO', 'FRESA', 'TIKTOK', 'PERRO', 'RELAMPAGO', 'LEON', 'CAMPO', 'PERICO', 'TECNOLOGIA', 'INTERNET', 'AHORCADO', 'GRUPO', 'FERIA'];
 
-                const storedCoins = parseInt(localStorage.getItem('ahorcado_coins'));
-                coins = isNaN(storedCoins) ? 0 : storedCoins;
-                coinCountSpan.textContent = coins;
-            }
+    let currentWord = '';
+    let guessedLetters = [];
+    let maxErrors = 6;
+    let errors = 0;
+    let score = 0;
 
-            // Escoger palabra aleatoria
-            function selectWord() {
-                const idx = Math.floor(Math.random() * words.length);
-                currentWord = words[idx].toUpperCase();
-            }
+    const wordDisplay = document.getElementById('wordDisplay');
+    const usedLettersDisplay = document.getElementById('usedLetters');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const scoreText = document.getElementById('scoreText');
+    const coinIcon = document.getElementById('coinIcon');
+    const resetButton = document.getElementById('resetButton');
+    const newWordInput = document.getElementById('newWordInput');
+    const addWordButton = document.getElementById('addWordButton');
+    const keyboardDiv = document.getElementById('keyboard');
 
-            // Mostrar palabra oculta
-            function displayWord() {
-                let display = '';
-                for (const ch of currentWord) {
-                    if (correctLetters.has(ch)) {
-                        display += ch + ' ';
-                    } else if (ch === ' ') {
-                        display += '  ';
-                    } else {
-                        display += '_ ';
-                    }
-                }
-                wordDisplay.textContent = display.trim();
-            }
+    // Letras para teclado virtual + botón eliminar
+    const letters = [
+        'A','B','C','D','E','F','G','H','I','J',
+        'K','L','M','N','Ñ','O','P','Q','R','S',
+        'T','U','V','W','X','Y','Z'
+    ];
 
-            // Actualizar letras usadas
-            function displayUsedLetters() {
-                if (guessedLetters.size === 0) {
-                    usedLettersDisplay.textContent = 'Letras usadas: ';
-                } else {
-                    usedLettersDisplay.textContent = 'Letras usadas: ' + Array.from(guessedLetters).sort().join(' ');
-                }
-            }
+    // Para guardar el historial de letras ingresadas y poder eliminar la última
+    let inputHistory = [];
 
-            // Comprobar si ganó
-            function checkWin() {
-                for (const ch of currentWord) {
-                    if (ch !== ' ' && !correctLetters.has(ch)) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            // Mostrar monedas brincando
-            function coinJumpEffect() {
-                const jumpCount = 8;
-                for (let i = 0; i < jumpCount; i++) {
-                    const coin = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                    coin.setAttribute('viewBox', '0 0 64 64');
-                    coin.classList.add('coin-jump');
-                    coin.style.left = (i * 30 + 10) + 'px';
-                    coin.style.bottom = '0px';
-                    coin.style.position = 'absolute';
-                    coin.style.fill = '#f0a500';
-                    coin.style.width = '24px';
-                    coin.style.height = '24px';
-
-                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    circle.setAttribute('cx', '32');
-                    circle.setAttribute('cy', '32');
-                    circle.setAttribute('r', '30');
-                    circle.setAttribute('stroke', '#f0a500');
-                    circle.setAttribute('stroke-width', '4');
-                    circle.setAttribute('fill', '#f0a500');
-
-                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    text.setAttribute('x', '32');
-                    text.setAttribute('y', '40');
-                    text.setAttribute('text-anchor', 'middle');
-                    text.setAttribute('font-size', '28');
-                    text.setAttribute('fill', '#121212');
-                    text.setAttribute('font-weight', '700');
-                    text.textContent = '$';
-
-                    coin.appendChild(circle);
-                    coin.appendChild(text);
-
-                    coinsContainer.appendChild(coin);
-
-                    // Remover después de animar
-                    coin.addEventListener('animationend', () => {
-                        coin.remove();
-                    });
-                }
-            }
-
-            // Reiniciar juego
-            function resetGame() {
-                guessedLetters.clear();
-                correctLetters.clear();
-                errors = 0;
-                statusMessage.textContent = '';
-                selectWord();
-                displayWord();
-                displayUsedLetters();
-                letterInput.value = '';
-                letterInput.disabled = false;
-                letterInput.focus();
-            }
-
-            // Manejar ingreso de letra
-            function handleLetterInput(e) {
-                const letter = e.target.value.toUpperCase();
-                e.target.value = '';
-
-                if (!letter.match(/^[A-ZÑ]$/)) {
-                    statusMessage.textContent = 'Ingrese solo una letra válida (A-Z, Ñ).';
-                    return;
-                }
-
-                if (guessedLetters.has(letter)) {
-                    statusMessage.textContent = `Ya usaste la letra "${letter}". Intenta otra.`;
-                    return;
-                }
-
-                guessedLetters.add(letter);
-
-                if (currentWord.includes(letter)) {
-                    correctLetters.add(letter);
-                    displayWord();
-                    statusMessage.textContent = `¡Bien! La letra "${letter}" está en la palabra.`;
-
-                    if (checkWin()) {
-                        coins += 10;
-                        coinCountSpan.textContent = coins;
-                        saveState();
-                        statusMessage.textContent = `¡Felicidades! Ganaste 10 monedas.`;
-                        letterInput.disabled = true;
-                        coinJumpEffect();
-                    }
-                } else {
-                    errors++;
-                    statusMessage.textContent = `La letra "${letter}" no está en la palabra. Errores: ${errors} de ${maxErrors}`;
-
-                    if (errors >= maxErrors) {
-                        statusMessage.textContent = `Juego terminado. La palabra era: ${currentWord}`;
-                        displayWord(); // Mostrar palabra completa
-                        letterInput.disabled = true;
-                    }
-                }
-
-                displayUsedLetters();
-            }
-
-            // Agregar nueva palabra
-            function addWord() {
-                const newWord = newWordInput.value.trim().toUpperCase();
-                if (!newWord.match(/^[A-ZÑ\s]{2,15}$/)) {
-                    alert('Ingrese una palabra válida (solo letras A-Z y espacios, 2 a 15 caracteres).');
-                    return;
-                }
-
-                if (words.includes(newWord)) {
-                    alert('La palabra ya existe.');
-                    return;
-                }
-
-                words.push(newWord);
-                saveState();
-                newWordInput.value = '';
-                alert(`Palabra "${newWord}" agregada. Comienza un nuevo juego.`);
-                resetGame();
-            }
-
-            // Eventos
-            letterInput.addEventListener('input', handleLetterInput);
-            addWordBtn.addEventListener('click', addWord);
-            newWordInput.addEventListener('keypress', e => {
-                if (e.key === 'Enter') {
-                    addWord();
+    function createKeyboard() {
+        keyboardDiv.innerHTML = '';
+        letters.forEach(letter => {
+            const button = document.createElement('button');
+            button.textContent = letter;
+            button.classList.add('key');
+            button.id = 'key_' + letter;
+            button.addEventListener('click', () => {
+                if (!button.disabled) {
+                    handleGuess(letter);
                 }
             });
+            keyboardDiv.appendChild(button);
+        });
+        // Botón eliminar letra
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '⌫';
+        deleteButton.classList.add('key');
+        deleteButton.id = 'deleteKey';
+        deleteButton.title = 'Eliminar última letra';
+        deleteButton.addEventListener('click', () => {
+            deleteLastGuess();
+        });
+        keyboardDiv.appendChild(deleteButton);
+    }
 
-            // Inicialización
-            loadState();
-            resetGame();
-        })();
-    </script>
+    function chooseWord() {
+        const index = Math.floor(Math.random() * words.length);
+        return words[index];
+    }
+
+    function displayWord() {
+        let display = '';
+        for (const letter of currentWord) {
+            if (guessedLetters.includes(letter)) {
+                display += letter + ' ';
+            } else {
+                display += '_ ';
+            }
+        }
+        wordDisplay.textContent = display.trim();
+    }
+
+    function displayUsedLetters() {
+        usedLettersDisplay.textContent = 'Letras usadas: ' + guessedLetters.join(', ');
+    }
+
+    function updateScore(pointsToAdd = 0) {
+        if (pointsToAdd > 0) {
+            score += pointsToAdd;
+            // Animar icono moneda
+            coinIcon.classList.add('score-bounce');
+            setTimeout(() => {
+                coinIcon.classList.remove('score-bounce');
+            }, 500);
+        }
+        scoreText.textContent = 'Puntos: ' + score;
+    }
+
+    function disableKey(letter) {
+        const button = document.getElementById('key_' + letter);
+        if (button) button.disabled = true;
+    }
+
+    function enableKey(letter) {
+        const button = document.getElementById('key_' + letter);
+        if (button) button.disabled = false;
+    }
+
+    function handleGuess(letter) {
+        letter = letter.toUpperCase();
+        if (guessedLetters.includes(letter)) return; // ya usada
+        guessedLetters.push(letter);
+        inputHistory.push(letter);
+        disableKey(letter);
+
+        if (currentWord.includes(letter)) {
+            displayWord();
+            if (!wordDisplay.textContent.includes('_')) {
+                alert('¡Ganaste!');
+                updateScore(10);
+                disableKeyboard();
+            }
+        } else {
+            errors++;
+            if (errors >= maxErrors) {
+                alert('¡Perdiste! La palabra era: ' + currentWord);
+                disableKeyboard();
+            }
+        }
+        displayUsedLetters();
+    }
+
+    function disableKeyboard() {
+        letters.forEach(letter => disableKey(letter));
+        document.getElementById('deleteKey').disabled = true;
+    }
+
+    function resetKeyboard() {
+        letters.forEach(letter => {
+            enableKey(letter);
+        });
+        document.getElementById('deleteKey').disabled = false;
+    }
+
+    // Función para eliminar la última letra ingresada
+    function deleteLastGuess() {
+        if (inputHistory.length === 0) return;
+
+        const lastLetter = inputHistory.pop();
+
+        // Quitar de letras usadas
+        guessedLetters = guessedLetters.filter(l => l !== lastLetter);
+
+        // Habilitar tecla
+        enableKey(lastLetter);
+
+        // Si la letra era parte de la palabra, no se reduce error
+        // Si no estaba en la palabra, se reduce el error
+        if (!currentWord.includes(lastLetter)) {
+            errors = Math.max(errors - 1, 0);
+        }
+
+        displayWord();
+        displayUsedLetters();
+    }
+
+    function startGame() {
+        currentWord = chooseWord();
+        guessedLetters = [];
+        inputHistory = [];
+        errors = 0;
+        displayWord();
+        displayUsedLetters();
+        updateScore(0);
+        resetKeyboard();
+    }
+
+    addWordButton.addEventListener('click', () => {
+        let newWord = newWordInput.value.trim().toUpperCase();
+        if (!newWord) {
+            alert('Por favor, escribe una palabra.');
+            return;
+        }
+        if (!/^[A-ZÑ]+$/.test(newWord)) {
+            alert('La palabra solo debe contener letras sin espacios ni caracteres especiales.');
+            return;
+        }
+        if (words.includes(newWord)) {
+            alert('La palabra ya existe en el juego.');
+            return;
+        }
+        words.push(newWord);
+        alert(`Palabra "${newWord}" agregada correctamente.`);
+        newWordInput.value = '';
+    });
+
+    window.addEventListener('keydown', (e) => {
+        const letter = e.key.toUpperCase();
+        if (/^[A-ZÑ]$/.test(letter)) {
+            handleGuess(letter);
+        } else if (e.key === 'Backspace') {
+            deleteLastGuess();
+        }
+    });
+
+    resetButton.addEventListener('click', () => {
+        startGame();
+    });
+
+    createKeyboard();
+    startGame();
+</script>
 </body>
 </html>
