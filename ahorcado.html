@@ -1,374 +1,407 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Juego del Ahorcado - Ejecutivo</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Juego de Triqui</title>
+  <style>
     body {
-        background-color: #121212;
-        color: #e0e0e0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 0;
-        padding: 20px;
-        min-height: 100vh;
-    }
-    h1 {
-        color: #f0a500;
-        margin-bottom: 0.2em;
-        font-weight: 700;
-    }
-    .container {
-        background-color: #1e1e1e;
-        border-radius: 10px;
-        padding: 20px 30px;
-        max-width: 480px;
-        width: 100%;
-        box-shadow: 0 0 15px #f0a500aa;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    #wordDisplay {
-        font-size: 2.5rem;
-        letter-spacing: 0.3em;
-        margin: 20px 0;
-        text-align: center;
-        user-select: none;
-        font-weight: 700;
-    }
-    #usedLetters {
-        margin-top: 15px;
-        font-size: 1rem;
-        min-height: 24px;
-        text-align: center;
-    }
-    #scoreDisplay {
-        margin-top: 10px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #f0a500;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        justify-content: center;
-        user-select: none;
-        position: relative;
-    }
-    #coinIcon {
-        width: 24px;
-        height: 24px;
-        fill: #f0a500;
-        transition: transform 0.3s ease;
-    }
-    /* Animación cuando se suman monedas */
-    .score-bounce {
-        animation: bounce 0.5s ease forwards;
-    }
-    @keyframes bounce {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.5); }
-        100% { transform: scale(1); }
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f9f9f9;
     }
 
-    #newWordContainer {
-        margin-top: 20px;
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        gap: 10px;
+    h1 {
+      margin-bottom: 10px;
     }
-    #newWordInput {
-        flex: 1;
-        padding: 8px 10px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
+
+    #winnerContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      visibility: hidden;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-    #addWordButton {
-        background-color: #f0a500;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 5px;
-        font-weight: 700;
-        cursor: pointer;
-        color: #121212;
-        transition: background-color 0.3s ease;
+
+    #winnerIcon {
+      width: 30px;
+      height: 30px;
+      fill: blue;
+      animation: blink 1s infinite;
     }
-    #addWordButton:hover {
-        background-color: #cf8e00;
+
+    #winnerText {
+      font-size: 1.5rem;
+      color: blue;
+      font-weight: bold;
+      animation: blink 1s infinite;
     }
-    #resetButton {
-        margin-top: 20px;
-        width: 100%;
+
+    @keyframes blink {
+      0%, 50%, 100% {
+        opacity: 1;
+      }
+      25%, 75% {
+        opacity: 0;
+      }
     }
-    #keyboard {
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: repeat(11, 1fr);
-        gap: 8px;
-        width: 100%;
-        max-width: 480px;
+
+    #scoreboard {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+      align-items: center;
     }
-    .key {
-        background-color: #f0a500;
-        border: none;
-        border-radius: 5px;
-        padding: 12px 0;
-        font-weight: 700;
-        cursor: pointer;
-        color: #121212;
-        user-select: none;
-        transition: background-color 0.3s ease;
+
+    .playerScore {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-    .key:disabled {
-        background-color: #555555;
-        cursor: default;
-        color: #999999;
+
+    .playerSymbol {
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .key:hover:not(:disabled) {
-        background-color: #cf8e00;
+
+    #board {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 20px;
+      border: 2px solid #333;
+      background: white;
+      user-select: none;
     }
-    /* Botón eliminar especial */
-    #deleteKey {
-        background-color: #d32f2f;
-        color: #fff;
-        font-weight: 900;
-        font-size: 1.1rem;
+
+    .cell {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #999;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    #deleteKey:hover:not(:disabled) {
-        background-color: #b71c1c;
+
+    .cell:hover {
+      background-color: #e0e0e0;
     }
-</style>
+
+    #controls {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    select {
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+
+    button {
+      padding: 8px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    #resetBtn {
+      background-color: #c0392b;
+      color: white;
+    }
+
+    #resetBtn:hover {
+      background-color: #e74c3c;
+    }
+
+    #inviteBtn {
+      background-color: #d3d3d3;
+      color: #333;
+      font-weight: 600;
+    }
+
+    #inviteBtn:hover {
+      background-color: #bfbfbf;
+    }
+
+    #playAgainBtn {
+      background-color: #2980b9;
+      color: white;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    #playAgainBtn:hover {
+      background-color: #3498db;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-    <h1>Juego del Ahorcado</h1>
-    <div id="wordDisplay">_ _ _ _ _</div>
-    <div id="usedLetters">Letras usadas: </div>
-    <div id="scoreDisplay">
-        <svg id="coinIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" stroke="none" />
-            <path d="M12 7v10M9 12h6" stroke="#121212" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span id="scoreText">Puntos: 0</span>
-    </div>
+  <h1>Juego de Triqui</h1>
 
-    <div id="newWordContainer">
-        <input type="text" id="newWordInput" placeholder="Agregar palabras" maxlength="15" />
-        <button id="addWordButton">Agregar palabra</button>
-    </div>
+  <div id="winnerContainer">
+    <svg id="winnerIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 2L15 8l6 1-4.5 4.4L17 21l-5-2.6L7 21l1.5-7.6L4 9l6-1z"/>
+    </svg>
+    <div id="winnerText">GANADOR</div>
+    <button id="playAgainBtn" style="display:none;">Volver a jugar</button>
+  </div>
 
-    <div id="keyboard"></div>
+  <div id="scoreboard">
+    <div class="playerScore" id="scoreX">X: 0</div>
+    <div class="playerScore" id="scoreO">O: 0</div>
+  </div>
 
-    <button id="resetButton">Volver a jugar</button>
-</div>
+  <div id="controls">
+    <label for="sizeSelect">Tamaño del tablero:</label>
+    <select id="sizeSelect">
+      <!-- Opciones de 1 a 6 -->
+      <option value="1">1 x 1</option>
+      <option value="2">2 x 2</option>
+      <option value="3" selected>3 x 3</option>
+      <option value="4">4 x 4</option>
+      <option value="5">5 x 5</option>
+      <option value="6">6 x 6</option>
+    </select>
+    <button id="resetBtn">Resetear</button>
+    <button id="inviteBtn">Invitación a jugar Triqui</button>
+  </div>
 
-<script>
-    let words = ['CACHAPA', 'AREPA', 'JUEGO', 'BURRO', 'GUACAMAYA', 'GUAYOYO', 'LLANERO', 'LAVAR', 'SAPOARA', 'ANGOSTURA', 'BIYUYO', 'CHAMO', 'MANGO', 'QUESO', 'CABALLO', 'CANOA', 'MONO', 'GRINGO','DOÑA', 'ABUELO', 'CARAMBA', 'MOLESTO', 'LIBRE', 'VENEZUELA', 'REGIMEN', 'PIPA', 'CALSON', 'ARRECHO', 'DULCE', 'PATILLA', 'SOMBRERO', 'JEVA', 'LUCERITO', 'BOLIVAR', 'DISCO', 'CATALINA', 'CAMBUR', 'NOCHE', 'MAESTRA', 'JUAN', 'VIVE', 'RADIO', 'LECHOSA', 'AMANECER', 'TELEVISOR', 'DEUDA', 'TRISTE', 'HAMBRE', 'CHORO', 'CARTEL', 'FARO', 'FRESA', 'TIKTOK', 'PERRO', 'RELAMPAGO', 'LEON', 'CAMPO', 'PERICO', 'TECNOLOGIA', 'INTERNET', 'AHORCADO', 'GRUPO', 'FERIA'];
+  <div id="board"></div>
 
-    let currentWord = '';
-    let guessedLetters = [];
-    let maxErrors = 6;
-    let errors = 0;
-    let score = 0;
+  <script>
+    const boardDiv = document.getElementById('board');
+    const winnerContainer = document.getElementById('winnerContainer');
+    const winnerText = document.getElementById('winnerText');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const sizeSelect = document.getElementById('sizeSelect');
+    const resetBtn = document.getElementById('resetBtn');
+    const inviteBtn = document.getElementById('inviteBtn');
+    const scoreXDiv = document.getElementById('scoreX');
+    const scoreODiv = document.getElementById('scoreO');
 
-    const wordDisplay = document.getElementById('wordDisplay');
-    const usedLettersDisplay = document.getElementById('usedLetters');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const scoreText = document.getElementById('scoreText');
-    const coinIcon = document.getElementById('coinIcon');
-    const resetButton = document.getElementById('resetButton');
-    const newWordInput = document.getElementById('newWordInput');
-    const addWordButton = document.getElementById('addWordButton');
-    const keyboardDiv = document.getElementById('keyboard');
+    let boardSize = parseInt(sizeSelect.value);
+    let board = [];
+    let currentPlayer = 'X';
+    let winner = null;
+    let scores = { X: 0, O: 0 };
+    const WIN_SCORE = 5; // Puntos para ganar saldo móvil
 
-    // Letras para teclado virtual + botón eliminar
-    const letters = [
-        'A','B','C','D','E','F','G','H','I','J',
-        'K','L','M','N','Ñ','O','P','Q','R','S',
-        'T','U','V','W','X','Y','Z'
-    ];
+    const STORAGE_KEY = 'triquiGameState';
 
-    // Para guardar el historial de letras ingresadas y poder eliminar la última
-    let inputHistory = [];
-
-    function createKeyboard() {
-        keyboardDiv.innerHTML = '';
-        letters.forEach(letter => {
-            const button = document.createElement('button');
-            button.textContent = letter;
-            button.classList.add('key');
-            button.id = 'key_' + letter;
-            button.addEventListener('click', () => {
-                if (!button.disabled) {
-                    handleGuess(letter);
-                }
-            });
-            keyboardDiv.appendChild(button);
-        });
-        // Botón eliminar letra
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '⌫';
-        deleteButton.classList.add('key');
-        deleteButton.id = 'deleteKey';
-        deleteButton.title = 'Eliminar última letra';
-        deleteButton.addEventListener('click', () => {
-            deleteLastGuess();
-        });
-        keyboardDiv.appendChild(deleteButton);
+    function saveGame() {
+      const state = {
+        boardSize,
+        board,
+        currentPlayer,
+        winner,
+        scores
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    function chooseWord() {
-        const index = Math.floor(Math.random() * words.length);
-        return words[index];
-    }
-
-    function displayWord() {
-        let display = '';
-        for (const letter of currentWord) {
-            if (guessedLetters.includes(letter)) {
-                display += letter + ' ';
-            } else {
-                display += '_ ';
-            }
+    function loadGame() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const state = JSON.parse(saved);
+          if (state.boardSize && state.board && state.currentPlayer && state.scores) {
+            boardSize = state.boardSize;
+            board = state.board;
+            currentPlayer = state.currentPlayer;
+            winner = state.winner || null;
+            scores = state.scores;
+            sizeSelect.value = boardSize;
+            return true;
+          }
+        } catch {
+          return false;
         }
-        wordDisplay.textContent = display.trim();
+      }
+      return false;
     }
 
-    function displayUsedLetters() {
-        usedLettersDisplay.textContent = 'Letras usadas: ' + guessedLetters.join(', ');
-    }
+    function createBoard(size) {
+      boardDiv.innerHTML = '';
+      boardDiv.style.gridTemplateColumns = `repeat(${size}, 40px)`;
+      boardDiv.style.gridTemplateRows = `repeat(${size}, 40px)`;
 
-    function updateScore(pointsToAdd = 0) {
-        if (pointsToAdd > 0) {
-            score += pointsToAdd;
-            // Animar icono moneda
-            coinIcon.classList.add('score-bounce');
-            setTimeout(() => {
-                coinIcon.classList.remove('score-bounce');
-            }, 500);
+      board = Array(size).fill(null).map(() => Array(size).fill(''));
+
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          cell.textContent = '';
+          cell.addEventListener('click', onCellClick);
+          boardDiv.appendChild(cell);
         }
-        scoreText.textContent = 'Puntos: ' + score;
+      }
     }
 
-    function disableKey(letter) {
-        const button = document.getElementById('key_' + letter);
-        if (button) button.disabled = true;
+    function updateBoardUI() {
+      const cells = boardDiv.querySelectorAll('.cell');
+      cells.forEach(cell => {
+        const r = parseInt(cell.dataset.row);
+        const c = parseInt(cell.dataset.col);
+        cell.textContent = board[r][c];
+      });
     }
 
-    function enableKey(letter) {
-        const button = document.getElementById('key_' + letter);
-        if (button) button.disabled = false;
+    function updateScores() {
+      scoreXDiv.textContent = `X: ${scores.X}`;
+      scoreODiv.textContent = `O: ${scores.O}`;
     }
 
-    function handleGuess(letter) {
-        letter = letter.toUpperCase();
-        if (guessedLetters.includes(letter)) return; // ya usada
-        guessedLetters.push(letter);
-        inputHistory.push(letter);
-        disableKey(letter);
+    function checkWinner() {
+      function allEqual(arr) {
+        if (arr.length === 0) return false;
+        return arr.every(v => v === arr[0] && v !== '');
+      }
 
-        if (currentWord.includes(letter)) {
-            displayWord();
-            if (!wordDisplay.textContent.includes('_')) {
-                alert('¡Ganaste!');
-                updateScore(10);
-                disableKeyboard();
-            }
-        } else {
-            errors++;
-            if (errors >= maxErrors) {
-                alert('¡Perdiste! La palabra era: ' + currentWord);
-                disableKeyboard();
-            }
+      // Filas
+      for (let r = 0; r < boardSize; r++) {
+        if (allEqual(board[r])) return board[r][0];
+      }
+
+      // Columnas
+      for (let c = 0; c < boardSize; c++) {
+        const col = [];
+        for (let r = 0; r < boardSize; r++) {
+          col.push(board[r][c]);
         }
-        displayUsedLetters();
+        if (allEqual(col)) return col[0];
+      }
+
+      // Diagonal principal
+      const diag1 = [];
+      for (let i = 0; i < boardSize; i++) {
+        diag1.push(board[i][i]);
+      }
+      if (allEqual(diag1)) return diag1[0];
+
+      // Diagonal secundaria
+      const diag2 = [];
+      for (let i = 0; i < boardSize; i++) {
+        diag2.push(board[i][boardSize - 1 - i]);
+      }
+      if (allEqual(diag2)) return diag2[0];
+
+      return null;
     }
 
-    function disableKeyboard() {
-        letters.forEach(letter => disableKey(letter));
-        document.getElementById('deleteKey').disabled = true;
+    function announceSaldoGanador(jugador) {
+      alert(`¡Felicidades ${jugador}! Has ganado ${WIN_SCORE} puntos y un saldo al móvil. ¡Disfrútalo!`);
     }
 
-    function resetKeyboard() {
-        letters.forEach(letter => {
-            enableKey(letter);
-        });
-        document.getElementById('deleteKey').disabled = false;
-    }
+    function onCellClick(e) {
+      if (winner) return;
 
-    // Función para eliminar la última letra ingresada
-    function deleteLastGuess() {
-        if (inputHistory.length === 0) return;
+      const r = parseInt(e.target.dataset.row);
+      const c = parseInt(e.target.dataset.col);
 
-        const lastLetter = inputHistory.pop();
+      if (board[r][c] !== '') return;
 
-        // Quitar de letras usadas
-        guessedLetters = guessedLetters.filter(l => l !== lastLetter);
+      board[r][c] = currentPlayer;
+      updateBoardUI();
 
-        // Habilitar tecla
-        enableKey(lastLetter);
+      winner = checkWinner();
+      if (winner) {
+        winnerContainer.style.visibility = 'visible';
+        winnerText.textContent = `GANADOR: ${winner}`;
+        scores[winner]++;
+        updateScores();
+        playAgainBtn.style.display = 'inline-block';
+        saveGame();
 
-        // Si la letra era parte de la palabra, no se reduce error
-        // Si no estaba en la palabra, se reduce el error
-        if (!currentWord.includes(lastLetter)) {
-            errors = Math.max(errors - 1, 0);
+        if (scores[winner] >= WIN_SCORE) {
+          announceSaldoGanador(winner);
+          scores = { X: 0, O: 0 };
+          updateScores();
+          // No reiniciamos aquí el tablero, dejamos que usuario use "Volver a jugar" o resetear
         }
 
-        displayWord();
-        displayUsedLetters();
+        return;
+      }
+
+      // Cambiar jugador
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      saveGame();
     }
 
-    function startGame() {
-        currentWord = chooseWord();
-        guessedLetters = [];
-        inputHistory = [];
-        errors = 0;
-        displayWord();
-        displayUsedLetters();
-        updateScore(0);
-        resetKeyboard();
-    }
-
-    addWordButton.addEventListener('click', () => {
-        let newWord = newWordInput.value.trim().toUpperCase();
-        if (!newWord) {
-            alert('Por favor, escribe una palabra.');
-            return;
-        }
-        if (!/^[A-ZÑ]+$/.test(newWord)) {
-            alert('La palabra solo debe contener letras sin espacios ni caracteres especiales.');
-            return;
-        }
-        if (words.includes(newWord)) {
-            alert('La palabra ya existe en el juego.');
-            return;
-        }
-        words.push(newWord);
-        alert(`Palabra "${newWord}" agregada correctamente.`);
-        newWordInput.value = '';
+    sizeSelect.addEventListener('change', () => {
+      boardSize = parseInt(sizeSelect.value);
+      winner = null;
+      winnerContainer.style.visibility = 'hidden';
+      playAgainBtn.style.display = 'none';
+      currentPlayer = 'X';
+      createBoard(boardSize);
+      saveGame();
     });
 
-    window.addEventListener('keydown', (e) => {
-        const letter = e.key.toUpperCase();
-        if (/^[A-ZÑ]$/.test(letter)) {
-            handleGuess(letter);
-        } else if (e.key === 'Backspace') {
-            deleteLastGuess();
-        }
+    resetBtn.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      winner = null;
+      winnerContainer.style.visibility = 'hidden';
+      playAgainBtn.style.display = 'none';
+      currentPlayer = 'X';
+      scores = { X: 0, O: 0 };
+      updateScores();
+      createBoard(boardSize);
     });
 
-    resetButton.addEventListener('click', () => {
-        startGame();
+    inviteBtn.addEventListener('click', () => {
+      alert('¡Te invito a jugar Triqui! ¿Estás listo para el reto?');
     });
 
-    createKeyboard();
-    startGame();
-</script>
+    playAgainBtn.addEventListener('click', () => {
+      winner = null;
+      winnerContainer.style.visibility = 'hidden';
+      playAgainBtn.style.display = 'none';
+      currentPlayer = 'X';
+      createBoard(boardSize);
+      saveGame();
+    });
+
+    // Inicializar juego
+    if (!loadGame()) {
+      createBoard(boardSize);
+    } else {
+      createBoard(boardSize);
+      updateBoardUI();
+      updateScores();
+      if (winner) {
+        winnerContainer.style.visibility = 'visible';
+        winnerText.textContent = `GANADOR: ${winner}`;
+        playAgainBtn.style.display = 'inline-block';
+      } else {
+        winnerContainer.style.visibility = 'hidden';
+        playAgainBtn.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>
