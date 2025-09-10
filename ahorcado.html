@@ -1,407 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Juego de Triqui</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #f9f9f9;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sección de Juego - Mantenimiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
 
-    h1 {
-      margin-bottom: 10px;
-    }
+        .mantenimiento-container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+        }
 
-    #winnerContainer {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      visibility: hidden;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+        /* Triángulo amarillo de aviso */
+        .warning-triangle {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 85px solid #ffcc00; /* amarillo */
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
 
-    #winnerIcon {
-      width: 30px;
-      height: 30px;
-      fill: blue;
-      animation: blink 1s infinite;
-    }
+        /* Signo de exclamación dentro del triángulo */
+        .warning-triangle::after {
+            content: "!";
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            font-weight: bold;
+            color: black;
+            user-select: none;
+            font-family: Arial, sans-serif;
+        }
 
-    #winnerText {
-      font-size: 1.5rem;
-      color: blue;
-      font-weight: bold;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 50%, 100% {
-        opacity: 1;
-      }
-      25%, 75% {
-        opacity: 0;
-      }
-    }
-
-    #scoreboard {
-      display: flex;
-      gap: 40px;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #333;
-      align-items: center;
-    }
-
-    .playerScore {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .playerSymbol {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    #board {
-      display: grid;
-      gap: 5px;
-      margin-bottom: 20px;
-      border: 2px solid #333;
-      background: white;
-      user-select: none;
-    }
-
-    .cell {
-      width: 40px;
-      height: 40px;
-      background: #fff;
-      border: 1px solid #999;
-      font-size: 1.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .cell:hover {
-      background-color: #e0e0e0;
-    }
-
-    #controls {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    select {
-      font-size: 1rem;
-      padding: 5px 10px;
-    }
-
-    button {
-      padding: 8px 15px;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      transition: background-color 0.3s;
-      user-select: none;
-    }
-
-    #resetBtn {
-      background-color: #c0392b;
-      color: white;
-    }
-
-    #resetBtn:hover {
-      background-color: #e74c3c;
-    }
-
-    #inviteBtn {
-      background-color: #d3d3d3;
-      color: #333;
-      font-weight: 600;
-    }
-
-    #inviteBtn:hover {
-      background-color: #bfbfbf;
-    }
-
-    #playAgainBtn {
-      background-color: #2980b9;
-      color: white;
-      font-weight: 600;
-      border-radius: 4px;
-      padding: 8px 15px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      user-select: none;
-    }
-
-    #playAgainBtn:hover {
-      background-color: #3498db;
-    }
-  </style>
+        .mensaje {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-  <h1>Juego de Triqui</h1>
+    <div class="mantenimiento-container">
+        <div class="warning-triangle"></div>
+        <div class="mensaje">La sección de Juego está en mantenimiento.<br>Por favor, inténtelo más tarde.</div>
+    </div>
 
-  <div id="winnerContainer">
-    <svg id="winnerIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 2L15 8l6 1-4.5 4.4L17 21l-5-2.6L7 21l1.5-7.6L4 9l6-1z"/>
-    </svg>
-    <div id="winnerText">GANADOR</div>
-    <button id="playAgainBtn" style="display:none;">Volver a jugar</button>
-  </div>
-
-  <div id="scoreboard">
-    <div class="playerScore" id="scoreX">X: 0</div>
-    <div class="playerScore" id="scoreO">O: 0</div>
-  </div>
-
-  <div id="controls">
-    <label for="sizeSelect">Tamaño del tablero:</label>
-    <select id="sizeSelect">
-      <!-- Opciones de 1 a 6 -->
-      <option value="1">1 x 1</option>
-      <option value="2">2 x 2</option>
-      <option value="3" selected>3 x 3</option>
-      <option value="4">4 x 4</option>
-      <option value="5">5 x 5</option>
-      <option value="6">6 x 6</option>
-    </select>
-    <button id="resetBtn">Resetear</button>
-    <button id="inviteBtn">Invitación a jugar Triqui</button>
-  </div>
-
-  <div id="board"></div>
-
-  <script>
-    const boardDiv = document.getElementById('board');
-    const winnerContainer = document.getElementById('winnerContainer');
-    const winnerText = document.getElementById('winnerText');
-    const playAgainBtn = document.getElementById('playAgainBtn');
-    const sizeSelect = document.getElementById('sizeSelect');
-    const resetBtn = document.getElementById('resetBtn');
-    const inviteBtn = document.getElementById('inviteBtn');
-    const scoreXDiv = document.getElementById('scoreX');
-    const scoreODiv = document.getElementById('scoreO');
-
-    let boardSize = parseInt(sizeSelect.value);
-    let board = [];
-    let currentPlayer = 'X';
-    let winner = null;
-    let scores = { X: 0, O: 0 };
-    const WIN_SCORE = 5; // Puntos para ganar saldo móvil
-
-    const STORAGE_KEY = 'triquiGameState';
-
-    function saveGame() {
-      const state = {
-        boardSize,
-        board,
-        currentPlayer,
-        winner,
-        scores
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function loadGame() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          const state = JSON.parse(saved);
-          if (state.boardSize && state.board && state.currentPlayer && state.scores) {
-            boardSize = state.boardSize;
-            board = state.board;
-            currentPlayer = state.currentPlayer;
-            winner = state.winner || null;
-            scores = state.scores;
-            sizeSelect.value = boardSize;
-            return true;
-          }
-        } catch {
-          return false;
-        }
-      }
-      return false;
-    }
-
-    function createBoard(size) {
-      boardDiv.innerHTML = '';
-      boardDiv.style.gridTemplateColumns = `repeat(${size}, 40px)`;
-      boardDiv.style.gridTemplateRows = `repeat(${size}, 40px)`;
-
-      board = Array(size).fill(null).map(() => Array(size).fill(''));
-
-      for (let r = 0; r < size; r++) {
-        for (let c = 0; c < size; c++) {
-          const cell = document.createElement('div');
-          cell.classList.add('cell');
-          cell.dataset.row = r;
-          cell.dataset.col = c;
-          cell.textContent = '';
-          cell.addEventListener('click', onCellClick);
-          boardDiv.appendChild(cell);
-        }
-      }
-    }
-
-    function updateBoardUI() {
-      const cells = boardDiv.querySelectorAll('.cell');
-      cells.forEach(cell => {
-        const r = parseInt(cell.dataset.row);
-        const c = parseInt(cell.dataset.col);
-        cell.textContent = board[r][c];
-      });
-    }
-
-    function updateScores() {
-      scoreXDiv.textContent = `X: ${scores.X}`;
-      scoreODiv.textContent = `O: ${scores.O}`;
-    }
-
-    function checkWinner() {
-      function allEqual(arr) {
-        if (arr.length === 0) return false;
-        return arr.every(v => v === arr[0] && v !== '');
-      }
-
-      // Filas
-      for (let r = 0; r < boardSize; r++) {
-        if (allEqual(board[r])) return board[r][0];
-      }
-
-      // Columnas
-      for (let c = 0; c < boardSize; c++) {
-        const col = [];
-        for (let r = 0; r < boardSize; r++) {
-          col.push(board[r][c]);
-        }
-        if (allEqual(col)) return col[0];
-      }
-
-      // Diagonal principal
-      const diag1 = [];
-      for (let i = 0; i < boardSize; i++) {
-        diag1.push(board[i][i]);
-      }
-      if (allEqual(diag1)) return diag1[0];
-
-      // Diagonal secundaria
-      const diag2 = [];
-      for (let i = 0; i < boardSize; i++) {
-        diag2.push(board[i][boardSize - 1 - i]);
-      }
-      if (allEqual(diag2)) return diag2[0];
-
-      return null;
-    }
-
-    function announceSaldoGanador(jugador) {
-      alert(`¡Felicidades ${jugador}! Has ganado ${WIN_SCORE} puntos y un saldo al móvil. ¡Disfrútalo!`);
-    }
-
-    function onCellClick(e) {
-      if (winner) return;
-
-      const r = parseInt(e.target.dataset.row);
-      const c = parseInt(e.target.dataset.col);
-
-      if (board[r][c] !== '') return;
-
-      board[r][c] = currentPlayer;
-      updateBoardUI();
-
-      winner = checkWinner();
-      if (winner) {
-        winnerContainer.style.visibility = 'visible';
-        winnerText.textContent = `GANADOR: ${winner}`;
-        scores[winner]++;
-        updateScores();
-        playAgainBtn.style.display = 'inline-block';
-        saveGame();
-
-        if (scores[winner] >= WIN_SCORE) {
-          announceSaldoGanador(winner);
-          scores = { X: 0, O: 0 };
-          updateScores();
-          // No reiniciamos aquí el tablero, dejamos que usuario use "Volver a jugar" o resetear
-        }
-
-        return;
-      }
-
-      // Cambiar jugador
-      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-      saveGame();
-    }
-
-    sizeSelect.addEventListener('change', () => {
-      boardSize = parseInt(sizeSelect.value);
-      winner = null;
-      winnerContainer.style.visibility = 'hidden';
-      playAgainBtn.style.display = 'none';
-      currentPlayer = 'X';
-      createBoard(boardSize);
-      saveGame();
-    });
-
-    resetBtn.addEventListener('click', () => {
-      localStorage.removeItem(STORAGE_KEY);
-      winner = null;
-      winnerContainer.style.visibility = 'hidden';
-      playAgainBtn.style.display = 'none';
-      currentPlayer = 'X';
-      scores = { X: 0, O: 0 };
-      updateScores();
-      createBoard(boardSize);
-    });
-
-    inviteBtn.addEventListener('click', () => {
-      alert('¡Te invito a jugar Triqui! ¿Estás listo para el reto?');
-    });
-
-    playAgainBtn.addEventListener('click', () => {
-      winner = null;
-      winnerContainer.style.visibility = 'hidden';
-      playAgainBtn.style.display = 'none';
-      currentPlayer = 'X';
-      createBoard(boardSize);
-      saveGame();
-    });
-
-    // Inicializar juego
-    if (!loadGame()) {
-      createBoard(boardSize);
-    } else {
-      createBoard(boardSize);
-      updateBoardUI();
-      updateScores();
-      if (winner) {
-        winnerContainer.style.visibility = 'visible';
-        winnerText.textContent = `GANADOR: ${winner}`;
-        playAgainBtn.style.display = 'inline-block';
-      } else {
-        winnerContainer.style.visibility = 'hidden';
-        playAgainBtn.style.display = 'none';
-      }
-    }
-  </script>
+    <script>
+        // Si se requiere alguna funcionalidad JavaScript, se puede agregar aquí.
+        // Por ahora, la página es estática.
+    </script>
 </body>
 </html>
