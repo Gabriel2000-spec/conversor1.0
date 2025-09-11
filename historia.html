@@ -1,403 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Historial del Dólar</title>
-  <style>
-    /* Reset y base */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #e0f7f7;
-      color: #004d40;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sección de Juego - Mantenimiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
 
-    header {
-      background: rgba(64, 224, 208, 0.3); /* turquesa transparente */
-      padding: 1rem 1.5rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #00796b;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      user-select: none;
-    }
+        .mantenimiento-container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+        }
 
-    main {
-      flex: 1;
-      padding: 1rem 1rem 2rem;
-      max-width: 600px;
-      margin: 0 auto;
-      width: 100%;
-    }
+        /* Triángulo amarillo de aviso */
+        .warning-triangle {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 85px solid #ffcc00; /* amarillo */
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
 
-    /* Input filtrado */
-    .filter-container {
-      margin-bottom: 1rem;
-    }
+        /* Signo de exclamación dentro del triángulo */
+        .warning-triangle::after {
+            content: "!";
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            font-weight: bold;
+            color: black;
+            user-select: none;
+            font-family: Arial, sans-serif;
+        }
 
-    #filterInput {
-      width: 100%;
-      padding: 0.6rem 1rem;
-      font-size: 1rem;
-      border: 2px solid #4db6ac;
-      border-radius: 8px;
-      outline-offset: 2px;
-      outline-color: #26a69a;
-      box-shadow: 0 0 8px rgba(38, 166, 154, 0.3);
-      transition: border-color 0.3s ease;
-    }
-    #filterInput:focus {
-      border-color: #00796b;
-      box-shadow: 0 0 12px rgba(0, 121, 107, 0.7);
-    }
-
-    /* Tabla */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 121, 107, 0.15);
-    }
-
-    thead {
-      background: rgba(64, 224, 208, 0.3);
-      font-weight: 700;
-      color: #004d40;
-    }
-
-    thead th {
-      padding: 0.8rem 0.6rem;
-      text-align: left;
-    }
-
-    tbody tr {
-      border-bottom: 1px solid #b2dfdb;
-      transition: background-color 0.3s ease;
-    }
-
-    tbody tr:hover {
-      background-color: rgba(38, 166, 154, 0.15);
-    }
-
-    tbody td {
-      padding: 0.6rem 0.6rem;
-      font-size: 1rem;
-      color: #004d40;
-    }
-
-    /* Botón regresar */
-    .btn-back {
-      margin: 1rem auto 0;
-      display: block;
-      background: rgba(64, 224, 208, 0.5);
-      border: none;
-      color: #004d40;
-      font-weight: 700;
-      padding: 0.8rem 2rem;
-      border-radius: 20px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0, 121, 107, 0.4);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-      text-decoration: none;
-      text-align: center;
-    }
-    .btn-back:hover {
-      background-color: #26a69a;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0, 105, 92, 0.7);
-    }
-
-    /* Responsividad */
-    @media (max-width: 480px) {
-      header {
-        font-size: 1.5rem;
-        padding: 1rem;
-      }
-      tbody td, thead th {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.4rem;
-      }
-      .btn-back {
-        width: 90%;
-        padding: 0.8rem 0;
-        font-size: 1rem;
-      }
-    }
-  </style>
+        .mensaje {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-
-  <header>
-    HISTORIA
-  </header>
-
-  <main>
-    <div class="filter-container">
-      <input
-        type="text"
-        id="filterInput"
-        placeholder="Buscar fecha (dd-mm-yyyy) o mes, año..."
-        aria-label="Buscar en historial de dólares"
-      />
+    <div class="mantenimiento-container">
+        <div class="warning-triangle"></div>
+        <div class="mensaje">Disculpa la sección de historia no está disponible.<br>Por favor, inténtelo más tarde.</div>
     </div>
 
-    <table aria-label="Historial de cotización del dólar">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Fecha</th>
-          <th>Hora</th>
-          <th>Mes</th>
-          <th>Año</th>
-          <th>Moneda</th>
-          <th>Bolívares</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <!-- Filas generadas por JS -->
-      </tbody>
-    </table>
-
-    <a href="index.html" class="btn-back" role="button" aria-label="Regresar al menú">
-      Regresar al menú
-    </a>
-  </main>
-
-  <script>
-    // Datos de ejemplo con fecha, hora, mes, año, moneda y bolívares
-    const historial = [
-      { fecha: '28-02-2025', hora: '00:00', mes: '02', año: '2025', moneda: 'dólar', bolivares: '64,24' },
-      { fecha: '05-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64,48' },
-      { fecha: '06-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64.61' },
-      { fecha: '07-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '64.74' },
-      { fecha: '10-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '65.26' },
-      { fecha: '11-03-2024', hora: '00:00', mes: '03', año: '2024', moneda: 'dólar', bolivares: '65.41' },
-      { fecha: '12-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '65.62' },
-      { fecha: '13-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.25' },
-      { fecha: '14-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.43' },
-      { fecha: '17-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.55' },
-      { fecha: '18-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '66.78' },
-      { fecha: '20-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '67.63' },
-      { fecha: '21-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '67.85' },
-      { fecha: '24-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.31' },
-      { fecha: '25-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.39' },
-       { fecha: '26-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '68.69' },
-       { fecha: '27-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69,01' }, 
-      { fecha: '28-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69,43' },
-      { fecha: '31-03-2025', hora: '00:00', mes: '03', año: '2025', moneda: 'dólar', bolivares: '69.56' },
-     { fecha: '01-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '69.77' },
-     { fecha: '02-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '70.01' },
-     { fecha: '03-04-2024', hora: '00:00', mes: '04', año: '2024', moneda: 'dólar', bolivares: '70.24' },
-      { fecha: '04-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '70.58' },
-      { fecha: '07-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '72.18' },
-      { fecha: '08-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '73.35' }, 
-      { fecha: '09-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '74.27' },
-     { fecha: '10-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '75.80' },
-      { fecha: '11-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '77.26' },
-      { fecha: '14-04-2025', hora: '09:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '78.36' },
-      { fecha: '15-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '78.59' },
-      { fecha: '16-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '79.78' },
-       { fecha: '21-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '80.95' },
-        { fecha: '22-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '81.76' },
-        { fecha: '23-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '82.37' },
-         { fecha: '24-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '83.41' },
-         { fecha: '25-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '84.42' },
-         { fecha: '28-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.11' },    
-         { fecha: '29-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.65' },
-         { fecha: '30-04-2025', hora: '00:00', mes: '04', año: '2025', moneda: 'dólar', bolivares: '86.84' },
-         { fecha: '02-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '87.56' },
-          { fecha: '05-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '88.64' },
-         { fecha: '06-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '88.72' },
-         { fecha: '07-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '91.21' },
-         { fecha: '08-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '91.91' },
-           { fecha: '09-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '92.83' },
-       { fecha: '12-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.04' }, 
-           { fecha: '13-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.06' },     
-         { fecha: '14-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '93.57' },
-          { fecha: '15-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.15' },    
-         { fecha: '16-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.32' },
-           { fecha: '19-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.76' },
-         { fecha: '20-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.80' },       
-           { fecha: '21-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.85' },
-         { fecha: '22-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '94.96' },      
-           { fecha: '23-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.01' }, 
-         { fecha: '26-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.08' },  
-           { fecha: '27-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.23' },     
-         { fecha: '28-05-2025', hora: '09:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '95.80' },  
-           { fecha: '29-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '96.53' },
-         { fecha: '30-05-2025', hora: '00:00', mes: '05', año: '2025', moneda: 'dólar', bolivares: '96.85' },
-           { fecha: '03-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.31' }, 
-         { fecha: '04-06-2025', hora: '09:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.41' },
-          { fecha: '05-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '97.90' },
-         { fecha: '06-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '98.51' },
-         { fecha: '09-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '99.09' },
-      { fecha: '10-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '99.12' },
-        { fecha: '11-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '99.69' },
-         { fecha: '12-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '100.33' },
-         { fecha: '13-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '101.08' },
-         { fecha: '17-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '102.15' },
-{ fecha: '18-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '102.80' },
-{ fecha: '19-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '103.73' },
-{ fecha: '20-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '104.54' },
-{ fecha: '25-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '105.45' },
-{ fecha: '26-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '106.16' },
-{ fecha: '27-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '106.86' },
-{ fecha: '30-06-2025', hora: '00:00', mes: '06', año: '2025', moneda: 'dólar', bolivares: '107.62' },
-{ fecha: '01-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '108.18' },
-{ fecha: '02-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '108.97' },
-{ fecha: '03-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '109.77' },
-{ fecha: '04-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '110.55' },
-  { fecha: '07-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '111.41' },
-   { fecha: '08-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '112.12' }, 
-{ fecha: '09-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '112.82' },
-{ fecha: '10-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '113.75' },
-{ fecha: '11-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '114.41' },
-{ fecha: '14-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '115.32' },
-{ fecha: '15-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '115.84' },
-{ fecha: '16-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '116.81' },
-{ fecha: '17-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '117.40' },
-{ fecha: '18-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '118.28' },
-{ fecha: '21-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '119.14' },
-{ fecha: '22-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '119.66' },
-{ fecha: '23-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '120.42' },
-{ fecha: '25-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '121.34' },
-{ fecha: '28-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '122.17' },
-{ fecha: '29-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '122.84' },
-{ fecha: '30-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '123.87' },
-{ fecha: '31-07-2025', hora: '00:00', mes: '07', año: '2025', moneda: 'dólar', bolivares: '124.51' },
-{ fecha: '01-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '125.42' },
-{ fecha: '04-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '126.28' },
-{ fecha: '05-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '127.10' },
-{ fecha: '06-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '128.24' },
-{ fecha: '07-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '129.05' },
-{ fecha: '08-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '130.06' },
-{ fecha: '11-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '131.12' },
-{ fecha: '12-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '132.30' },
-{ fecha: '13-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '133.51' },
-{ fecha: '14-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '134.48' },
-{ fecha: '15-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '135.63' },
-{ fecha: '19-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '136.89' },
-{ fecha: '20-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '138.12' },
-{ fecha: '21-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '139.40' },
-{ fecha: '22-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '140.66' },
-{ fecha: '25-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '141.88' },
-{ fecha: '26-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '143.03' },
-{ fecha: '27-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '144.37' },
-{ fecha: '28-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '145.74' },
-{ fecha: '29-08-2025', hora: '00:00', mes: '08', año: '2025', moneda: 'dólar', bolivares: '147.08' },
-{ fecha: '01-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '148.44' },
-{ fecha: '02-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '149.46' },
-{ fecha: '03-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '150.79' },
-{ fecha: '04-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '151.76' },
-{ fecha: '05-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '152.82' },
-{ fecha: '08-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '154.01' },
-{ fecha: '09-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '154.98' },
-{ fecha: '10-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '156.37' },
-{ fecha: '11-09-2025', hora: '00:00', mes: '09', año: '2025', moneda: 'dólar', bolivares: '157.72' },
-
-
-    
-        ];
-       
-   
-
-    const tableBody = document.getElementById('tableBody');
-    const filterInput = document.getElementById('filterInput');
-
-    // Función para renderizar tabla según listado dados
-    function renderTable(data) {
-      tableBody.innerHTML = '';
-      if (data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:1rem; color:#00796b;">No hay resultados</td></tr>';
-        return;
-      }
-      data.forEach((item, index) => {
-        const row = document.createElement('tr');
-
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${item.fecha}</td>
-          <td>${item.hora}</td>
-          <td>${item.mes}</td>
-          <td>${item.año}</td>
-          <td>${item.moneda}</td>
-          <td>${item.bolivares}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    // Función filtro que busca coincidencia parcial en fecha, mes o año
-    function filterTable() {
-      const filterValue = filterInput.value.toLowerCase().trim();
-
-      const filtered = historial.filter(item => {
-        return (
-          item.fecha.toLowerCase().includes(filterValue) ||
-          item.mes.toLowerCase().includes(filterValue) ||
-          item.año.toLowerCase().includes(filterValue)
-        );
-      });
-
-      renderTable(filtered);
-    }
-
-    // Eventos
-    filterInput.addEventListener('input', filterTable);
-
-    // Render inicial
-    renderTable(historial);
-
-
-
-
-    // Deshabilitar clic derecho
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// Deshabilitar teclas comunes de herramientas de desarrollador
-document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-    }
-    // Ctrl+U (ver código fuente)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-    }
-});
-
-// Código ofuscado básico (ejemplo)
-(function(){
-    var _0x1a2b = ['mensaje secreto', 'log'];
-    console[_0x1a2b[1]](_0x1a2b[0]);
-})();
-
-  </script>
-
+    <script>
+        // Si se requiere alguna funcionalidad JavaScript, se puede agregar aquí.
+        // Por ahora, la página es estática.
+    </script>
 </body>
 </html>
