@@ -3,68 +3,254 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sección de Juego - Mantenimiento</title>
+    <title>Calculadora de Ganancia %</title>
     <style>
+        /* Estilo juvenil y moderno */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
             margin: 0;
-            padding: 0;
-            display: flex;
+            padding: 20px;
             height: 100vh;
+            overflow: hidden;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .mantenimiento-container {
-            background-color: white;
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             padding: 30px 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            text-align: center;
             max-width: 400px;
-        }
-
-        /* Triángulo amarillo de aviso */
-        .warning-triangle {
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 85px solid #ffcc00; /* amarillo */
-            margin: 0 auto 20px auto;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
             position: relative;
+            z-index: 1;
         }
 
-        /* Signo de exclamación dentro del triángulo */
-        .warning-triangle::after {
-            content: "!";
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 60px;
-            font-weight: bold;
-            color: black;
+        h1 {
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            outline: none;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="number"]:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        button {
+            background-color: #ff5f6d;
+            background-image: linear-gradient(45deg, #ff5f6d, #ffc371);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 95, 109, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             user-select: none;
-            font-family: Arial, sans-serif;
         }
 
-        .mensaje {
-            font-size: 18px;
-            color: #333;
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 95, 109, 0.8);
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #5a0e0e;
+            padding: 25px 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(255, 105, 135, 0.5);
+            user-select: none;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+            min-height: 70px;
+            letter-spacing: 2px;
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animación parpadeo verde */
+        @keyframes blinkGreen {
+            0%, 100% {
+                background-color: #d4edda;
+                color: #155724;
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.7);
+            }
+            50% {
+                background-color: #a8e6a3;
+                color: #0b3c13;
+                box-shadow: 0 8px 40px rgba(40, 167, 69, 1);
+            }
+        }
+
+        .blink-green {
+            animation: blinkGreen 1.5s ease-in-out 3;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            user-select: none;
+        }
+
+        /* Estilos para el modal de bienvenida */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+            padding: 25px 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(255, 95, 109, 0.7);
+            max-width: 350px;
+            text-align: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.2rem;
+            user-select: none;
+        }
+
+        .modal button {
+            margin-top: 20px;
+            background: #fff;
+            color: #ff5f6d;
+            font-weight: 700;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(255, 95, 109, 0.6);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .modal button:hover {
+            background-color: #ff5f6d;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="mantenimiento-container">
-        <div class="warning-triangle"></div>
-        <div class="mensaje">Disculpa la sección de Juego no esta disponible.<br>Por favor, inténtelo más tarde.</div>
+    <div class="container">
+        <h1>Calculadora de Ganancia %</h1>
+        
+        <label for="payment">Ingresa tu pago:</label>
+        <input type="number" id="payment" placeholder="Ejemplo: 1000" min="0" step="any" />
+
+        <label for="percentage">Ingresa el porcentaje (%):</label>
+        <input type="number" id="percentage" placeholder="Ejemplo: 10" min="0" step="any" />
+
+        <button onclick="calcularGanancia()">Calcular Ganancia</button>
+        
+        <div class="result" id="result"></div>
+        <div class="footer">Calcula fácilmente cualquier porcentaje de ganancia.</div>
+    </div>
+
+    <!-- Modal de bienvenida -->
+    <div class="modal-bg" id="modal-bg">
+        <div class="modal">
+            ¡Bienvenido a la calculadora de ganancia!<br />
+            Aquí podrás calcular fácilmente el porcentaje que desees.<br />
+            <button onclick="cerrarModal()">Aceptar</button>
+        </div>
     </div>
 
     <script>
-        // Si se requiere alguna funcionalidad JavaScript, se puede agregar aquí.
-        // Por ahora, la página es estática.
+        function calcularGanancia() {
+            const paymentInput = document.getElementById('payment');
+            const percentageInput = document.getElementById('percentage');
+            const result = document.getElementById('result');
+
+            const pago = parseFloat(paymentInput.value);
+            const porcentaje = parseFloat(percentageInput.value);
+
+            // Limpiar animación previa
+            result.classList.remove('blink-green');
+
+            if (isNaN(pago) || pago < 0) {
+                result.textContent = 'Por favor ingresa un pago válido mayor o igual a 0.';
+                result.style.color = '#ffdddd';
+                result.style.background = 'rgba(255, 0, 0, 0.3)';
+                result.style.boxShadow = '0 8px 25px rgba(255, 0, 0, 0.5)';
+                result.style.opacity = '1';
+                return;
+            }
+
+            if (isNaN(porcentaje) || porcentaje < 0) {
+                result.textContent = 'Por favor ingresa un porcentaje válido mayor o igual a 0.';
+                result.style.color = '#ffdddd';
+                result.style.background = 'rgba(255, 0, 0, 0.3)';
+                result.style.boxShadow = '0 8px 25px rgba(255, 0, 0, 0.5)';
+                result.style.opacity = '1';
+                return;
+            }
+
+            const ganancia = pago * (porcentaje / 100);
+            result.style.color = '#155724';  // Verde oscuro
+            result.style.background = '#d4edda';  // Verde claro
+            result.style.boxShadow = '0 8px 25px rgba(40, 167, 69, 0.7)';
+            result.textContent = `$${ganancia.toFixed(2)}`;
+            result.style.opacity = '1';
+
+            // Añadir clase para animación parpadeo
+            // Forzar reflow para reiniciar animación si se repite
+            void result.offsetWidth;
+            result.classList.add('blink-green');
+        }
+
+        function cerrarModal() {
+            const modalBg = document.getElementById('modal-bg');
+            modalBg.style.display = 'none';
+        }
     </script>
 </body>
 </html>
