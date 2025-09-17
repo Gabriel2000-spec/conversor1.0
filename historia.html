@@ -3,68 +3,253 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sección de Juego - Mantenimiento</title>
+    <title>Mapa Mundí y Venezuela - Conversor Criollo</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+        /* Reset y estilo juvenil */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
             margin: 0;
-            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f0f4f8;
             display: flex;
-            height: 100vh;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            height: 100vh;
         }
 
-        .mantenimiento-container {
-            background-color: white;
-            padding: 30px 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
+        h1 {
+            margin: 20px 0 10px;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 2rem;
         }
 
-        /* Triángulo amarillo de aviso */
-        .warning-triangle {
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 85px solid #ffcc00; /* amarillo */
-            margin: 0 auto 20px auto;
+        #search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            width: 320px;
+            max-width: 90vw;
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 2px solid #3498db;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #search-input:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 8px #2980b9;
+        }
+
+        #search-button {
+            background-color: #3498db;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        #search-button:hover {
+            background-color: #2980b9;
+        }
+
+        #search-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        #map {
+            width: 90vw;
+            height: 70vh;
+            max-width: 1200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             position: relative;
         }
 
-        /* Signo de exclamación dentro del triángulo */
-        .warning-triangle::after {
-            content: "!";
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 60px;
-            font-weight: bold;
-            color: black;
-            user-select: none;
-            font-family: Arial, sans-serif;
+        /* Tooltip estilo para marcador */
+        .leaflet-tooltip.my-tooltip {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+            border-radius: 5px;
+            padding: 4px 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
 
-        .mensaje {
-            font-size: 18px;
-            color: #333;
+        /* Botón para cambiar capa */
+        #toggle-layer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+
+        #toggle-layer:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
-    <div class="mantenimiento-container">
-        <div class="warning-triangle"></div>
-        <div class="mensaje">Disculpa la sección de historia no está disponible.<br>Por favor, inténtelo más tarde.</div>
+    <h1>Mapa</h1>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Buscar zona o estado en Venezuela..." />
+        <button id="search-button" aria-label="Buscar">
+            <!-- Ícono lupa SVG -->
+            <svg viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4.5 4.5 0 110-9 4.5 4.5 0 010 9z"/>
+            </svg>
+        </button>
+    </div>
+    <div id="map">
+        <button id="toggle-layer" title="Cambiar a vista satélite">Satélite</button>
     </div>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Si se requiere alguna funcionalidad JavaScript, se puede agregar aquí.
-        // Por ahora, la página es estática.
+        // Capas base
+        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap',
+        });
+
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/' +
+            'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 18,
+            attribution: 'Tiles © Esri'
+        });
+
+        // Crear mapa centrado en América con zoom inicial
+        const map = L.map('map', {
+            center: [10, -60],
+            zoom: 5,
+            layers: [osmLayer]
+        });
+
+        // Zonas predefinidas en Venezuela para búsqueda con coordenadas y nombre
+        // Incluye ciudades y los 24 estados venezolanos con coordenadas aproximadas centrales
+        const zonas = {
+            // Ciudades
+            "caracas": { coords: [10.4806, -66.9036], nombre: "Caracas" },
+            "maracaibo": { coords: [10.6545, -71.654], nombre: "Maracaibo" },
+            "valencia": { coords: [10.1629, -68.0076], nombre: "Valencia" },
+            "barquisimeto": { coords: [10.0656, -69.3461], nombre: "Barquisimeto" },
+            "maracay": { coords: [10.2461, -67.5958], nombre: "Maracay" },
+            "puerto la cruz": { coords: [10.2167, -64.6167], nombre: "Puerto La Cruz" },
+            "maturin": { coords: [9.75, -63.17], nombre: "Maturín" },
+            "puerto ordaz": { coords: [8.27, -62.75], nombre: "Puerto Ordaz" },
+            "ciudad guayana": { coords: [8.35, -62.62], nombre: "Ciudad Guayana" },
+            "cumaná": { coords: [10.46, -64.18], nombre: "Cumaná" },
+
+            // Estados (con capital o centro aproximado)
+            "amazonas": { coords: [3.25, -65.75], nombre: "Amazonas" },
+            "anzoátegui": { coords: [9.45, -64.5], nombre: "Anzoátegui" },
+            "apure": { coords: [7.5, -69.25], nombre: "Apure" },
+            "aragua": { coords: [10.23, -67.6], nombre: "Aragua" },
+            "barinas": { coords: [8.6, -70.2], nombre: "Barinas" },
+            "bolívar": { coords: [7.7, -62.6], nombre: "Bolívar" },
+            "carabobo": { coords: [10.15, -68.0], nombre: "Carabobo" },
+            "cojedes": { coords: [9.67, -68.15], nombre: "Cojedes" },
+            "delta amacuro": { coords: [8.9, -62.3], nombre: "Delta Amacuro" },
+            "falcón": { coords: [11.4, -69.25], nombre: "Falcón" },
+            "guárico": { coords: [9.0, -67.0], nombre: "Guárico" },
+            "lara": { coords: [10.08, -69.3], nombre: "Lara" },
+            "mérida": { coords: [8.6, -71.15], nombre: "Mérida" },
+            "miranda": { coords: [10.3, -66.8], nombre: "Miranda" },
+            "monagas": { coords: [9.55, -63.3], nombre: "Monagas" },
+            "nueva esparta": { coords: [11.0, -64.6], nombre: "Nueva Esparta" },
+            "portuguesa": { coords: [9.0, -69.25], nombre: "Portuguesa" },
+            "sucre": { coords: [10.6, -63.9], nombre: "Sucre" },
+            "táchira": { coords: [7.8, -72.25], nombre: "Táchira" },
+            "trujillo": { coords: [9.35, -70.3], nombre: "Trujillo" },
+            "vargas": { coords: [10.6, -66.95], nombre: "Vargas" },
+            "yaracuy": { coords: [10.07, -68.3], nombre: "Yaracuy" },
+            "zulia": { coords: [10.0, -71.4], nombre: "Zulia" }
+        };
+
+        let currentMarker = null;
+
+        // Función búsqueda
+        function buscarZona() {
+            const input = document.getElementById('search-input').value.trim().toLowerCase();
+
+            if (!input) {
+                alert('Por favor ingresa el nombre de una zona para buscar.');
+                return;
+            }
+
+            // Buscar en zonas predefinidas
+            if (zonas[input]) {
+                const { coords, nombre } = zonas[input];
+
+                // Remover marcador anterior
+                if (currentMarker) {
+                    map.removeLayer(currentMarker);
+                }
+
+                // Añadir marcador nuevo
+                currentMarker = L.marker(coords).addTo(map)
+                    .bindTooltip(nombre, { permanent: true, direction: 'top', className: 'my-tooltip' })
+                    .openTooltip();
+
+                // Centrar y hacer zoom
+                map.setView(coords, 10);
+            } else {
+                alert('Zona no encontrada. Intenta con otro nombre.');
+            }
+        }
+
+        // Eventos botón y tecla enter
+        document.getElementById('search-button').addEventListener('click', buscarZona);
+        document.getElementById('search-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                buscarZona();
+            }
+        });
+
+        // Botón para cambiar capa entre Mapa y Satélite
+        const toggleBtn = document.getElementById('toggle-layer');
+        let mostrandoSatelite = false;
+
+        toggleBtn.addEventListener('click', () => {
+            if (mostrandoSatelite) {
+                map.removeLayer(satelliteLayer);
+                map.addLayer(osmLayer);
+                toggleBtn.textContent = 'Satélite';
+                toggleBtn.title = 'Cambiar a vista satélite';
+                mostrandoSatelite = false;
+            } else {
+                map.removeLayer(osmLayer);
+                map.addLayer(satelliteLayer);
+                toggleBtn.textContent = 'Mapa';
+                toggleBtn.title = 'Cambiar a vista mapa';
+                mostrandoSatelite = true;
+            }
+        });
     </script>
 </body>
 </html>
