@@ -200,9 +200,9 @@
 </head>
 <body>
   <div class="container">
-    <header>CONVERSOR CRIOLLO</header>
+    <header>CONVERSOR GREEN</header>
     
-    <div class="date-time" id="date-display">VIERNES 20 -06 -2025 BCV 000,00</div>
+    <div class="date-time" id="date-display">VIERNES 20 -06 -2025 BCV 104,00</div>
     <div class="clock" id="clock">01 : 01 : 53 AM</div>
     
     <div class="input-dolar">
@@ -246,12 +246,12 @@
         <span class="text">Historia</span>
         <div class="icon">📌📌</div>
       </a>
-      <a href="politica.html" id="btn-privacidad" aria-label="Política de privacidad">
+      <a href="politica.txt" id="btn-privacidad" aria-label="Política de privacidad">
         <span class="text">política de privacidad</span>
         <div class="icon">🔒</div>
       </a>
-      <a href="ahorcado.html" id="btn-Calculadora de porcentaje" aria-label="Calculadora de porcentaje">
-        <span class="text">Calculadora de porcentaje</span>
+      <a href="instrucciones.html" id="btn-juegos" aria-label="Juegos">
+        <span class="text">Juegos</span>
         <div class="icon">📝📊</div>
       </a>
     </nav>
@@ -281,8 +281,11 @@
       btnJuegos: "Calculadora de porcentaje",
       weekday: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
       months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 161.88",
+      bcvRate: "BCV 161,88",
     },
+    
+    
+    
     en: {
       dolarNextLabel: "Dollar next day",
       btnDolarBolivar: "Dollar to bolivar",
@@ -292,10 +295,10 @@
       btnNotas: "Notes",
       btnHistoria: "History",
       btnPrivacidad: "Privacy policy",
-      btnJuegos: "Games",
+      btnJuegos: "Calculadora de porcentaje",
       weekday: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 124.51",
+      bcvRate: "BCV 161.88",
     },
     pt: {
       dolarNextLabel: "Dólar do dia seguinte",
@@ -306,10 +309,10 @@
       btnNotas: "Notas",
       btnHistoria: "História",
       btnPrivacidad: "política de privacidade",
-      btnJuegos: "Calculadora de porcentaje",
+      btnJuegos: "Calculadora de porcentagem",
       weekday: ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"],
       months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 123,87",
+      bcvRate: "BCV 161,88",
     },
     jp: {
       dolarNextLabel: "翌日のドル",
@@ -323,7 +326,7 @@
       btnJuegos: "ゲーム",
       weekday: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
       months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 123.87",
+      bcvRate: "BCV 161.88",
     }
   };
 
@@ -363,7 +366,7 @@
     document.getElementById('btn-notas').querySelector('.text').textContent = t.btnNotas;
     document.getElementById('btn-historia').querySelector('.text').textContent = t.btnHistoria;
     document.getElementById('btn-privacidad').querySelector('.text').textContent = t.btnPrivacidad;
-    document.getElementById('btn-Calculadora de porcentaje').querySelector('.text').textContent = t.btnCalculadora de porcentaje;
+    document.getElementById('btn-juegos').querySelector('.text').textContent = t.btnJuegos;
 
     updateDateTime(lang);
   }
