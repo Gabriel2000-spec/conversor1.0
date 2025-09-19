@@ -1,257 +1,295 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calendario Mes Actual 2025</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px auto;
-      max-width: 400px;
-      background-color: #f0f0f0;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .calendar {
-      background: white;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    .calendar-header button {
-      background-color: #007BFF;
-      border: none;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .calendar-header button:hover {
-      background-color: #0056b3;
-    }
-    .month-year {
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-    }
-    th, td {
-      padding: 8px 0;
-      border: 1px solid #ddd;
-      height: 38px;
-      vertical-align: middle;
-      font-size: 14px;
-    }
-    th {
-      background-color: #007BFF;
-      color: white;
-    }
-    .holiday {
-      background-color: #ffcccc;
-      color: #a00;
-      font-weight: bold;
-    }
-    .bank-day {
-      background-color: #ccffcc;
-      color: #060;
-    }
-    .weekend {
-      background-color: #eee;
-      color: #999;
-    }
-    .legend {
-      margin-top: 20px;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-around;
-    }
-    .legend div {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .legend span {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 3px;
-    }
-    .holiday-box {
-      background-color: #ffcccc;
-      border: 1px solid #a00;
-    }
-    .bank-day-box {
-      background-color: #ccffcc;
-      border: 1px solid #060;
-    }
-    .weekend-box {
-      background-color: #eee;
-      border: 1px solid #999;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calendario Navideño 2024 - 2050</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #f7f1e3;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            user-select: none;
+        }
+
+        .calendar {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            padding: 20px;
+            width: 320px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            margin-bottom: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .month-year {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            min-width: 140px;
+            text-align: center;
+            user-select: none;
+        }
+
+        button.nav-btn {
+            background-color: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #2c3e50;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        button.nav-btn:hover:not(:disabled) {
+            color: #1a252f;
+        }
+
+        button.nav-btn:disabled {
+            cursor: default;
+            color: #999;
+        }
+
+        .weekdays, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .weekdays div {
+            font-weight: 600;
+            color: #34495e;
+            text-align: center;
+            padding: 8px 0;
+            border-bottom: 2px solid #dcdde1;
+            user-select: none;
+        }
+
+        .days div {
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 6px;
+            cursor: default;
+            user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            color: #2c3e50;
+        }
+
+        .days div:hover {
+            background-color: #dff9fb;
+            color: #130f40;
+        }
+
+        .today {
+            color: #e74c3c;
+            font-weight: 700;
+            background-color: #fdecea;
+            border-radius: 8px;
+        }
+
+        button.menu-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button.menu-btn:hover {
+            background-color: #34495e;
+        }
+
+        .message-container {
+            width: 320px;
+            background: rgba(44, 62, 80, 0.85); /* Color serio y juvenil: azul oscuro semitransparente */
+            color: white;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 360px) {
+            .calendar, .message-container {
+                width: 95vw;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Calendario 2025</h1>
-
-  <div class="calendar">
-    <div class="calendar-header">
-      <button id="prevMonth">&lt;</button>
-      <div class="month-year" id="monthYear"></div>
-      <button id="nextMonth">&gt;</button>
+    <h1>Calendario Navideño 2024 - 2050</h1>
+    <div class="calendar" id="calendar">
+        <div class="header">
+            <button class="nav-btn" id="prevBtn" aria-label="Mes anterior">&lt;</button>
+            <div class="month-year" id="monthYear"></div>
+            <button class="nav-btn" id="nextBtn" aria-label="Mes siguiente">&gt;</button>
+        </div>
+        <div class="weekdays">
+            <div>Dom</div>
+            <div>Lun</div>
+            <div>Mar</div>
+            <div>Mié</div>
+            <div>Jue</div>
+            <div>Vie</div>
+            <div>Sáb</div>
+        </div>
+        <div class="days" id="days"></div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Dom</th>
-          <th>Lun</th>
-          <th>Mar</th>
-          <th>Mié</th>
-          <th>Jue</th>
-          <th>Vie</th>
-          <th>Sáb</th>
-        </tr>
-      </thead>
-      <tbody id="calendarBody"></tbody>
-    </table>
-  </div>
+    <div class="message-container" id="messageContainer">
+        ¡ Que esta temporada esté llena de alegría y momentos inolvidables.
+    </div>
+    <button class="menu-btn" onclick="location.href='index.html'">Volver al menú</button>
 
-  <div class="legend">
-    <div><span class="holiday-box"></span> Feriado</div>
-    <div><span class="bank-day-box"></span> D.S</div>
-    <div><span class="weekend-box"></span> Fin de Semana</div>
-  </div>
+    <script>
+        const startYear = 2024;
+        const startMonth = 0; // Enero
+        const endYear = 2050;
+        const endMonth = 11; // Diciembre
 
-  <script>
-    const holidays = [
-      '01-01', // Año Nuevo
-      '02-05', // 
-      '07-24', // Natalicio de Simón Bolivar 
-      
-      '05-01', // 
-      '09-16', // 
-      '11-02', // 
-      '11-20', // 
-      '12-25'  // 
-    ];
+        const monthYearElement = document.getElementById('monthYear');
+        const daysElement = document.getElementById('days');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-    function isHoliday(date) {
-      const mmdd = (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
-      return holidays.includes(mmdd);
-    }
+        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-    function isWeekend(date) {
-      const day = date.getDay();
-      return day === 0 || day === 6;
-    }
+        let currentYear, currentMonth;
 
-    function isBankDay(date) {
-      return !isWeekend(date) && !isHoliday(date);
-    }
-
-    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-    let currentYear = 2025;
-    let currentMonth = new Date().getMonth(); // Mes actual automático
-
-    const monthYearElem = document.getElementById('monthYear');
-    const calendarBody = document.getElementById('calendarBody');
-    const prevBtn = document.getElementById('prevMonth');
-    const nextBtn = document.getElementById('nextMonth');
-
-    function renderCalendar(year, month) {
-      monthYearElem.textContent = monthNames[month] + ' ' + year;
-      calendarBody.innerHTML = '';
-
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
-      const daysInMonth = lastDay.getDate();
-      const startDayOfWeek = firstDay.getDay();
-
-      let row = document.createElement('tr');
-
-      // Espacios vacíos antes del primer día
-      for(let i = 0; i < startDayOfWeek; i++) {
-        const td = document.createElement('td');
-        row.appendChild(td);
-      }
-
-      for(let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(year, month, day);
-        const td = document.createElement('td');
-        td.textContent = day;
-
-        if(isHoliday(date)) {
-          td.classList.add('holiday');
-          td.title = "Feriado";
-        } else if (isWeekend(date)) {
-          td.classList.add('weekend');
-          td.title = "Fin de Semana";
-        } else {
-          td.classList.add('bank-day');
-          td.title = "Día Bancario";
+        function initializeCalendarDate() {
+            const now = new Date();
+            if (now.getFullYear() < startYear || (now.getFullYear() === startYear && now.getMonth() < startMonth)) {
+                currentYear = startYear;
+                currentMonth = startMonth;
+            } else if (now.getFullYear() > endYear || (now.getFullYear() === endYear && now.getMonth() > endMonth)) {
+                currentYear = endYear;
+                currentMonth = endMonth;
+            } else {
+                currentYear = now.getFullYear();
+                currentMonth = now.getMonth();
+            }
         }
 
-        row.appendChild(td);
+        function renderCalendar() {
+            monthYearElement.textContent = monthNames[currentMonth];
 
-        if(date.getDay() === 6 && day !== daysInMonth) {
-          calendarBody.appendChild(row);
-          row = document.createElement('tr');
+            daysElement.innerHTML = '';
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const blankDay = document.createElement('div');
+                daysElement.appendChild(blankDay);
+            }
+
+            const today = new Date();
+            const isCurrentMonth = today.getFullYear() === currentYear && today.getMonth() === currentMonth;
+            const todayDate = today.getDate();
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.textContent = day;
+
+                if (isCurrentMonth && day === todayDate) {
+                    dayElement.classList.add('today');
+                }
+
+                daysElement.appendChild(dayElement);
+            }
+
+            prevBtn.disabled = (currentYear === startYear && currentMonth === startMonth);
+            nextBtn.disabled = (currentYear === endYear && currentMonth === endMonth);
+            prevBtn.style.opacity = prevBtn.disabled ? '0.3' : '1';
+            nextBtn.style.opacity = nextBtn.disabled ? '0.3' : '1';
         }
-      }
 
-      // Completar la última fila con celdas vacías si es necesario
-      const lastDayOfWeek = lastDay.getDay();
-      for(let i = lastDayOfWeek + 1; i <= 6; i++) {
-        const td = document.createElement('td');
-        row.appendChild(td);
-      }
-      calendarBody.appendChild(row);
-    }
+        function goToPreviousMonth() {
+            if (currentYear === startYear && currentMonth === startMonth) return;
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
 
-    prevBtn.addEventListener('click', () => {
-      if (currentMonth === 0) {
-        currentMonth = 11;
-        currentYear--;
-      } else {
-        currentMonth--;
-      }
-      renderCalendar(currentYear, currentMonth);
-    });
+        function goToNextMonth() {
+            if (currentYear === endYear && currentMonth === endMonth) return;
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
 
-    nextBtn.addEventListener('click', () => {
-      if (currentMonth === 11) {
-        currentMonth = 0;
-        currentYear++;
-      } else {
-        currentMonth++;
-      }
-      renderCalendar(currentYear, currentMonth);
-    });
+        function autoAdvanceMonth() {
+            const now = new Date();
+            const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            if (currentYear === now.getFullYear() && currentMonth === now.getMonth()) {
+                if (now.getDate() === lastDayOfMonth) {
+                    if (currentYear < endYear || (currentYear === endYear && currentMonth < endMonth)) {
+                        goToNextMonth();
+                    }
+                }
+            }
+        }
 
-    // Renderizar mes actual (automático en 2025)
-    if (new Date().getFullYear() === 2025) {
-      currentMonth = new Date().getMonth();
-    } else { // Si no es 2025, mostrar enero de 2025 por defecto
-      currentMonth = 0;
-      currentYear = 2025;
-    }
-    renderCalendar(currentYear, currentMonth);
-  </script>
+        prevBtn.addEventListener('click', () => {
+            goToPreviousMonth();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            goToNextMonth();
+        });
+
+        function scheduleNextUpdate() {
+            const now = new Date();
+            const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const msToNextDay = nextDay - now;
+            setTimeout(() => {
+                autoAdvanceMonth();
+                scheduleNextUpdate();
+            }, msToNextDay);
+        }
+
+        initializeCalendarDate();
+        renderCalendar();
+        scheduleNextUpdate();
+    </script>
 </body>
 </html>
