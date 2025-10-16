@@ -1,272 +1,110 @@
-ni<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora Bs a Dólar BCV</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    body {
-      background: #f9f9f9 url('https://web.whatsapp.com/img/bg2.9e1b7d8a.png') repeat;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      color: #222;
-    }
-
-    .container {
-      background: #fff;
-      border-radius: 20px;
-      padding: 25px 30px 40px;
-      box-shadow: 0 12px 40px rgba(26, 115, 232, 0.3);
-      max-width: 350px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .btn-bcv {
-      background: #fff;
-      border: 3px solid #1a73e8;
-      border-radius: 20px;
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: default;
-      box-shadow: 0 8px 20px rgba(26, 115, 232, 0.4);
-      transition: box-shadow 0.3s ease;
-    }
-    .btn-bcv:hover {
-      box-shadow: 0 12px 30px rgba(26, 115, 232, 0.7);
-    }
-
-    .btn-bcv img {
-      width: 70px;
-      height: 70px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .btn-bcv span {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #1a73e8;
-      user-select: none;
-    }
-
-    .inputs-container {
-      display: flex;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 25px;
-      width: 100%;
-      height: 60px;
-    }
-
-    .input-group {
-      flex: 1;
-      position: relative;
-    }
-
-    .input-group input {
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      font-size: 1.3rem;
-      font-weight: 600;
-      padding: 0 45px 0 20px;
-      color: #333;
-      background: #f4f7fc;
-      transition: background 0.3s ease;
-    }
-    .input-group input:focus {
-      background: #e8f0fe;
-    }
-
-    .input-symbol {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #555;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .input-group:first-child input {
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
-    }
-    .input-group:last-child input {
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
-      background: #1a73e8;
-      color: white;
-      cursor: default;
-      font-weight: 700;
-    }
-
-    .input-group:last-child input::selection {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .info-text {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-      color: #444;
-      user-select: none;
-    }
-
-    .btn-whatsapp {
-      background-color: #25d366;
-      border-radius: 30px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.3rem;
-      border: none;
-      padding: 17px 0;
-      width: 100%;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.7);
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-    .btn-whatsapp:hover {
-      background-color: #1ebe57;
-    }
-    
-    
-     /* Estilos para el botón */
-        .btn-salir {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            text-decoration: none; /* Para que parezca un botón */
-            display: inline-block;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Página Cerrada - Vivestremo</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #d4af37; /* Dorado */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        .btn-salir:hover {
-            background-color: #0056b3;
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
         }
 
-  </style>
+        .message {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #d4af37;
+            animation: blink 1.5s infinite;
+            text-shadow:
+                0 0 5px #d4af37,
+                0 0 10px #d4af37,
+                0 0 20px #ffd700;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% {
+                opacity: 1;
+            }
+            25%, 75% {
+                opacity: 0.3;
+            }
+        }
+
+        .countdown {
+            font-size: 7rem;
+            font-weight: 900;
+            color: #ff0000; /* Rojo intenso */
+            text-shadow:
+                0 0 10px #ff0000,
+                0 0 20px #ff4d4d,
+                0 0 30px #ff9999;
+            user-select: none;
+        }
+
+        footer {
+            width: 100%;
+            padding: 15px 0;
+            background-color: #1a1a1a;
+            color: #d4af37;
+            font-size: 1rem;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(212,175,55,0.5);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Para evitar scroll en móviles */
+        body, html {
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    
-      
-  <div class="container">
-      
-       <a href="index.html" class="btn-salir">Salir al Menú</a>
-       <br>
-       <br>
-    <div class="btn-bcv" title="Tasa BCV">
-          <img src="img/dolar.jpeg" />
-      <span></span>
+    <div class="content" role="main" aria-live="polite">
+        <div class="message" aria-label="Mensaje de página cerrada">En estos momentos página cerrada</div>
+        <div class="countdown" id="countdown" aria-live="assertive" aria-atomic="true" aria-relevant="text">15</div>
     </div>
+    <footer>
+        © Vivestremo.com 2025
+    </footer>
 
-    <div class="inputs-container">
-      <div class="input-group">
-        <input type="number" id="bs-input" placeholder=" Bs" min="0" step="0.01" />
-        <div class="input-symbol"></div>
-      </div>
-      <div class="input-group">
-        <input type="text" id="usd-result" placeholder=" " readonly />
-        <div class="input-symbol">$</div>
-      </div>
-    </div>
+    <script>
+        let timeLeft = 15; // segundos
+        const countdownEl = document.getElementById('countdown');
 
-    <div class="info-text">
-      Coloca tu cantidad en bolívares y tendrás el resultado en dólar
-    </div>
+        function updateTimer() {
+            countdownEl.textContent = timeLeft;
+            if (timeLeft === 0) {
+                // Intentar cerrar la pestaña o ventana
+                window.close();
 
-    <button class="btn-whatsapp" id="send-wsp">Enviar por WhatsApp</button>
-  </div>
+                // Si no se puede cerrar (por seguridad del navegador), mostrar mensaje final
+                countdownEl.textContent = "Cerrando...";
+                clearInterval(timerInterval);
+            }
+            timeLeft--;
+        }
 
-  <script>
-    const tasaBCV = 201.46; // Tasa fija dolar oficial.
-
-    const bsInput = document.getElementById('bs-input');
-    const usdResult = document.getElementById('usd-result');
-    const sendBtn = document.getElementById('send-wsp');
-
-    function calcularDolar() {
-      const bs = parseFloat(bsInput.value);
-      if (!isNaN(bs) && bs >= 0) {
-        const dolar = (bs / tasaBCV).toFixed(2);
-        usdResult.value = dolar;
-      } else {
-        usdResult.value = '';
-      }
-    }
-
-    bsInput.addEventListener('input', calcularDolar);
-
-    sendBtn.addEventListener('click', () => {
-      const bs = bsInput.value.trim();
-      const dolar = usdResult.value.trim();
-
-      if (!bs || !dolar) {
-        alert('Por favor, ingresa una cantidad válida en bolívares.');
-        return;
-      }
-
-      const mensaje = `Hola, la conversión de ${bs} Bs a dólares usando la tasa BCV (${tasaBCV} Bs) es: $${dolar}.`;
-      const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
-      window.open(url, '_blank');
-    });
-
-
-
-
-    // Deshabilitar clic derecho
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// Deshabilitar teclas comunes de herramientas de desarrollador
-document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-    }
-    // Ctrl+U (ver código fuente)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-    }
-});
-
-// Código ofuscado básico (ejemplo)
-(function(){
-    var _0x1a2b = ['mensaje secreto', 'log'];
-    console[_0x1a2b[1]](_0x1a2b[0]);
-})();
-
-  </script>
-
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    </script>
 </body>
 </html>
