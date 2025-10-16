@@ -1,290 +1,344 @@
-h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mini Calculadora Dólar a Bolívar</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conversor Bs - USD</title>
+    <style>
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+        }
 
-  body {
-    background: #f0f4ff;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 10vh;
-    margin: 0;
-    padding: 20px;
-  }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #004b9b; /* azul oscuro */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  .calculator-container {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 84, 255, 0.15);
-    width: 320px;
-    padding: 30px 25px 40px;
-    text-align: center;
-  }
+        .container {
+            background: #005cbf;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
 
-  .logo-box {
-    border: 3px solid #2063f6;
-    border-radius: 20px;
-    padding: 15px;
-    width: 90px;
-    margin: 0 auto 25px;
-    box-shadow: 0 0 20px rgba(32, 99, 246, 0.3);
-    color: #2063f6;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 1.2;
-  }
+        .last-update {
+            background: #004080;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            user-select: none;
+        }
 
-  .logo-box img {
-    display: block;
-    margin: 0 auto 5px;
-    max-width: 60px;
-  }
-
-  .inputs-wrapper {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-  }
-
-  .input-group {
-    flex: 1;
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(32, 99, 246, 0.2);
-    font-weight: 700;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .input-group.dollar {
-    background: #fff;
-    color: #111;
-    box-shadow:
-      0 8px 20px rgba(0, 0, 0, 0.08),
-      inset 0 0 8px #dde6f9;
-  }
-
-  .input-group.bolivar {
-    background: #2063f6;
-    color: #cce1ff;
-    box-shadow:
-      0 8px 20px rgba(32, 99, 246, 0.5),
-      inset 0 0 15px #3a87ff;
-  }
-
-  .input-group span {
-    padding: 1 15px;
-    user-select: none;
-  }
-
-  .input-group span.symbol {
-    font-size: 22px;
-  }
-
-  .input-group input {
-    border: none;
-    outline: none;
-    font-weight: 900;
-    font-size: 20px;
-    background: transparent;
-    color: inherit;
-    padding: 20px 10px;
-    flex: 1;
-  }
-
-  /* Input azul no editable */
-  .input-group.bolivar input {
-    cursor: default;
-  }
-
-  .description {
-    font-weight: 500;
-    color: #3a3a3a;
-    font-size: 15px;
-    margin-bottom: 30px;
-    user-select: none;
-  }
-
-  .btn-whatsapp {
-    background: #25d366;
-    color: white;
-    font-weight: 700;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    padding: 15px 0;
-    width: 100%;
-    cursor: pointer;
-    box-shadow:
-      0 8px 20px rgba(37, 211, 102, 0.5),
-      inset 0 -3px 15px #1faa4a;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .btn-whatsapp:hover {
-    background: #1ebc57;
-    box-shadow:
-      0 10px 25px rgba(30, 188, 87, 0.7),
-      inset 0 -5px 20px #168d3a;
-  }
-  
-  
-      /* Estilos para el botón */
-        .btn-salir {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        .switcher {
+            background: #007bff;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            text-decoration: none; /* Para que parezca un botón */
-            display: inline-block;
+            user-select: none;
         }
 
-        .btn-salir:hover {
-            background-color: #0056b3;
+        .currency {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-</style>
+
+        .currency span.flag {
+            font-size: 1.5rem;
+        }
+
+        .switch-icon {
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            user-select: none;
+        }
+
+        .inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 12px;
+            border: none;
+            padding: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+            background: #dbe9ff;
+            color: #000;
+            -moz-appearance: textfield;
+        }
+
+        /* Quitar flechas en input number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 0;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+
+        button:focus {
+            outline: 3px solid #ffeb3b;
+            outline-offset: 2px;
+        }
+
+        .btn-clear {
+            background: #0057d9;
+            color: #fff;
+        }
+
+        .btn-clear:hover {
+            background: #0045a1;
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe57;
+        }
+
+        .whatsapp-icon {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        @media (max-width: 400px) {
+            .inputs {
+                flex-direction: column;
+            }
+            input[type="number"] {
+                font-size: 1.5rem;
+            }
+            button {
+                font-size: 0.9rem;
+                padding: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    
-    
+    <main class="container" role="main" aria-label="Conversor de divisas entre Bolívar y Dólar">
+        <section class="last-update" aria-live="polite" aria-atomic="true" id="lastUpdate">
+            Última actualización: 16 oct 2025, 12:27 a. m.
+        </section>
 
-<div class="calculator-container"
- role="main" aria-label="Calculadora dólar a bolívar">
- 
-   <a href="index.html" class="btn-salir">Salir al Menú</a>
- <br>
- <br>
- 
- 
-  <div class="logo-box" aria-label="Logo BCV">
-    <img src="img/dolar.jpeg" alt="Logo BCV" />
-    
-  </div>
+        <div class="switcher" role="button" tabindex="0" aria-pressed="false" aria-label="Cambiar dirección de conversión" id="switcher">
+            <div class="currency" id="currencyLeft">Bs <span class="flag" aria-hidden="true">🇻🇪</span></div>
+            <div class="switch-icon" aria-hidden="true">⇄</div>
+            <div class="currency" id="currencyRight">USD <span class="flag" aria-hidden="true">🇺🇸</span></div>
+        </div>
 
-  <div class="inputs-wrapper">
-    <div class="input-group dollar" aria-label="Cantidad en dólares">
-      <span class="symbol" aria-hidden="true">$</span>
-      <input 
-        type="number" 
-        id="dolarInput" 
-        placeholder="Dólar" 
-        min="0" step="0.01" 
-        aria-describedby="dolarDesc"
-      />
-    </div>
-    <div class="input-group bolivar" aria-label="Resultado en bolívares">
-      <span class="symbol" aria-hidden="true"></span>
-      <input 
-        type="text" 
-        id="bolivarInput" 
-        placeholder="Bolívar" 
-        readonly 
-        aria-readonly="true" 
-        tabindex="-1"
-      />
-    </div>
-  </div>
+        <div class="inputs">
+            <input type="number" id="inputLeft" aria-label="Cantidad en Bolívar" placeholder="000" min="0" step="any" />
+            <input type="number" id="inputRight" aria-label="Cantidad en Dólar" placeholder="000" min="0" step="any" />
+        </div>
 
-  <p class="description" id="dolarDesc">
-    Coloca tu cantidad en dólares y tendrás el resultado en bolívares automáticamente
-  </p>
+        <div class="buttons-row">
+            <button type="button" class="btn-clear" id="btnClear" aria-label="Limpiar campos">Limpiar</button>
+        </div>
 
-  <button class="btn-whatsapp" id="sendWhatsappBtn" aria-label="Enviar resultado por WhatsApp">
-    Enviar por WhatsApp
-  </button>
-</div>
+        <button type="button" class="btn-whatsapp" id="btnWhatsapp" aria-label="Compartir resultado en WhatsApp">
+         
+                <path d="M20.52 3.48A11.75 11.75 0 0012.04.04a11.754 11.754 0 00-10.2 17.66L.5 23.5l5.94-1.54a11.776 11.776 0 006.6 1.92h.02a11.75 11.75 0 008.46-20.4zm-8.48 17.32h-.02a9.36 9.36 0 01-4.76-1.33l-.34-.2-3.53.92.94-3.44-.22-.35a9.376 9.376 0 1110.15 4.4zm5.57-7.5c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.63.07a8.83 8.83 0 01-2.6-1.6 9.59 9.59 0 01-1.78-2.2c-.18-.3 0-.46.13-.6.13-.13.3-.34.45-.5.15-.17.2-.28.3-.47.1-.2 0-.37-.05-.52-.05-.15-.68-1.63-.94-2.23-.25-.58-.5-.5-.68-.5-.17 0-.37 0-.57 0-.2 0-.52.07-.8.37-.3.3-1.15 1.12-1.15 2.72 0 1.6 1.18 3.15 1.35 3.37.17.22 2.33 3.55 5.63 4.97a4.97 4.97 0 002.22.72c.96 0 1.48-.45 1.63-.85.15-.4.15-.75.1-.85-.05-.1-.2-.15-.5-.3z"/>
+            </svg>
+            
+        </button>
+    </main>
 
-<script>
-  // Tipo de cambio fijo. Puedes cambiarlo o hacer dinámico.
-  const TIPO_CAMBIO = 201.46 // Precio del dólar oficial
+    <script>
+        (function(){
+            // Variables DOM
+            const switcher = document.getElementById('switcher');
+            const currencyLeft = document.getElementById('currencyLeft');
+            const currencyRight = document.getElementById('currencyRight');
+            const inputLeft = document.getElementById('inputLeft');
+            const inputRight = document.getElementById('inputRight');
+            const btnClear = document.getElementById('btnClear');
+            const btnWhatsapp = document.getElementById('btnWhatsapp');
 
-  const dolarInput = document.getElementById('dolarInput');
-  const bolivarInput = document.getElementById('bolivarInput');
-  const sendBtn = document.getElementById('sendWhatsappBtn');
+            // Estado: true si conversión es Bs -> USD, false si USD -> Bs
+            let isBsToUsd = true;
 
-  // Función para formatear número a moneda local (bolívares)
-  function formatearBolivares(valor) {
-    return Number(valor).toLocaleString('es-VE', {
-      style: 'currency',
-      currency: 'VES',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
+            // Tipo de cambio - puedes actualizarlo dinámicamente si quieres
+            const exchangeRate = 201.46; // Ejemplo: 1 USD = 24,000 Bs
 
-  // Calcular bolívares automáticamente al escribir dólares
-  dolarInput.addEventListener('input', () => {
-    const dolar = parseFloat(dolarInput.value);
-    if (!isNaN(dolar) && dolar >= 0) {
-      const bolivares = dolar * TIPO_CAMBIO;
-      bolivarInput.value = formatearBolivares(bolivares);
-    } else {
-      bolivarInput.value = '';
-    }
-  });
+            // Actualiza textos de monedas según estado
+            function updateSwitcherText() {
+                if (isBsToUsd) {
+                    currencyLeft.innerHTML = 'Bs <span class="flag" aria-hidden="true">🇻🇪</span>';
+                    currencyRight.innerHTML = 'USD <span class="flag" aria-hidden="true">🇺🇸</span>';
+                    inputLeft.setAttribute('aria-label', 'Cantidad en Bolívar');
+                    inputRight.setAttribute('aria-label', 'Cantidad en Dólar');
+                    inputLeft.placeholder = "000";
+                    inputRight.placeholder = "000";
+                } else {
+                    currencyLeft.innerHTML = 'USD <span class="flag" aria-hidden="true">🇺🇸</span>';
+                    currencyRight.innerHTML = 'Bs <span class="flag" aria-hidden="true">🇻🇪</span>';
+                    inputLeft.setAttribute('aria-label', 'Cantidad en Dólar');
+                    inputRight.setAttribute('aria-label', 'Cantidad en Bolívar');
+                    inputLeft.placeholder = "000";
+                    inputRight.placeholder = "000";
+                }
+                clearFields();
+            }
 
-  // Enviar mensaje por WhatsApp con el resultado
-  sendBtn.addEventListener('click', () => {
-    const dolar = parseFloat(dolarInput.value);
-    if (isNaN(dolar) || dolar <= 0) {
-      alert('Por favor, ingresa una cantidad válida en dólares.');
-      dolarInput.focus();
-      return;
-    }
-    const bolivares = dolar * TIPO_CAMBIO;
-    const mensaje = `Hola, al cambio de ${dolar.toFixed(2)} USD a ${formatearBolivares(bolivares)} Bs.`;
-    const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
-    window.open(urlWhatsapp, '_blank');
-  });
+            // Limpia inputs
+            function clearFields() {
+                inputLeft.value = '';
+                inputRight.value = '';
+            }
 
+            // Convierte y actualiza campo contrario
+            function convertFromLeft() {
+                const leftValue = parseFloat(inputLeft.value);
+                if (isNaN(leftValue) || leftValue < 0) {
+                    inputRight.value = '';
+                    return;
+                }
 
+                let result = 0;
+                if (isBsToUsd) {
+                    // Bs a USD
+                    result = leftValue / exchangeRate;
+                } else {
+                    // USD a Bs
+                    result = leftValue * exchangeRate;
+                }
+                inputRight.value = result.toFixed(2);
+            }
 
+            function convertFromRight() {
+                const rightValue = parseFloat(inputRight.value);
+                if (isNaN(rightValue) || rightValue < 0) {
+                    inputLeft.value = '';
+                    return;
+                }
 
+                let result = 0;
+                if (isBsToUsd) {
+                    // USD a Bs
+                    result = rightValue * exchangeRate;
+                } else {
+                    // Bs a USD
+                    result = rightValue / exchangeRate;
+                }
+                inputLeft.value = result.toFixed(2);
+            }
 
+            // Cambia dirección de conversión
+            function toggleConversion() {
+                isBsToUsd = !isBsToUsd;
+                updateSwitcherText();
+            }
 
-  // Deshabilitar clic derecho
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
+            // Construye mensaje para WhatsApp
+            function buildWhatsappMessage() {
+                const leftValue = parseFloat(inputLeft.value);
+                const rightValue = parseFloat(inputRight.value);
+                if (isNaN(leftValue) || leftValue < 0 || isNaN(rightValue) || rightValue < 0) {
+                    alert('Por favor, ingresa valores válidos para convertir antes de compartir.');
+                    return null;
+                }
 
-// Deshabilitar teclas comunes de herramientas de desarrollador
-document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-    }
-    // Ctrl+U (ver código fuente)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-    }
-});
+                if (isBsToUsd) {
+                    return `Convertido: leftValue.toLocaleString(′es−VE′)Bs={leftValue.toLocaleString('es-VE')} Bs =leftValue.toLocaleString(′es−VE′)Bs={rightValue.toFixed(2)} USD (Tipo de cambio: 1 USD = ${exchangeRate.toLocaleString('es-VE')} Bs)`;
+                } else {
+                    return `Convertido: leftValue.toFixed(2)USD={leftValue.toFixed(2)} USD =leftValue.toFixed(2)USD={rightValue.toLocaleString('es-VE')} Bs (Tipo de cambio: 1 USD = ${exchangeRate.toLocaleString('es-VE')} Bs)`;
+                }
+            }
 
-// Código ofuscado básico (ejemplo)
-(function(){
-    var _0x1a2b = ['mensaje secreto', 'log'];
-    console[_0x1a2b[1]](_0x1a2b[0]);
-})();
+            // Enviar mensaje por WhatsApp
+            function shareWhatsapp() {
+                const message = buildWhatsappMessage();
+                if (!message) return;
 
-</script>
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
 
+            // Eventos
+            switcher.addEventListener('click', () => {
+                toggleConversion();
+            });
+
+            // Soporte para teclado
+            switcher.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleConversion();
+                }
+            });
+
+            inputLeft.addEventListener('input', () => {
+                convertFromLeft();
+            });
+
+            inputRight.addEventListener('input', () => {
+                convertFromRight();
+            });
+
+            btnClear.addEventListener('click', () => {
+                clearFields();
+                inputLeft.focus();
+            });
+
+            btnWhatsapp.addEventListener('click', () => {
+                shareWhatsapp();
+            });
+
+            // Inicialización
+            updateSwitcherText();
+
+        })();
+    </script>
 </body>
 </html>
