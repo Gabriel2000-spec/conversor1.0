@@ -89,16 +89,13 @@
     <script>
         let timeLeft = 15; // segundos
         const countdownEl = document.getElementById('countdown');
+        const mainMenuUrl = 'https://www.vivestremo.com/menu-principal'; // Reemplaza con la URL de tu menú principal
 
         function updateTimer() {
             countdownEl.textContent = timeLeft;
             if (timeLeft === 0) {
-                // Intentar cerrar la pestaña o ventana
-                window.close();
-
-                // Si no se puede cerrar (por seguridad del navegador), mostrar mensaje final
-                countdownEl.textContent = "Cerrando...";
-                clearInterval(timerInterval);
+                // Redirigir al menú principal
+                window.location.href = mainMenuUrl;
             }
             timeLeft--;
         }
