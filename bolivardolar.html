@@ -3,105 +3,502 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Página Cerrada - Vivestremo</title>
+    <title>Calculadora de División - Saca tu cuenta fácil</title>
     <style>
-        html, body {
-            height: 100%;
+        /* Reset básico */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #d4af37; /* Dorado */
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #333;
+        }
+
+        /* Loader pantalla completa */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        /* Círculo grande multicolor brillante */
+        .circle-loader {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff3f8b,
+                #04c2c9,
+                #2e55c1,
+                #ff3f8b,
+                #04c2c9,
+                #2e55c1,
+                #ff3f8b
+            );
+            box-shadow: 0 0 20px 5px #ff3f8b, 0 0 30px 15px #04c2c9, 0 0 40px 25px #2e55c1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Texto central estático, multicolor letra por letra */
+        .center-text {
+            position: absolute;
+            width: 180px;
             text-align: center;
-        }
-
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .message {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #d4af37;
-            animation: blink 1.5s infinite;
-            text-shadow:
-                0 0 5px #d4af37,
-                0 0 10px #d4af37,
-                0 0 20px #ffd700;
-        }
-
-        @keyframes blink {
-            0%, 50%, 100% {
-                opacity: 1;
-            }
-            25%, 75% {
-                opacity: 0.3;
-            }
-        }
-
-        .countdown {
-            font-size: 7rem;
             font-weight: 900;
-            color: #ff0000; /* Rojo intenso */
-            text-shadow:
-                0 0 10px #ff0000,
-                0 0 20px #ff4d4d,
-                0 0 30px #ff9999;
+            font-size: 1.4rem;
+            line-height: 1.2;
             user-select: none;
         }
 
-        footer {
-            width: 100%;
-            padding: 15px 0;
-            background-color: #1a1a1a;
-            color: #d4af37;
-            font-size: 1rem;
-            text-align: center;
-            box-shadow: 0 -2px 10px rgba(212,175,55,0.5);
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        .center-text span {
+            font-weight: 900;
+            -webkit-text-stroke: 1px black;
+            text-stroke: 1px black;
+            display: inline-block;
+            animation: none;
         }
 
-        /* Para evitar scroll en móviles */
-        body, html {
-            overflow: hidden;
+        /* Colores para cada letra */
+        .center-text span:nth-child(1)  { color: #e74c3c; }  /* rojo */
+        .center-text span:nth-child(2)  { color: #f39c12; }  /* naranja */
+        .center-text span:nth-child(3)  { color: #f1c40f; }  /* amarillo */
+        .center-text span:nth-child(4)  { color: #2ecc71; }  /* verde */
+        .center-text span:nth-child(5)  { color: #1abc9c; }  /* turquesa */
+        .center-text span:nth-child(6)  { color: #3498db; }  /* azul */
+        .center-text span:nth-child(7)  { color: #9b59b6; }  /* morado */
+        .center-text span:nth-child(8)  { color: #e74c3c; }
+        .center-text span:nth-child(9)  { color: #f39c12; }
+        .center-text span:nth-child(10) { color: #f1c40f; }
+        .center-text span:nth-child(11) { color: #2ecc71; }
+        .center-text span:nth-child(12) { color: #1abc9c; }
+        .center-text span:nth-child(13) { color: #3498db; }
+        .center-text span:nth-child(14) { color: #9b59b6; }
+        .center-text span:nth-child(15) { color: #e74c3c; }
+        .center-text span:nth-child(16) { color: #f39c12; }
+        .center-text span:nth-child(17) { color: #f1c40f; }
+        .center-text span:nth-child(18) { color: #2ecc71; }
+        .center-text span:nth-child(19) { color: #1abc9c; }
+        .center-text span:nth-child(20) { color: #3498db; }
+        .center-text span:nth-child(21) { color: #9b59b6; }
+
+        /* Contenedor de puntitos girando */
+        .dots-container {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            animation: spinDots 6s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Puntitos */
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #2ecc71; /* verde */
+            border: 2px solid #e74c3c; /* borde rojo */
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px #2ecc71;
+        }
+
+        /* Posiciones de 8 puntitos alrededor (cada 45 grados) */
+        .dot:nth-child(1) {
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        .dot:nth-child(2) {
+            top: 21%;
+            left: 80%;
+            transform: translate(-50%, 0);
+        }
+        .dot:nth-child(3) {
+            top: 50%;
+            left: 95%;
+            transform: translate(-50%, -50%);
+        }
+        .dot:nth-child(4) {
+            top: 79%;
+            left: 80%;
+            transform: translate(-50%, -100%);
+        }
+        .dot:nth-child(5) {
+            top: 95%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+        }
+        .dot:nth-child(6) {
+            top: 79%;
+            left: 20%;
+            transform: translate(-50%, -100%);
+        }
+        .dot:nth-child(7) {
+            top: 50%;
+            left: 5%;
+            transform: translate(-50%, -50%);
+        }
+        .dot:nth-child(8) {
+            top: 21%;
+            left: 20%;
+            transform: translate(-50%, 0);
+        }
+
+        /* Animaciones */
+        @keyframes spinDots {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Ocultar contenido principal inicialmente */
+        #mainContent {
+            display: none;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .container {
+            max-width: 400px;
+            background: #fff;
+            margin: 50px auto;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h2 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            border: 1.5px solid #ccc;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+            background-color: #fff;
+            user-select: text;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+
+        input[readonly] {
+            background-color: #e9e9e9;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            flex: 1;
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            padding: 14px 0;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+
+        button:hover {
+            background-color: #1a52c0;
+        }
+
+        button.clear {
+            background-color: #f44336;
+        }
+
+        button.clear:hover {
+            background-color: #c0392b;
+        }
+
+        /* Estilo para el input de resultado */
+        #resultadoInput {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ff0000; /* rojo grueso */
+            background-color: #d0e7ff; /* azul bajito */
+            border: 2px solid #2575fc;
+            border-radius: 8px;
+            text-align: center;
+            user-select: text;
+            margin-top: 15px;
+        }
+
+        /* Teclado numérico personalizado reducido */
+        .teclado {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+            user-select: none;
+        }
+
+        .teclado button {
+            background-color: #e0e7ff;
+            color: #2575fc;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid #2575fc;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .teclado button:hover {
+            background-color: #2575fc;
+            color: white;
+        }
+
+        .teclado button.action {
+            background-color: #f44336;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .teclado button.action:hover {
+            background-color: #c0392b;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        @media(max-width: 480px) {
+            .container {
+                margin: 30px 15px;
+                padding: 25px 20px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px 0;
+            }
+
+            .teclado button {
+                font-size: 1rem;
+                padding: 8px;
+            }
+
+            .circle-loader {
+                width: 180px;
+                height: 180px;
+            }
+
+            .center-text {
+                width: 140px;
+                font-size: 1.1rem;
+            }
+
+            .dots-container {
+                width: 180px;
+                height: 180px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="content" role="main" aria-live="polite">
-        <div class="message" aria-label="Mensaje de página cerrada">( Uuupss algo salio mal )</div>
-        <div class="countdown" id="countdown" aria-live="assertive" aria-atomic="true" aria-relevant="text">15</div>
+    <!-- Loader con logo animado -->
+    <div id="loader" role="alert" aria-live="assertive" aria-busy="true">
+        <div class="circle-loader" aria-hidden="true">
+            <div class="dots-container" aria-hidden="true">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="center-text" aria-label="Calculadora para Dividir">
+                <!-- Texto con cada letra envuelta en span para color individual -->
+                <span>C</span><span>a</span><span>l</span><span>c</span><span>u</span><span>l</span><span>a</span><span>d</span><span>o</span><span>r</span><span>a</span> <br/>
+                <span>p</span><span>a</span><span>r</span><span>a</span> <br/>
+                <span>D</span><span>i</span><span>v</span><span>i</span><span>d</span><span>i</span><span>r</span>
+            </div>
+        </div>
     </div>
-    <footer>
-        © Conversor - 2025
-    </footer>
+
+    <!-- Contenido principal -->
+    <div id="mainContent">
+        <main class="container" role="main">
+            <h2>Calculadora de División</h2>
+            <form id="calcForm" aria-label="Formulario para calcular división" onsubmit="return false;">
+                <label for="dividendo">Dividendo (Número a dividir):</label>
+                <input type="text" id="dividendo" name="dividendo" placeholder=" " readonly aria-required="true" aria-label="Dividendo" />
+
+                <label for="divisor">Divisor (Número para dividir):</label>
+                <input type="text" id="divisor" name="divisor" placeholder=" " readonly aria-required="true" aria-label="Divisor" />
+
+                <div class="buttons">
+                    <button type="button" id="btnCalcular" aria-label="Calcular división">Calcular</button>
+                    <button type="button" class="clear" id="btnClear" aria-label="Borrar campos y resultado">Borrar</button>
+                </div>
+            </form>
+
+            <!-- Input para resultado -->
+            <input type="text" id="resultadoInput" readonly aria-live="polite" aria-label="Resultado de la división" placeholder="Resultado" />
+
+            <!-- Teclado numérico -->
+            <div class="teclado" role="application" aria-label="Teclado numérico">
+                <button type="button" class="num-btn" data-value="7">7</button>
+                <button type="button" class="num-btn" data-value="8">8</button>
+                <button type="button" class="num-btn" data-value="9">9</button>
+                <button type="button" class="num-btn" data-value="4">4</button>
+                <button type="button" class="num-btn" data-value="5">5</button>
+                <button type="button" class="num-btn" data-value="6">6</button>
+                <button type="button" class="num-btn" data-value="1">1</button>
+                <button type="button" class="num-btn" data-value="2">2</button>
+                <button type="button" class="num-btn" data-value="3">3</button>
+                <button type="button" id="btnDot" class="num-btn" data-value=".">.</button>
+                <button type="button" class="num-btn" data-value="0">0</button>
+                <button type="button" class="action" id="btnBackspace" aria-label="Borrar último dígito">⌫</button>
+            </div>
+        </main>
+
+        <footer>
+            <Center>
+            &copy; 2025 | Calculadora de División
+            </Center>
+        </footer>
+    </div>
 
     <script>
-        let timeLeft = 15; // segundos
-        const countdownEl = document.getElementById('countdown');
-        const mainMenuUrl = 'https://gabriel2000-spec.github.io/conversor1.0/'; // Reemplaza con la URL de tu menú principal
+        
+        // Mostrar loader y luego contenido principal después de 6 segundos
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                const mainContent = document.getElementById('mainContent');
+                loader.style.display = 'none';
+                mainContent.style.display = 'flex';
+            }, 2000); // 3 segundos
+        });
 
-        function updateTimer() {
-            countdownEl.textContent = timeLeft;
-            if (timeLeft === 0) {
-                // Redirigir al menú principal
-                window.location.href = mainMenuUrl;
-            }
-            timeLeft--;
+        const dividendoInput = document.getElementById('dividendo');
+        const divisorInput = document.getElementById('divisor');
+        const resultadoInput = document.getElementById('resultadoInput');
+        const btnCalcular = document.getElementById('btnCalcular');
+        const btnClear = document.getElementById('btnClear');
+        const btnBackspace = document.getElementById('btnBackspace');
+        const numButtons = document.querySelectorAll('.num-btn');
+
+        // Variable para saber en qué input estamos escribiendo
+        let inputActivo = dividendoInput;
+        dividendoInput.classList.add('input-activo');
+
+        // Cambiar input activo al hacer click
+        dividendoInput.addEventListener('click', () => setInputActivo(dividendoInput));
+        divisorInput.addEventListener('click', () => setInputActivo(divisorInput));
+
+        function setInputActivo(input) {
+            inputActivo = input;
+            dividendoInput.classList.toggle('input-activo', input === dividendoInput);
+            divisorInput.classList.toggle('input-activo', input === divisorInput);
         }
 
-        updateTimer();
-        const timerInterval = setInterval(updateTimer, 1000);
-    </script>
-</body>
-</html>
+        // Función para añadir valor al input activo
+        function agregarValor(valor) {
+            if (!inputActivo) return;
+
+            // Evitar más de un punto decimal
+            if (valor === '.' && inputActivo.value.includes('.')) {
+                return;
+            }
+            inputActivo.value += valor;
+        }
+
+        // Teclado numérico botones
+        numButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                agregarValor(button.dataset.value);
+            });
+        });
+
+        // Botón backspace
+        btnBackspace.addEventListener('click', () => {
+            if (!inputActivo) return;
+            inputActivo.value = inputActivo.value.slice(0, -1);
+        });
+
+        // Botón borrar todo
+        btnClear.addEventListener('click', () => {
+            dividendoInput.value = '';
+            divisorInput.value = '';
+            resultadoInput.value = '';
+            setInputActivo(dividendoInput);
+            dividendoInput.focus();
+        });
+
+            // Botón calcular
+        btnCalcular.addEventListener('click', () => {
+            const dividendo = parseFloat(dividendoInput.value);
+            const divisor = parseFloat(divisorInput.value);
+
+            if (isNaN(dividendo) || isNaN(divisor)) {
+                resultadoInput.value = "Por favor, introduce números válidos.";
+                return;
+            }
+
+            if (divisor === 0) {
+                resultadoInput.value = "Error: No se puede dividir entre cero.";
+                return;
+            }
+
+            const resultado = dividendo / divisor;
+            resultadoInput.value = resultado.toFixed(4);
+        });
+        </script>
+        </body>
+        </HTML>
