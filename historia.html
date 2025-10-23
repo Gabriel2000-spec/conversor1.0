@@ -1,255 +1,412 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mapa Mundí y Venezuela - Conversor Criollo</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprende Matemáticas Divertido</title>
     <style>
-        /* Reset y estilo juvenil */
         body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #f0f4f8;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
 
-        h1 {
-            margin: 20px 0 10px;
-            color: #2c3e50;
-            font-weight: 700;
-            font-size: 2rem;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        #search-container {
+        h2 {
+            color: #4682b4;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border: 2px dashed #ff6347;
+            border-radius: 10px;
+            background-color: #fffafa;
+        }
+
+        .score-display, .coin-container {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2e8b57;
+        }
+
+        .coin-container {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
-            width: 320px;
-            max-width: 90vw;
         }
 
-        #search-input {
-            flex-grow: 1;
-            padding: 10px 15px;
-            border: 2px solid #3498db;
-            border-radius: 25px;
-            font-size: 16px;
-            outline: none;
+        .coin {
+            width: 40px;
+            height: 40px;
+            background-color: gold;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: #b8860b;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            transition: transform 0.3s ease-in-out;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .question {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #483d8b;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 100px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
             transition: border-color 0.3s;
         }
 
-        #search-input:focus {
-            border-color: #2980b9;
-            box-shadow: 0 0 8px #2980b9;
+        input[type="number"]:focus {
+            border-color: #4682b4;
+            outline: none;
         }
 
-        #search-button {
-            background-color: #3498db;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
-
-        #search-button:hover {
-            background-color: #2980b9;
-        }
-
-        #search-button svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        #map {
-            width: 90vw;
-            height: 70vh;
-            max-width: 1200px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        /* Tooltip estilo para marcador */
-        .leaflet-tooltip.my-tooltip {
-            background-color: #3498db;
+        button {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            background-color: #ff6347;
             color: white;
-            font-weight: 600;
+            border: none;
             border-radius: 5px;
-            padding: 4px 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.3);
-        }
-
-        /* Botón para cambiar capa */
-        #toggle-layer {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: background-color 0.3s;
+            margin-top: 15px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px #cc503a;
         }
 
-        #toggle-layer:hover {
-            background-color: #2980b9;
+        button:hover {
+            background-color: #e9544c;
+            transform: translateY(-1px);
         }
+
+        button:active {
+            box-shadow: 0 1px #cc503a;
+            transform: translateY(2px);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .correct {
+            color: #228b22;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .incorrect {
+            color: #dc143c;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .celebration-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .celebration-box {
+            background-color: #fffacd;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.9);
+            text-align: center;
+            position: relative;
+            animation: popIn 0.6s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-box h2 {
+            color: #daa520;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .celebration-box p {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: repeating-linear-gradient(45deg, #f06, #fff, #0ff);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .icon-hint {
+            margin-top: 15px;
+            font-size: 2em;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Mapa</h1>
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Buscar zona o estado en Venezuela..." />
-        <button id="search-button" aria-label="Buscar">
-            <!-- Ícono lupa SVG -->
-            <svg viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4.5 4.5 0 110-9 4.5 4.5 0 010 9z"/>
-            </svg>
-        </button>
-    </div>
-    <div id="map">
-        <button id="toggle-layer" title="Cambiar a vista satélite">Satélite</button>
+
+    <h2>Entrenamiento Matemático</h2>
+
+    <div class="game-container">
+        <div class="score-area">
+            <div class="score-display">
+                Puntuación: <span id="scoreValue">0</span>
+            </div>
+            <div class="coin-container">
+                <div class="coin">💰</div>
+                <span class="score-display">Puntos</span>
+            </div>
+        </div>
+
+        <div class="icon-hint">
+            🤔
+        </div>
+
+        <div class="question" id="question">
+            Cargando pregunta...
+        </div>
+
+        <input type="number" id="answerInput" placeholder="Tu respuesta" autofocus>
+        <button onclick="checkAnswer()">Responder</button>
+
+        <div id="feedback" class="feedback"></div>
     </div>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Celebración Container -->
+    <div id="celebration" class="celebration-container">
+        <div class="celebration-box">
+            <div class="icon-hint" style="font-size: 3em;">🎉✨</div>
+            <h2>¡Felicidades!</h2>
+            <p>¡Has completado el aprendizaje matemático!</p>
+            <p>Tu puntuación final es: <span id="finalScoreCelebration">0</span></p>
+            <button onclick="hideCelebration()">Continuar</button>
+        </div>
+    </div>
+
     <script>
-        // Capas base
-        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '© OpenStreetMap',
-        });
+        const scoreElement = document.getElementById('scoreValue');
+        const questionElement = document.getElementById('question');
+        const answerInput = document.getElementById('answerInput');
+        const feedbackElement = document.getElementById('feedback');
+        const celebrationElement = document.getElementById('celebration');
+        const finalScoreCelebration = document.getElementById('finalScoreCelebration');
 
-        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/' +
-            'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 18,
-            attribution: 'Tiles © Esri'
-        });
+        let score = 0;
+        let num1, num2, operator, correctAnswer;
+        const totalQuestions = 10; // Establecer un objetivo para la prueba
+        let questionsAnswered = 0;
 
-        // Crear mapa centrado en América con zoom inicial
-        const map = L.map('map', {
-            center: [10, -60],
-            zoom: 5,
-            layers: [osmLayer]
-        });
-
-        // Zonas predefinidas en Venezuela para búsqueda con coordenadas y nombre
-        // Incluye ciudades y los 24 estados venezolanos con coordenadas aproximadas centrales
-        const zonas = {
-            // Ciudades
-            "caracas": { coords: [10.4806, -66.9036], nombre: "Caracas" },
-            "maracaibo": { coords: [10.6545, -71.654], nombre: "Maracaibo" },
-            "valencia": { coords: [10.1629, -68.0076], nombre: "Valencia" },
-            "barquisimeto": { coords: [10.0656, -69.3461], nombre: "Barquisimeto" },
-            "maracay": { coords: [10.2461, -67.5958], nombre: "Maracay" },
-            "puerto la cruz": { coords: [10.2167, -64.6167], nombre: "Puerto La Cruz" },
-            "maturin": { coords: [9.75, -63.17], nombre: "Maturín" },
-            "puerto ordaz": { coords: [8.27, -62.75], nombre: "Puerto Ordaz" },
-            "ciudad guayana": { coords: [8.35, -62.62], nombre: "Ciudad Guayana" },
-            "cumaná": { coords: [10.46, -64.18], nombre: "Cumaná" },
-
-            // Estados (con capital o centro aproximado)
-            "amazonas": { coords: [3.25, -65.75], nombre: "Amazonas" },
-            "anzoátegui": { coords: [9.45, -64.5], nombre: "Anzoátegui" },
-            "apure": { coords: [7.5, -69.25], nombre: "Apure" },
-            "aragua": { coords: [10.23, -67.6], nombre: "Aragua" },
-            "barinas": { coords: [8.6, -70.2], nombre: "Barinas" },
-            "bolívar": { coords: [7.7, -62.6], nombre: "Bolívar" },
-            "carabobo": { coords: [10.15, -68.0], nombre: "Carabobo" },
-            "cojedes": { coords: [9.67, -68.15], nombre: "Cojedes" },
-            "delta amacuro": { coords: [8.9, -62.3], nombre: "Delta Amacuro" },
-            "falcón": { coords: [11.4, -69.25], nombre: "Falcón" },
-            "guárico": { coords: [9.0, -67.0], nombre: "Guárico" },
-            "lara": { coords: [10.08, -69.3], nombre: "Lara" },
-            "mérida": { coords: [8.6, -71.15], nombre: "Mérida" },
-            "miranda": { coords: [10.3, -66.8], nombre: "Miranda" },
-            "monagas": { coords: [9.55, -63.3], nombre: "Monagas" },
-            "nueva esparta": { coords: [11.0, -64.6], nombre: "Nueva Esparta" },
-            "portuguesa": { coords: [9.0, -69.25], nombre: "Portuguesa" },
-            "sucre": { coords: [10.6, -63.9], nombre: "Sucre" },
-            "táchira": { coords: [7.8, -72.25], nombre: "Táchira" },
-            "trujillo": { coords: [9.35, -70.3], nombre: "Trujillo" },
-            "vargas": { coords: [10.6, -66.95], nombre: "Vargas" },
-            "yaracuy": { coords: [10.07, -68.3], nombre: "Yaracuy" },
-            "zulia": { coords: [10.0, -71.4], nombre: "Zulia" }
-        };
-
-        let currentMarker = null;
-
-        // Función búsqueda
-        function buscarZona() {
-            const input = document.getElementById('search-input').value.trim().toLowerCase();
-
-            if (!input) {
-                alert('Por favor ingresa el nombre de una zona para buscar.');
+        function generateQuestion() {
+            if (questionsAnswered >= totalQuestions) {
+                showCelebration();
                 return;
             }
 
-            // Buscar en zonas predefinidas
-            if (zonas[input]) {
-                const { coords, nombre } = zonas[input];
+            // Generar números aleatorios entre 1 y 12
+            num1 = Math.floor(Math.random() * 11) + 2;
+            num2 = Math.floor(Math.random() * 11) + 2;
 
-                // Remover marcador anterior
-                if (currentMarker) {
-                    map.removeLayer(currentMarker);
-                }
+            const operators = ['+', '-', '*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
 
-                // Añadir marcador nuevo
-                currentMarker = L.marker(coords).addTo(map)
-                    .bindTooltip(nombre, { permanent: true, direction: 'top', className: 'my-tooltip' })
-                    .openTooltip();
-
-                // Centrar y hacer zoom
-                map.setView(coords, 10);
-            } else {
-                alert('Zona no encontrada. Intenta con otro nombre.');
+            // Evitar resultados negativos en restas si es posible, aunque no es estricto
+            if (operator === '-' && num1 < num2) {
+                [num1, num2] = [num2, num1]; // Intercambiar
             }
+
+            switch (operator) {
+                case '+':
+                    correctAnswer = num1 + num2;
+                    break;
+                case '-':
+                    correctAnswer = num1 - num2;
+                    break;
+                case '*':
+                    correctAnswer = num1 * num2;
+                    break;
+            }
+
+            questionElement.textContent = `${num1} ${operator} ${num2} = ?`;
+            answerInput.value = '';
+            feedbackElement.textContent = '';
+            answerInput.focus();
         }
 
-        // Eventos botón y tecla enter
-        document.getElementById('search-button').addEventListener('click', buscarZona);
-        document.getElementById('search-input').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                buscarZona();
+        function checkAnswer() {
+            const userAnswer = parseInt(answerInput.value);
+
+            if (isNaN(userAnswer)) {
+                feedbackElement.textContent = "Por favor, ingresa un número.";
+                feedbackElement.className = 'feedback incorrect';
+                return;
             }
-        });
 
-        // Botón para cambiar capa entre Mapa y Satélite
-        const toggleBtn = document.getElementById('toggle-layer');
-        let mostrandoSatelite = false;
-
-        toggleBtn.addEventListener('click', () => {
-            if (mostrandoSatelite) {
-                map.removeLayer(satelliteLayer);
-                map.addLayer(osmLayer);
-                toggleBtn.textContent = 'Satélite';
-                toggleBtn.title = 'Cambiar a vista satélite';
-                mostrandoSatelite = false;
+            questionsAnswered++;
+            
+            if (userAnswer === correctAnswer) {
+                score += 10;
+                scoreElement.textContent = score;
+                feedbackElement.textContent = "¡Correcto! Muy bien. (+10 Puntos)";
+                feedbackElement.className = 'feedback correct';
+                addCoinEffect();
             } else {
-                map.removeLayer(osmLayer);
-                map.addLayer(satelliteLayer);
-                toggleBtn.textContent = 'Mapa';
-                toggleBtn.title = 'Cambiar a vista mapa';
-                mostrandoSatelite = true;
+                feedbackElement.textContent = `Incorrecto. La respuesta era ${correctAnswer}.`;
+                feedbackElement.className = 'feedback incorrect';
+            }
+
+            // Pequeño movimiento en el contenedor de la pregunta al responder
+            const gameContainer = document.querySelector('.game-container');
+            gameContainer.style.animation = 'shakeQuestion 0.4s';
+            setTimeout(() => {
+                gameContainer.style.animation = '';
+                if (questionsAnswered < totalQuestions) {
+                    generateQuestion();
+                } else {
+                    showCelebration();
+                }
+            }, 400);
+        }
+
+        function addCoinEffect() {
+            const coin = document.querySelector('.coin');
+            coin.style.transform = 'scale(1.5) rotate(360deg)';
+            setTimeout(() => {
+                coin.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+        }
+
+        function showCelebration() {
+            finalScoreCelebration.textContent = score;
+            celebrationElement.style.display = 'flex';
+            createConfetti();
+        }
+
+        function hideCelebration() {
+            celebrationElement.style.display = 'none';
+            resetGame();
+        }
+
+        function resetGame() {
+            score = 0;
+            questionsAnswered = 0;
+            scoreElement.textContent = 0;
+            generateQuestion();
+        }
+
+        // Efecto Confetti (animación simple para entretener)
+        function createConfetti() {
+            const celebrationBox = document.querySelector('.celebration-box');
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                
+                const colorIndex = Math.floor(Math.random() * 3);
+                const colors = ['#f06', '#fff', '#0ff'];
+                confetti.style.backgroundColor = colors[colorIndex];
+
+                // Animación de caída y giro
+                confetti.style.animation = `confettiFall ${3 + Math.random() * 2}s linear forwards`;
+                
+                celebrationBox.appendChild(confetti);
+            }
+
+            // Limpiar confetis después de la animación
+            setTimeout(() => {
+                document.querySelectorAll('.confetti').forEach(c => c.remove());
+            }, 5000);
+        }
+
+        // Definición de keyframes para confeti (necesitan estar en el estilo o inyectados)
+        const styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(`
+            @keyframes confettiFall {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(500px) rotate(${720 * (Math.random() > 0.5 ? 1 : -1)}deg); opacity: 0; }
+            }
+        `, styleSheet.cssRules.length);
+
+        // Iniciar el juego
+        generateQuestion();
+
+        // Permitir responder con Enter
+        answerInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
             }
         });
+
     </script>
 </body>
 </html>
