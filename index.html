@@ -196,8 +196,100 @@
     background-color: white;
     color: #007bff;
   }
+  
+  
+  
+  
+   /* Contenedor del banner */
+  .ad-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255, 165, 0, 0.85), rgba(0, 0, 255, 0.6)); /* naranja con azul transparente */
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  /* Contenido dentro del banner */
+  .ad-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* Imagen del banner */
+  .ad-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+  }
+
+  /* Mensaje del banner */
+  .ad-message {
+    flex: 1;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
+
+  /* Botón aceptar */
+  .ad-button {
+    background-color: rgba(0, 0, 255, 0.8); /* azul sólido con opacidad */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+
+  .ad-button:hover {
+    background-color: rgba(0, 0, 255, 1);
+  }
+
+  /* Animación para ocultar el banner */
+  .ad-banner.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Responsive: texto más pequeño en pantallas pequeñas */
+  @media (max-width: 480px) {
+    .ad-message {
+      font-size: 0.9rem;
+    }
+
+    .ad-button {
+      padding: 8px 24px;
+      font-size: 0.9rem;
+    }
+  }
 </style>
 </head>
+
+ <!-- Banner Publicitario -->
+<div id="adBanner" class="ad-banner">
+  <div class="ad-content">
+    <img src="img/publister.jpeg" alt="Publicidad" class="ad-image" />
+    <span class="ad-message">Se acerca tu cumpleaños ven ahora tortas María a buen precio.</span>
+    <button id="acceptBtn" class="ad-button">Ocultar</button>
+  </div>
+</div>
+
+
 <body>
   <div class="container">
     <header>CONVERSOR</header>
@@ -478,6 +570,30 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem(consentKey, 'rejected');
       hideBanner();
     });
+  });
+  
+  
+   const banner = document.getElementById('adBanner');
+  const acceptBtn = document.getElementById('acceptBtn');
+
+  // Tiempo en milisegundos para que reaparezca el banner (2 minutos)
+  const REAPPEAR_TIME = 2 * 60 * 1000; // 120000 ms
+
+  let reapearTimeoutId = null;
+
+  acceptBtn.addEventListener('click', () => {
+    // Oculta el banner
+    banner.classList.add('hide');
+
+    // Limpia cualquier timeout previo por si se oculta varias veces
+    if (reapearTimeoutId) {
+      clearTimeout(reapearTimeoutId);
+    }
+
+    // Programa que reaparezca el banner tras 2 minutos
+    reapearTimeoutId = setTimeout(() => {
+      banner.classList.remove('hide');
+    }, REAPPEAR_TIME);
   });
 </script>
 </body>
