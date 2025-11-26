@@ -1,504 +1,635 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Calculadora de División - Saca tu cuenta fácil</title>
-    <style>
-        /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: #333;
-        }
-
-        /* Loader pantalla completa */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 9999;
-        }
-
-        /* Círculo grande multicolor brillante */
-        .circle-loader {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: conic-gradient(
-                #ff3f8b,
-                #04c2c9,
-                #2e55c1,
-                #ff3f8b,
-                #04c2c9,
-                #2e55c1,
-                #ff3f8b
-            );
-            box-shadow: 0 0 20px 5px #ff3f8b, 0 0 30px 15px #04c2c9, 0 0 40px 25px #2e55c1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        /* Texto central estático, multicolor letra por letra */
-        .center-text {
-            position: absolute;
-            width: 180px;
-            text-align: center;
-            font-weight: 900;
-            font-size: 1.4rem;
-            line-height: 1.2;
-            user-select: none;
-        }
-
-        .center-text span {
-            font-weight: 900;
-            -webkit-text-stroke: 1px black;
-            text-stroke: 1px black;
-            display: inline-block;
-            animation: none;
-        }
-
-        /* Colores para cada letra */
-        .center-text span:nth-child(1)  { color: #e74c3c; }  /* rojo */
-        .center-text span:nth-child(2)  { color: #f39c12; }  /* naranja */
-        .center-text span:nth-child(3)  { color: #f1c40f; }  /* amarillo */
-        .center-text span:nth-child(4)  { color: #2ecc71; }  /* verde */
-        .center-text span:nth-child(5)  { color: #1abc9c; }  /* turquesa */
-        .center-text span:nth-child(6)  { color: #3498db; }  /* azul */
-        .center-text span:nth-child(7)  { color: #9b59b6; }  /* morado */
-        .center-text span:nth-child(8)  { color: #e74c3c; }
-        .center-text span:nth-child(9)  { color: #f39c12; }
-        .center-text span:nth-child(10) { color: #f1c40f; }
-        .center-text span:nth-child(11) { color: #2ecc71; }
-        .center-text span:nth-child(12) { color: #1abc9c; }
-        .center-text span:nth-child(13) { color: #3498db; }
-        .center-text span:nth-child(14) { color: #9b59b6; }
-        .center-text span:nth-child(15) { color: #e74c3c; }
-        .center-text span:nth-child(16) { color: #f39c12; }
-        .center-text span:nth-child(17) { color: #f1c40f; }
-        .center-text span:nth-child(18) { color: #2ecc71; }
-        .center-text span:nth-child(19) { color: #1abc9c; }
-        .center-text span:nth-child(20) { color: #3498db; }
-        .center-text span:nth-child(21) { color: #9b59b6; }
-
-        /* Contenedor de puntitos girando */
-        .dots-container {
-            position: absolute;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            top: 0;
-            left: 0;
-            animation: spinDots 6s linear infinite;
-            pointer-events: none;
-        }
-
-        /* Puntitos */
-        .dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background-color: #2ecc71; /* verde */
-            border: 2px solid #e74c3c; /* borde rojo */
-            border-radius: 50%;
-            box-shadow: 0 0 8px 2px #2ecc71;
-        }
-
-        /* Posiciones de 8 puntitos alrededor (cada 45 grados) */
-        .dot:nth-child(1) {
-            top: 5%;
-            left: 50%;
-            transform: translate(-50%, 0);
-        }
-        .dot:nth-child(2) {
-            top: 21%;
-            left: 80%;
-            transform: translate(-50%, 0);
-        }
-        .dot:nth-child(3) {
-            top: 50%;
-            left: 95%;
-            transform: translate(-50%, -50%);
-        }
-        .dot:nth-child(4) {
-            top: 79%;
-            left: 80%;
-            transform: translate(-50%, -100%);
-        }
-        .dot:nth-child(5) {
-            top: 95%;
-            left: 50%;
-            transform: translate(-50%, -100%);
-        }
-        .dot:nth-child(6) {
-            top: 79%;
-            left: 20%;
-            transform: translate(-50%, -100%);
-        }
-        .dot:nth-child(7) {
-            top: 50%;
-            left: 5%;
-            transform: translate(-50%, -50%);
-        }
-        .dot:nth-child(8) {
-            top: 21%;
-            left: 20%;
-            transform: translate(-50%, 0);
-        }
-
-        /* Animaciones */
-        @keyframes spinDots {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Ocultar contenido principal inicialmente */
-        #mainContent {
-            display: none;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .container {
-            max-width: 400px;
-            background: #fff;
-            margin: 50px auto;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-
-        h2 {
-            color: #2575fc;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #444;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1.1rem;
-            border-radius: 6px;
-            border: 1.5px solid #ccc;
-            margin-bottom: 20px;
-            transition: border-color 0.3s ease;
-            background-color: #fff;
-            user-select: text;
-        }
-
-        input[type="text"]:focus {
-            border-color: #2575fc;
-            outline: none;
-        }
-
-        input[readonly] {
-            background-color: #e9e9e9;
-            cursor: pointer;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            flex: 1;
-            background-color: #2575fc;
-            color: white;
-            border: none;
-            padding: 14px 0;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-            user-select: none;
-        }
-
-        button:hover {
-            background-color: #1a52c0;
-        }
-
-        button.clear {
-            background-color: #f44336;
-        }
-
-        button.clear:hover {
-            background-color: #c0392b;
-        }
-
-        /* Estilo para el input de resultado */
-        #resultadoInput {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #ff0000; /* rojo grueso */
-            background-color: #d0e7ff; /* azul bajito */
-            border: 2px solid #2575fc;
-            border-radius: 8px;
-            text-align: center;
-            user-select: text;
-            margin-top: 15px;
-        }
-
-        /* Teclado numérico personalizado reducido */
-        .teclado {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-            user-select: none;
-        }
-
-        .teclado button {
-            background-color: #e0e7ff;
-            color: #2575fc;
-            font-weight: 700;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            padding: 10px;
-            border: 2px solid #2575fc;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .teclado button:hover {
-            background-color: #2575fc;
-            color: white;
-        }
-
-        .teclado button.action {
-            background-color: #f44336;
-            color: white;
-            border-color: #c0392b;
-        }
-
-        .teclado button.action:hover {
-            background-color: #c0392b;
-        }
-
-        .input-container {
-            position: relative;
-        }
-
-        @media(max-width: 480px) {
-            .container {
-                margin: 30px 15px;
-                padding: 25px 20px;
-            }
-
-            button {
-                font-size: 1rem;
-                padding: 12px 0;
-            }
-
-            .teclado button {
-                font-size: 1rem;
-                padding: 8px;
-            }
-
-            .circle-loader {
-                width: 180px;
-                height: 180px;
-            }
-
-            .center-text {
-                width: 140px;
-                font-size: 1.1rem;
-            }
-
-            .dots-container {
-                width: 180px;
-                height: 180px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat Operador Virtual - Conversor</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
+<style>
+
+/* Reset básico y tipografía */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+header {
+  background-color: #272727;
+  padding: 15px 20px;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+#btnBack {
+  background-color: #007acc;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+#btnBack:hover,
+#btnBack:focus {
+  background-color: #005f99;
+  outline: none;
+}
+
+main#chatWindow {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #121212;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+/* Mensajes */
+.message {
+  margin-bottom: 12px;
+  position: relative;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  word-wrap: break-word;
+  font-size: 1rem;
+  line-height: 1.3;
+  user-select: text;
+}
+
+.message.user {
+  background-color: #005f99;
+  color: #e0e0e0;
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
+}
+
+.message.operator {
+  background-color: #333;
+  color: #ddd;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+
+/* Botón para borrar mensaje individual */
+.message button.deleteBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: #ff5555;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0 5px;
+  border-radius: 3px;
+  transition: color 0.3s ease;
+}
+
+.message button.deleteBtn:hover,
+.message button.deleteBtn:focus {
+  color: #ff2222;
+  outline: none;
+}
+
+/* Formulario de chat */
+form#chatForm {
+  display: flex;
+  border-top: 1px solid #333;
+  background-color: #1e1e1e;
+  padding: 10px 15px;
+  gap: 10px;
+  border-radius: 0 0 8px 8px;
+}
+
+form#chatForm input[type='text'] {
+  flex-grow: 1;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-color: #333;
+  color: #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+form#chatForm input[type='text']:focus {
+  background-color: #444;
+}
+
+form#chatForm button {
+  background-color: #007acc;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form#chatForm button:hover,
+form#chatForm button:focus {
+  background-color: #005f99;
+  outline: none;
+}
+
+/* Sección para añadir preguntas y respuestas */
+#addQASection {
+  background-color: #272727;
+  padding: 15px 20px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+
+#addQASection h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+form#addQAForm {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+form#addQAForm input[type='text'] {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  background-color: #333;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+form#addQAForm input[type='text']:focus {
+  background-color: #444;
+  outline: none;
+}
+
+form#addQAForm button {
+  background-color: #28a745;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form#addQAForm button:hover,
+form#addQAForm button:focus {
+  background-color: #1e7e34;
+  outline: none;
+}
+
+/* Scroll personalizado para el chat */
+main#chatWindow::-webkit-scrollbar {
+  width: 8px;
+}
+
+main#chatWindow::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+main#chatWindow::-webkit-scrollbar-thumb {
+  background-color: #007acc;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  form#addQAForm {
+    flex-direction: column;
+  }
+
+  form#addQAForm input[type='text'],
+  form#addQAForm button {
+    width: 100%;
+  }
+}
+
+
+</style>
+
 <body>
-    <!-- Loader con logo animado -->
-    <div id="loader" role="alert" aria-live="assertive" aria-busy="true">
-        <div class="circle-loader" aria-hidden="true">
-            <div class="dots-container" aria-hidden="true">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <div class="center-text" aria-label="Calculadora de división">
-                <!-- Texto con cada letra envuelta en span para color individual -->
-                <span>C</span><span>a</span><span>l</span><span>c</span><span>u</span><span>l</span><span>a</span><span>d</span><span>o</span><span>r</span><span>a</span> <br/>
-                <span>p</span><span>a</span><span>r</span><span>a</span> <br/>
-                <span>D</span><span>i</span><span>v</span><span>i</span><span>d</span><span>i</span><span>r</span>
-            </div>
-        </div>
-    </div>
+  <div class="container">
+    <header>
+      <h1>Operador Virtual - Conversor</h1>
+      <button id="btnBack" title="Volver al menú">← Volver al Menú</button>
+    </header>
 
-    <!-- Contenido principal -->
-    <div id="mainContent">
-        <main class="container" role="main">
-            <h2>Calculadora de División</h2>
-            <form id="calcForm" aria-label="Formulario para calcular división" onsubmit="return false;">
-                <label for="dividendo">Dividendo (Número a dividir):</label>
-                <input type="text" id="dividendo" name="dividendo" placeholder=" " readonly aria-required="true" aria-label="Dividendo" />
+    <main id="chatWindow" aria-label="Chat de preguntas y respuestas"></main>
 
-                <label for="divisor">Divisor (Número para dividir):</label>
-                <input type="text" id="divisor" name="divisor" placeholder=" " readonly aria-required="true" aria-label="Divisor" />
+    <form id="chatForm" aria-label="Formulario de chat">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Escribe tu pregunta..."
+        autocomplete="off"
+        aria-required="true"
+        maxlength="150"
+        required
+      />
+      <button type="submit" aria-label="Enviar mensaje">Enviar</button>
+    </form>
 
-                <div class="buttons">
-                    <button type="button" id="btnCalcular" aria-label="Calcular división">Calcular</button>
-                    <button type="button" class="clear" id="btnClear" aria-label="Borrar campos y resultado">Borrar</button>
-                </div>
-            </form>
+    <section id="addQASection" aria-label="Añadir preguntas y respuestas">
+      <h2>Añadir Pregunta y Respuesta</h2>
+      <form id="addQAForm">
+        <input
+          type="text"
+          id="newQuestion"
+          placeholder="Nueva pregunta"
+          autocomplete="off"
+          maxlength="150"
+          required
+          aria-required="true"
+        />
+        <input
+          type="text"
+          id="newAnswer"
+          placeholder="Respuesta correspondiente"
+          autocomplete="off"
+          maxlength="300"
+          required
+          aria-required="true"
+        />
+        <button type="submit">Añadir</button>
+      </form>
+    </section>
+  </div>
 
-            <!-- Input para resultado -->
-            <input type="text" id="resultadoInput" readonly aria-live="polite" aria-label="Resultado de la división" placeholder="Resultado" />
+  <script>// Lista de palabras ofensivas para bloquear
+const bannedWords = [
+  'coño',
+  'coño la madre',
+  'maldito',
+  'mierda',
+  'desgraciado',
+  'pajuo',
+  'cuca',
+  'culo',
+  'mal parido',
+  'muerte',
+  'sangre',
+  'maldicion',
+  'pipe',
+  'muerta de hambre',
+  'dame culo',
+'mama guevo',
+'viva maduro',
+'chavez vive',
+'viva la patria',
+'el socialismo ',
 
-            <!-- Teclado numérico -->
-            <div class="teclado" role="application" aria-label="Teclado numérico">
-                <button type="button" class="num-btn" data-value="7">7</button>
-                <button type="button" class="num-btn" data-value="8">8</button>
-                <button type="button" class="num-btn" data-value="9">9</button>
-                <button type="button" class="num-btn" data-value="4">4</button>
-                <button type="button" class="num-btn" data-value="5">5</button>
-                <button type="button" class="num-btn" data-value="6">6</button>
-                <button type="button" class="num-btn" data-value="1">1</button>
-                <button type="button" class="num-btn" data-value="2">2</button>
-                <button type="button" class="num-btn" data-value="3">3</button>
-                <button type="button" id="btnDot" class="num-btn" data-value=".">.</button>
-                <button type="button" class="num-btn" data-value="0">0</button>
-                <button type="button" class="action" id="btnBackspace" aria-label="Borrar último dígito">⌫</button>
-            </div>
-        </main>
 
-        <footer>
-            <Center>
-            &copy; 2025 | Calculadora de División
-            </Center>
-        </footer>
-    </div>
+  // Puedes agregar más si deseas
+];
 
-    <script>
-        
-        // Mostrar loader y luego contenido principal después de 6 segundos
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                const mainContent = document.getElementById('mainContent');
-                loader.style.display = 'none';
-                mainContent.style.display = 'flex';
-            }, 2000); // 3 segundos
-        });
+// Preguntas y respuestas predefinidas
+const defaultQA = {
+  'publicidad': 'Nuestra aplicación muestra publicidad para mantener el servicio gratuito.',
+  
+  'porque no actualizo el dólar en la aplicación': 'El dólar puede no actualizarse debido a problemas con la fuente de datos o conexión.',
+  'fecha bancaria': 'La aplicación muestra la fecha bancaria actualizada según el banco asociado.',
+  'inicio de sección': 'Para iniciar sesión, ingresa tu usuario y contraseña en la pantalla de inicio.',
+  'cuanto cuesta la aplicación': 'La aplicación es gratuita con opciones premium de pago.',
+  'precio de la aplicación': 'El precio varía según el plan, desde MATH_EXPR_09.99 por mes.',
+  'porque no funciona la calculadora': 'Verifica que tu conexión esté activa y que la calculadora esté actualizada.',
+  'porque no funciona el calendario': 'El calendario puede estar deshabilitado temporalmente por mantenimiento.',
+  'que pasa con esta aplicación': 'Estamos trabajando para mejorar la experiencia y corregir errores.',
+  'quien fue el creador de esta app': 'La aplicación fue creada por un equipo de desarrolladores expertos en software.',
+  'puedo publicar propagandas': 'Actualmente no permitimos publicidad externa para mantener la calidad.',
+  'de donde es la aplicación': 'Esta aplicación fue desarrollada en Latinoamérica.',
+  'cuando fue creada': 'La aplicación fue creada en el año 2023.',
+  'como la descargo': 'Puedes descargarla desde nuestra página oficial o tiendas de aplicaciones.',
+  'está en play estore': 'Sí, la aplicación está disponible en Google Play Store.',
+  // 8 preguntas adicionales
+  'precio del dólar de hoy': 'el dólar de hoy cotiza en 243.57.',
+  
+  'cómo cambio el idioma': 'Puedes cambiar el idioma desde la configuración en la sección de ajustes.',
+  'la aplicación consume muchos datos': 'La aplicación está optimizada para consumir pocos datos, pero depende del uso.',
+  'cómo restablecer la contraseña': 'Puedes restablecer la contraseña desde la pantalla de inicio, opción "Olvidé mi contraseña".',
+  'la calculadora da resultados erróneos': 'Por favor revisa que los datos ingresados sean correctos y actualiza la app.',
+  'cómo contacto soporte': 'Puedes contactarnos a soporte@conversorapp.com o vía chat en línea.',
+  'hay versión para iOS': 'Sí, próximamente lanzaremos la versión para iOS.',
+  
+  'qué hacer si la app se cierra sola': 'Intenta reinstalar la aplicación y borrar caché para resolver el problema.',
+  
+   'quien eres': 'soy un operador virtual de la plataforma de la aplicación conversor',
+   
+   'que haces': 'mantenerte informado en las preguntas que me agas',
+   
+   'tu nombre': 'me llamo operador virtual de esta aplicación me puedes llamar Noe',
+   
+   'quien te creo': 'disculpa no puedo darte esa información de quien creo la aplicación conversor no estoy autorizado para dar esa información.',
+   
+   'eres juan': 'disculpa quien es Juan ',
+   
+   'disculpa pense': 'ok no sigas pensando porque soy operador virtual de esta app',
+   
+   'disculpa': 'Disculpad@, alguna otra pregunta para ayudarte',
+   
+   'tengo hambre': 'valla a cocinar pues y disfrute de su comida',
+   
+   'eres casado': 'no soy casado no estoy diseñado para ese parentesco',
+   
+   'que versión eres': 'la versión de la app conversor es 1.0',
+   
+   'eres hombre o mujer': 'hombre y tu?',
+   
+   'mujer':'ok que bueno chica',
+   
+   'hombre': 'ok exelente amigo', 
+   'dame la hora': ' te invito ver la hora en el menú de la aplicación',
+   
+   'hola buenas': 'hola puedo ayurte en algo?',
+   
+   'si quien eres': 'hola soy tu operador virtual en que te podré ayudar',
+   
+   'precio de una aplicación':'depende el tipo de aplicación que necesites de tu interes',
+  
+   'como debo publicar por esta aplicación': 'para publicar por esta app debes comunicarte con el desarrollador.',
+   
+   'crear publicidad': 'debes comunicarte con el desarrollador de la app para publicar alguna publicación de tu interes',
+   
+   'no entiendo' : 'que no entiendes para explicarte otra vez',
+     
+'contacto del desarrollador':'disculpa no estoy autorizado para darte el contacto del desarrollador pero intentaré comunicarme con el y proporcionarte la repuesta',
+     
+  'dame tu número': 'lo siento estás en mi contacto que deseabas ',
+   
+'color favorito': 'verde',
 
-        const dividendoInput = document.getElementById('dividendo');
-        const divisorInput = document.getElementById('divisor');
-        const resultadoInput = document.getElementById('resultadoInput');
-        const btnCalcular = document.getElementById('btnCalcular');
-        const btnClear = document.getElementById('btnClear');
-        const btnBackspace = document.getElementById('btnBackspace');
-        const numButtons = document.querySelectorAll('.num-btn');
+'buenas noches': 'buenas noches en que puedo servirte.',
 
-        // Variable para saber en qué input estamos escribiendo
-        let inputActivo = dividendoInput;
-        dividendoInput.classList.add('input-activo');
+'como te llamas': 'mi nombre es Noe',
 
-        // Cambiar input activo al hacer click
-        dividendoInput.addEventListener('click', () => setInputActivo(dividendoInput));
-        divisorInput.addEventListener('click', () => setInputActivo(divisorInput));
+'a como está el dolar hoy': 've al menú y allí está mostrada el dólar al dia',
 
-        function setInputActivo(input) {
-            inputActivo = input;
-            dividendoInput.classList.toggle('input-activo', input === dividendoInput);
-            divisorInput.classList.toggle('input-activo', input === divisorInput);
-        }
 
-        // Función para añadir valor al input activo
-        function agregarValor(valor) {
-            if (!inputActivo) return;
+'chao': 'gracias por escribir bienvenido cuando vuelva nuevamente hasta luego',
+   
+};
 
-            // Evitar más de un punto decimal
-            if (valor === '.' && inputActivo.value.includes('.')) {
-                return;
-            }
-            inputActivo.value += valor;
-        }
+// Claves para almacenamiento local
+const STORAGE_KEY_MESSAGES = 'chat_messages';
+const STORAGE_KEY_QA = 'chat_qa';
 
-        // Teclado numérico botones
-        numButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                agregarValor(button.dataset.value);
-            });
-        });
+const chatWindow = document.getElementById('chatWindow');
+const chatForm = document.getElementById('chatForm');
+const userInput = document.getElementById('userInput');
+const addQAForm = document.getElementById('addQAForm');
+const newQuestionInput = document.getElementById('newQuestion');
+const newAnswerInput = document.getElementById('newAnswer');
+const btnBack = document.getElementById('btnBack');
 
-        // Botón backspace
-        btnBackspace.addEventListener('click', () => {
-            if (!inputActivo) return;
-            inputActivo.value = inputActivo.value.slice(0, -1);
-        });
+// Carga preguntas y respuestas desde localStorage o usa las predeterminadas
+function loadQA() {
+  const savedQA = localStorage.getItem(STORAGE_KEY_QA);
+  if (savedQA) {
+    try {
+      return JSON.parse(savedQA);
+    } catch {
+      return { ...defaultQA };
+    }
+  }
+  return { ...defaultQA };
+}
 
-        // Botón borrar todo
-        btnClear.addEventListener('click', () => {
-            dividendoInput.value = '';
-            divisorInput.value = '';
-            resultadoInput.value = '';
-            setInputActivo(dividendoInput);
-            dividendoInput.focus();
-        });
+// Guarda preguntas y respuestas en localStorage
+function saveQA(qaObj) {
+  localStorage.setItem(STORAGE_KEY_QA, JSON.stringify(qaObj));
+}
 
-            // Botón calcular
-        btnCalcular.addEventListener('click', () => {
-            const dividendo = parseFloat(dividendoInput.value);
-            const divisor = parseFloat(divisorInput.value);
+// Carga mensajes previos desde localStorage
+function loadMessages() {
+  const saved = localStorage.getItem(STORAGE_KEY_MESSAGES);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
 
-            if (isNaN(dividendo) || isNaN(divisor)) {
-                resultadoInput.value = "Por favor, introduce números válidos.";
-                return;
-            }
+// Guarda mensajes en localStorage
+function saveMessages(msgs) {
+  localStorage.setItem(STORAGE_KEY_MESSAGES, JSON.stringify(msgs));
+}
 
-            if (divisor === 0) {
-                resultadoInput.value = "Error: No se puede dividir entre cero.";
-                return;
-            }
+// Función para sanitizar texto y evitar XSS
+function sanitize(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
-            const resultado = dividendo / divisor;
-            resultadoInput.value = resultado.toFixed(4);
-        });
-        </script>
-        </body>
-        </HTML>
+// Comprueba si el mensaje contiene palabras ofensivas
+function containsBannedWords(text) {
+  const lowerText = text.toLowerCase();
+  return bannedWords.some((word) => lowerText.includes(word));
+}
+
+// Añade un mensaje al chat y lo guarda
+function addMessage(text, sender) {
+  const messages = loadMessages();
+  const messageObj = {
+    id: Date.now(),
+    sender,
+    text,
+  };
+  messages.push(messageObj);
+  saveMessages(messages);
+  renderMessage(messageObj);
+  scrollChatToBottom();
+  return messageObj.id;
+}
+
+// Renderiza un único mensaje en el chat
+function renderMessage(message) {
+  const div = document.createElement('div');
+  div.classList.add('message', message.sender);
+  div.setAttribute('data-id', message.id);
+  div.setAttribute('role', 'article');
+  div.setAttribute('aria-label', `message.sender===′user′?′Usuario′:′Operadorvirtual′dijo:{message.sender === 'user' ? 'Usuario' : 'Operador virtual'} dijo:message.sender===′user′?′Usuario′:′Operadorvirtual′dijo:{message.text}`);
+
+  div.innerHTML = `
+    <span>${sanitize(message.text)}</span>
+    <button aria-label="Borrar mensaje" class="deleteBtn">&times;</button>
+  `;
+
+  // Añadir evento para borrar mensaje
+  div.querySelector('.deleteBtn').addEventListener('click', () => {
+    deleteMessage(message.id);
+  });
+
+  chatWindow.appendChild(div);
+}
+
+// Renderiza todos los mensajes guardados al cargar
+function renderMessages() {
+  chatWindow.innerHTML = '';
+  const messages = loadMessages();
+  messages.forEach(renderMessage);
+  scrollChatToBottom();
+}
+
+// Borra un mensaje individual
+function deleteMessage(id) {
+  let messages = loadMessages();
+  messages = messages.filter((msg) => msg.id !== id);
+  saveMessages(messages);
+  renderMessages();
+}
+
+// Desplaza el chat al final
+function scrollChatToBottom() {
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Responde al usuario con la respuesta apropiada
+function responderPregunta(text) {
+  const qa = loadQA();
+  const normalizedText = text.trim().toLowerCase();
+
+  // Buscar coincidencia exacta o parcial
+  let response = null;
+
+  // Exact match
+  if (qa.hasOwnProperty(normalizedText)) {
+    response = qa[normalizedText];
+  } else {
+    // Busca pregunta que incluya la pregunta del usuario (para aproximados)
+    for (const question in qa) {
+      if (normalizedText.includes(question)) {
+        response = qa[question];
+        break;
+      }
+    }
+  }
+
+  if (!response) {
+    response = 'Lo siento, no tengo una respuesta para esa pregunta. Por favor, intenta con otra consulta o añade una respuesta personalizada.';
+  }
+
+  return response;
+}
+
+// Maneja el envío del formulario de chat
+chatForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const userText = userInput.value.trim();
+  if (!userText) return;
+
+  // Bloquear palabras ofensivas
+  if (containsBannedWords(userText)) {
+    alert('Por favor, no uses palabras ofensivas.');
+    userInput.value = '';
+    return;
+  }
+
+  // Añadir mensaje del usuario
+  addMessage(userText, 'user');
+
+  // Obtener respuesta del operador virtual
+  const answer = responderPregunta(userText);
+
+  // Simular pequeña demora para respuesta
+  setTimeout(() => {
+    addMessage(answer, 'operator');
+  }, 700);
+
+  userInput.value = '';
+});
+
+// Maneja el envío de nuevas preguntas y respuestas
+addQAForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const question = newQuestionInput.value.trim().toLowerCase();
+  const answer = newAnswerInput.value.trim();
+
+  if (!question || !answer) {
+    alert('Por favor, completa ambas preguntas y respuestas.');
+    return;
+  }
+
+  // Bloquear palabras ofensivas en pregunta y respuesta
+  if (containsBannedWords(question) || containsBannedWords(answer)) {
+    alert('No se permiten palabras ofensivas en la pregunta o respuesta.');
+    return;
+  }
+
+  const qa = loadQA();
+  if (qa.hasOwnProperty(question)) {
+    if (!confirm('La pregunta ya existe. ¿Quieres sobrescribir la respuesta?')) {
+      return;
+    }
+  }
+
+  qa[question] = answer;
+  saveQA(qa);
+
+  alert('Pregunta y respuesta añadidas correctamente.');
+
+  newQuestionInput.value = '';
+  newAnswerInput.value = '';
+});
+
+// Carga mensajes guardados al iniciar la página
+window.addEventListener('load', () => {
+  renderMessages();
+});
+
+// Botón para volver al menú.html
+btnBack.addEventListener('click', () => {
+  window.location.href = 'menu.html';
+});
+
+
+</script>
+</body>
+</html>
