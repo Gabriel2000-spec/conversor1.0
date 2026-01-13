@@ -3,649 +3,496 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chat Operador Virtual - Conversor</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
+  <title>Reproductor Clásico Windows XP - Manipulable desde index.html</title>
+  <style>
+    /* ===== Windows XP Classic Style ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Tahoma&display=swap');
 
-<style>
-
-/* Reset básico y tipografía */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #121212;
-  color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  min-height: 100vh;
-}
-
-.container {
-  max-width: 700px;
-  width: 100%;
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  height: 90vh;
-}
-
-header {
-  background-color: #272727;
-  padding: 15px 20px;
-  border-radius: 8px 8px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-#btnBack {
-  background-color: #007acc;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-#btnBack:hover,
-#btnBack:focus {
-  background-color: #005f99;
-  outline: none;
-}
-
-main#chatWindow {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
-  background-color: #121212;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-}
-
-/* Mensajes */
-.message {
-  margin-bottom: 12px;
-  position: relative;
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  word-wrap: break-word;
-  font-size: 1rem;
-  line-height: 1.3;
-  user-select: text;
-}
-
-.message.user {
-  background-color: #005f99;
-  color: #e0e0e0;
-  align-self: flex-end;
-  border-bottom-right-radius: 0;
-}
-
-.message.operator {
-  background-color: #333;
-  color: #ddd;
-  align-self: flex-start;
-  border-bottom-left-radius: 0;
-}
-
-/* Botón para borrar mensaje individual */
-.message button.deleteBtn {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: transparent;
-  border: none;
-  color: #ff5555;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 0 5px;
-  border-radius: 3px;
-  transition: color 0.3s ease;
-}
-
-.message button.deleteBtn:hover,
-.message button.deleteBtn:focus {
-  color: #ff2222;
-  outline: none;
-}
-
-/* Formulario de chat */
-form#chatForm {
-  display: flex;
-  border-top: 1px solid #333;
-  background-color: #1e1e1e;
-  padding: 10px 15px;
-  gap: 10px;
-  border-radius: 0 0 8px 8px;
-}
-
-form#chatForm input[type='text'] {
-  flex-grow: 1;
-  padding: 10px 15px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  background-color: #333;
-  color: #e0e0e0;
-  transition: background-color 0.3s ease;
-}
-
-form#chatForm input[type='text']:focus {
-  background-color: #444;
-}
-
-form#chatForm button {
-  background-color: #007acc;
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-form#chatForm button:hover,
-form#chatForm button:focus {
-  background-color: #005f99;
-  outline: none;
-}
-
-/* Sección para añadir preguntas y respuestas */
-#addQASection {
-  background-color: #272727;
-  padding: 15px 20px;
-  margin-top: 15px;
-  border-radius: 8px;
-}
-
-#addQASection h2 {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-}
-
-form#addQAForm {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-form#addQAForm input[type='text'] {
-  flex-grow: 1;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: none;
-  background-color: #333;
-  color: #e0e0e0;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-}
-
-form#addQAForm input[type='text']:focus {
-  background-color: #444;
-  outline: none;
-}
-
-form#addQAForm button {
-  background-color: #28a745;
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-form#addQAForm button:hover,
-form#addQAForm button:focus {
-  background-color: #1e7e34;
-  outline: none;
-}
-
-/* Scroll personalizado para el chat */
-main#chatWindow::-webkit-scrollbar {
-  width: 8px;
-}
-
-main#chatWindow::-webkit-scrollbar-track {
-  background: #1e1e1e;
-}
-
-main#chatWindow::-webkit-scrollbar-thumb {
-  background-color: #007acc;
-  border-radius: 10px;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  form#addQAForm {
-    flex-direction: column;
-  }
-
-  form#addQAForm input[type='text'],
-  form#addQAForm button {
-    width: 100%;
-  }
-}
-
-
-</style>
-
-<body>
-  <div class="container">
-    <header>
-      <h1>Operador Virtual - Conversor</h1>
-      <button id="btnBack" title="Volver al menú">← Volver al Menú</button>
-    </header>
-
-    <main id="chatWindow" aria-label="Chat de preguntas y respuestas"></main>
-
-    <form id="chatForm" aria-label="Formulario de chat">
-      <input
-        type="text"
-        id="userInput"
-        placeholder="Escribe tu pregunta..."
-        autocomplete="off"
-        aria-required="true"
-        maxlength="150"
-        required
-      />
-      <button type="submit" aria-label="Enviar mensaje">Enviar</button>
-    </form>
-
-    <section id="addQASection" aria-label="Añadir preguntas y respuestas">
-      <h2>Añadir Pregunta y Respuesta</h2>
-      <form id="addQAForm">
-        <input
-          type="text"
-          id="newQuestion"
-          placeholder="Nueva pregunta"
-          autocomplete="off"
-          maxlength="150"
-          required
-          aria-required="true"
-        />
-        <input
-          type="text"
-          id="newAnswer"
-          placeholder="Respuesta correspondiente"
-          autocomplete="off"
-          maxlength="300"
-          required
-          aria-required="true"
-        />
-        <button type="submit">Añadir</button>
-      </form>
-    </section>
-  </div>
-
-  <script>// Lista de palabras ofensivas para bloquear
-const bannedWords = [
-  'coño',
-  'coño la madre',
-  'maldito',
-  'mierda',
-  'desgraciado',
-  'pajuo',
-  'cuca',
-  'culo',
-  'mal parido',
-  'muerte',
-  'sangre',
-  'maldicion',
-  'pipe',
-  'muerta de hambre',
-  'dame culo',
-'mama guevo',
-'viva maduro',
-'chavez vive',
-'viva la patria',
-'el socialismo ',
-  'eres marisco',
-  'mamamelo',
-  'nojodas',
-
-
-  // Puedes agregar más si deseas
-];
-
-// Preguntas y respuestas predefinidas
-const defaultQA = {
-  'publicidad': 'Nuestra aplicación muestra publicidad para mantener el servicio gratuito.',
-  
-  'porque no actualizo el dólar en la aplicación': 'El dólar puede no actualizarse debido a problemas con la fuente de datos o conexión.',
-  'fecha bancaria': 'La aplicación muestra la fecha bancaria actualizada según el banco asociado.',
-  'inicio de sección': 'Para iniciar sesión, ingresa tu usuario y contraseña en la pantalla de inicio.',
-  'cuanto cuesta la aplicación': 'La aplicación es gratuita con opciones premium de pago.',
-  'precio de la aplicación': 'El precio varía según el plan, desde MATH_EXPR_09.99 por mes.',
-  'porque no funciona la calculadora': 'Verifica que tu conexión esté activa y que la calculadora esté actualizada.',
-  'porque no funciona el calendario': 'El calendario puede estar deshabilitado temporalmente por mantenimiento.',
-  'que pasa con esta aplicación': 'Estamos trabajando para mejorar la experiencia y corregir errores.',
-  'quien fue el creador de esta app': 'La aplicación fue creada por un equipo de desarrolladores expertos en software.',
-  'puedo publicar propagandas': 'Actualmente no permitimos publicidad externa para mantener la calidad.',
-  'de donde es la aplicación': 'Esta aplicación fue desarrollada en Latinoamérica.',
-  'cuando fue creada': 'La aplicación fue creada en el año 2023.',
-  'como la descargo': 'Puedes descargarla desde nuestra página oficial o tiendas de aplicaciones.',
-  'está en play estore': 'Sí, la aplicación está disponible en Google Play Store.',
-  // 8 preguntas adicionales
-  'precio del dólar' : 'dolar de hoy 298,14',
-  'precio del dólar de hoy': 'el dólar de hoy cotiza en 298.14.',
-  
-  'cómo cambio el idioma': 'Puedes cambiar el idioma desde la configuración en la sección de ajustes.',
-  'la aplicación consume muchos datos': 'La aplicación está optimizada para consumir pocos datos, pero depende del uso.',
-  'cómo restablecer la contraseña': 'Puedes restablecer la contraseña desde la pantalla de inicio, opción "Olvidé mi contraseña".',
-  'la calculadora da resultados erróneos': 'Por favor revisa que los datos ingresados sean correctos y actualiza la app.',
-  'cómo contacto soporte': 'Puedes contactarnos a soporte@conversorapp.com o vía chat en línea.',
-  'hay versión para iOS': 'Sí, próximamente lanzaremos la versión para iOS.',
-  
-  'qué hacer si la app se cierra sola': 'Intenta reinstalar la aplicación y borrar caché para resolver el problema.',
-  
-   'quien eres': 'soy un operador virtual de la plataforma de la aplicación conversor',
-   
-   'que haces': 'mantenerte informado en las preguntas que me agas',
-   
-   'tu nombre': 'me llamo operador virtual de esta aplicación me puedes llamar Noe',
-   
-   'quien te creo': 'disculpa no puedo darte esa información de quien creo la aplicación conversor no estoy autorizado para dar esa información.',
-   
-   'eres juan': 'disculpa quien es Juan ',
-   
-   'disculpa pense': 'ok no sigas pensando porque soy operador virtual de esta app',
-   
-   'disculpa': 'Disculpad@, alguna otra pregunta para ayudarte',
-   
-   'tengo hambre': 'valla a cocinar pues y disfrute de su comida',
-   
-   'eres casado': 'no soy casado no estoy diseñado para ese parentesco',
-   
-   'que versión eres': 'la versión de la app conversor es 1.0',
-   
-   'eres hombre o mujer': 'hombre y tu?',
-   
-   'mujer':'ok que bueno chica',
-   
-   'hombre': 'ok exelente amigo', 
-   'dame la hora': ' te invito ver la hora en el menú de la aplicación',
-   
-   'hola buenas': 'hola puedo ayurte en algo?',
-   
-   'si quien eres': 'hola soy tu operador virtual en que te podré ayudar',
-   
-   'precio de una aplicación':'depende el tipo de aplicación que necesites de tu interes',
-  
-   'como debo publicar por esta aplicación': 'para publicar por esta app debes comunicarte con el desarrollador.',
-   
-   'crear publicidad': 'debes comunicarte con el desarrollador de la app para publicar alguna publicación de tu interes',
-   
-   'no entiendo' : 'que no entiendes para explicarte otra vez',
-     
-'contacto del desarrollador':'disculpa no estoy autorizado para darte el contacto del desarrollador pero intentaré comunicarme con el y proporcionarte la repuesta',
-     
-  'dame tu número': 'lo siento estás en mi contacto que deseabas ',
-   
-'color favorito': 'verde',
-
-'buenas noches': 'buenas noches en que puedo servirte.',
-
-'como te llamas': 'mi nombre es Noe',
-
-'a como está el dolar hoy': 've al menú y allí está mostrada el dólar al dia',
-
-'chao': 'gracias por escribir bienvenido cuando vuelva nuevamente hasta luego',
-'hola': 'hola en que puedo ayudarte',
-
-'cómo estas': 'bien gracias a Dios y tú?',
-
-'quien eres': 'soy Noe ',
-'que edad tienes' : 'me lo reservo',
-'hasta que hora atiendes' : 'las 24 horas al día mientras este activo la app',
-
-'eres casado': 'no estoy casado',
-'no sé me actualiza la aplicación': 'estimado debe esperar que la app actualice desde la plataformao en caso que se allá actualizado borre el cache de la aplicación y la vuelve abrir nuevamente para que muestre la actualización.',
-
-'que edad tienes': '45',
-'que edad tiene': '45',
-   
-};
-
-// Claves para almacenamiento local
-const STORAGE_KEY_MESSAGES = 'chat_messages';
-const STORAGE_KEY_QA = 'chat_qa';
-
-const chatWindow = document.getElementById('chatWindow');
-const chatForm = document.getElementById('chatForm');
-const userInput = document.getElementById('userInput');
-const addQAForm = document.getElementById('addQAForm');
-const newQuestionInput = document.getElementById('newQuestion');
-const newAnswerInput = document.getElementById('newAnswer');
-const btnBack = document.getElementById('btnBack');
-
-// Carga preguntas y respuestas desde localStorage o usa las predeterminadas
-function loadQA() {
-  const savedQA = localStorage.getItem(STORAGE_KEY_QA);
-  if (savedQA) {
-    try {
-      return JSON.parse(savedQA);
-    } catch {
-      return { ...defaultQA };
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
     }
-  }
-  return { ...defaultQA };
-}
-
-// Guarda preguntas y respuestas en localStorage
-function saveQA(qaObj) {
-  localStorage.setItem(STORAGE_KEY_QA, JSON.stringify(qaObj));
-}
-
-// Carga mensajes previos desde localStorage
-function loadMessages() {
-  const saved = localStorage.getItem(STORAGE_KEY_MESSAGES);
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch {
-      return [];
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #008080; /* Classic teal background */
+      color: #000;
+      user-select: none;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-  }
-  return [];
-}
 
-// Guarda mensajes en localStorage
-function saveMessages(msgs) {
-  localStorage.setItem(STORAGE_KEY_MESSAGES, JSON.stringify(msgs));
-}
+    /* Loading Screen */
+    #loading-screen {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 250px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      background: #c0c0c0;
+      border: 2px solid #000;
+      padding: 15px;
+      box-shadow: 3px 3px 0 #fff inset, -3px -3px 0 #404040 inset;
+      border-radius: 4px;
+      z-index: 1000;
+    }
+    #loading-bar {
+      width: 100%;
+      height: 20px;
+      background: #fff;
+      border: 1px solid #000;
+      margin-bottom: 8px;
+      position: relative;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #404040;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    #loading-progress {
+      height: 100%;
+      width: 0;
+      background: #000080;
+      box-shadow:
+        1px 1px 0 #fff inset,
+        -1px -1px 0 #404040 inset;
+      transition: width 0.3s ease;
+    }
 
-// Función para sanitizar texto y evitar XSS
-function sanitize(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
+    /* Main container hidden initially */
+    #app {
+      display: none;
+      max-width: 640px;
+      width: 90vw;
+      background: #c0c0c0;
+      border: 2px solid #000;
+      box-shadow:
+        3px 3px 0 #fff inset,
+        -3px -3px 0 #404040 inset;
+      border-radius: 4px;
+      padding: 8px;
+      box-sizing: border-box;
+      user-select: text;
+      flex-direction: column;
+      display: flex;
+    }
 
-// Comprueba si el mensaje contiene palabras ofensivas
-function containsBannedWords(text) {
-  const lowerText = text.toLowerCase();
-  return bannedWords.some((word) => lowerText.includes(word));
-}
+    /* Title bar */
+    #title-bar {
+      background: linear-gradient(to bottom, #000080, #0000cd);
+      color: #fff;
+      padding: 4px 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #404040;
+      border-radius: 2px;
+      margin-bottom: 8px;
+      user-select: none;
+    }
 
-// Añade un mensaje al chat y lo guarda
-function addMessage(text, sender) {
-  const messages = loadMessages();
-  const messageObj = {
-    id: Date.now(),
-    sender,
-    text,
-  };
-  messages.push(messageObj);
-  saveMessages(messages);
-  renderMessage(messageObj);
-  scrollChatToBottom();
-  return messageObj.id;
-}
+    /* Video container */
+    #video-container {
+      position: relative;
+      background: black;
+      border: 2px solid #000080;
+      box-shadow:
+        3px 3px 0 #fff inset,
+        -3px -3px 0 #404040 inset;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      max-height: 360px;
+      /* mobile-friendly */
+      width: 100%;
+      margin-bottom: 8px;
+    }
 
-// Renderiza un único mensaje en el chat
-function renderMessage(message) {
-  const div = document.createElement('div');
-  div.classList.add('message', message.sender);
-  div.setAttribute('data-id', message.id);
-  div.setAttribute('role', 'article');
-  div.setAttribute('aria-label', `message.sender===′user′?′Usuario′:′Operadorvirtual′dijo:{message.sender === 'user' ? 'Usuario' : 'Operador virtual'} dijo:message.sender===′user′?′Usuario′:′Operadorvirtual′dijo:{message.text}`);
+    video {
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: block;
+    }
 
-  div.innerHTML = `
-    <span>${sanitize(message.text)}</span>
-    <button aria-label="Borrar mensaje" class="deleteBtn">&times;</button>
-  `;
+    /* Controls Bar */
+    #controls {
+      background: #c0c0c0;
+      border: 2px solid #000;
+      box-shadow:
+        3px 3px 0 #fff inset,
+        -3px -3px 0 #404040 inset;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
 
-  // Añadir evento para borrar mensaje
-  div.querySelector('.deleteBtn').addEventListener('click', () => {
-    deleteMessage(message.id);
-  });
+    button, input[type="range"], input[type="color"] {
+      cursor: pointer;
+      background: #e0e0e0;
+      border: 2px outset #fff;
+      box-shadow:
+        1px 1px 0 #fff inset,
+        -1px -1px 0 #404040 inset;
+      font-size: 0.9rem;
+      padding: 4px 8px;
+      border-radius: 2px;
+      transition: all 0.1s ease-in-out;
+      user-select: none;
+    }
+    button:active {
+      border-style: inset;
+      box-shadow:
+        -1px -1px 0 #fff inset,
+        1px 1px 0 #404040 inset;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      height: 16px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      flex-grow: 1;
+      max-width: 150px;
+      margin: 0 4px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #000080;
+      border-radius: 2px;
+      cursor: pointer;
+      border: 1px solid #000;
+      box-shadow:
+        1px 1px 0 #fff inset,
+        -1px -1px 0 #404040 inset;
+      margin-top: -5px;
+      position: relative;
+      z-index: 1;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #000080;
+      border-radius: 2px;
+      cursor: pointer;
+      border: 1px solid #000;
+      box-shadow:
+        1px 1px 0 #fff inset,
+        -1px -1px 0 #404040 inset;
+      position: relative;
+      z-index: 1;
+    }
 
-  chatWindow.appendChild(div);
-}
+    /* Input for video name */
+    #video-name-container {
+      margin-top: 12px;
+      background: #c0c0c0;
+      border: 2px solid #000;
+      box-shadow:
+        3px 3px 0 #fff inset,
+        -3px -3px 0 #404040 inset;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #video-name-label {
+      user-select: none;
+      font-weight: bold;
+    }
+    #video-name {
+      flex-grow: 1;
+      border: 2px inset #fff;
+      background: #e0e0e0;
+      color: #000;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: 2px;
+      user-select: text;
+    }
 
-// Renderiza todos los mensajes guardados al cargar
-function renderMessages() {
-  chatWindow.innerHTML = '';
-  const messages = loadMessages();
-  messages.forEach(renderMessage);
-  scrollChatToBottom();
-}
-
-// Borra un mensaje individual
-function deleteMessage(id) {
-  let messages = loadMessages();
-  messages = messages.filter((msg) => msg.id !== id);
-  saveMessages(messages);
-  renderMessages();
-}
-
-// Desplaza el chat al final
-function scrollChatToBottom() {
-  chatWindow.scrollTop = chatWindow.scrollHeight;
-}
-
-// Responde al usuario con la respuesta apropiada
-function responderPregunta(text) {
-  const qa = loadQA();
-  const normalizedText = text.trim().toLowerCase();
-
-  // Buscar coincidencia exacta o parcial
-  let response = null;
-
-  // Exact match
-  if (qa.hasOwnProperty(normalizedText)) {
-    response = qa[normalizedText];
-  } else {
-    // Busca pregunta que incluya la pregunta del usuario (para aproximados)
-    for (const question in qa) {
-      if (normalizedText.includes(question)) {
-        response = qa[question];
-        break;
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      #app {
+        max-width: 100vw;
+        width: 100vw;
+        border-radius: 0;
+        height: 100vh;
+        box-sizing: border-box;
+        padding: 6px;
+      }
+      #video-container {
+        max-height: none;
+        aspect-ratio: auto;
+        height: 200px;
+      }
+      #controls {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      button, input[type="range"], input[type="color"] {
+        flex-grow: 1;
+        max-width: 100%;
       }
     }
-  }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen" role="alert" aria-live="assertive" aria-busy="true">
+    <div id="loading-bar" aria-label="Barra de carga">
+      <div id="loading-progress"></div>
+    </div>
+    Cargando...
+  </div>
 
-  if (!response) {
-    response = 'Lo siento, no tengo una respuesta para esa pregunta. Por favor, intenta con otra consulta o añade una respuesta personalizada.';
-  }
+  <!-- Main App Container -->
+  <main id="app" role="main" aria-label="Aplicación reproductor de video estilo clásico Windows XP">
+    <div id="title-bar">Reproductor Clásico</div>
 
-  return response;
-}
+    <section id="video-container">
+      <!-- VIDEO ELEMENT -->
+      <video id="video" controls preload="metadata" tabindex="0" aria-label="Reproductor de video">
+        <!--
+          Aquí va el enlace del video (URL) que desees reproducir.
+          Para cambiar el video, modifica el atributo 'src' a la URL deseada.
+        -->
+        <source id="video-source" src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+        Tu navegador no soporta la etiqueta de video.
+      </video>
+    </section>
 
-// Maneja el envío del formulario de chat
-chatForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+    <section id="controls" aria-label="Controles del reproductor">
+      <button id="btn-backward" aria-label="Retroceder 10 segundos" title="Retroceder 10 segundos">&#9664;&#9664;</button>
+      <button id="btn-play-pause" aria-label="Reproducir/Pausar" title="Reproducir/Pausar">&#9654;</button>
+      <button id="btn-forward" aria-label="Adelantar 10 segundos" title="Adelantar 10 segundos">&#9654;&#9654;</button>
 
-  const userText = userInput.value.trim();
-  if (!userText) return;
+      <label for="volume-range" class="sr-only">Volumen</label>
+      <input type="range" id="volume-range" min="0" max="1" step="0.05" aria-valuemin="0" aria-valuemax="1" aria-valuenow="1" aria-label="Control de volumen" title="Control de volumen" value="1" />
 
-  // Bloquear palabras ofensivas
-  if (containsBannedWords(userText)) {
-    alert('Por favor, no uses palabras ofensivas.');
-    userInput.value = '';
-    return;
-  }
+      <button id="btn-download" aria-label="Descargar video" title="Descargar video">&#128229;</button>
 
-  // Añadir mensaje del usuario
-  addMessage(userText, 'user');
+      <label for="color-picker" class="sr-only">Color de fondo del reproductor</label>
+      <input type="color" id="color-picker" aria-label="Seleccionar color de fondo del reproductor" title="Cambiar color de fondo del reproductor" value="#000000" />
+    </section>
 
-  // Obtener respuesta del operador virtual
-  const answer = responderPregunta(userText);
+    <section id="video-name-container" aria-label="Nombre del video">
+      <label for="video-name" id="video-name-label">Nombre del video:</label>
+      <input type="text" id="video-name" readonly aria-readonly="true" />
+    </section>
+    <p>
+        <p>
+    <Center> En prueba clip-video para que disfrute de tus videos anexado por la aplicación.</Center>
+  </main>
 
-  // Simular pequeña demora para respuesta
-  setTimeout(() => {
-    addMessage(answer, 'operator');
-  }, 700);
+  <script>
+    // ====== Variables ======
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingProgress = document.getElementById('loading-progress');
+    const app = document.getElementById('app');
 
-  userInput.value = '';
-});
+    const video = document.getElementById('video');
+    const videoSource = document.getElementById('video-source');
+    const videoNameInput = document.getElementById('video-name');
 
-// Maneja el envío de nuevas preguntas y respuestas
-addQAForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+    const btnPlayPause = document.getElementById('btn-play-pause');
+    const btnBackward = document.getElementById('btn-backward');
+    const btnForward = document.getElementById('btn-forward');
+    const btnDownload = document.getElementById('btn-download');
 
-  const question = newQuestionInput.value.trim().toLowerCase();
-  const answer = newAnswerInput.value.trim();
+    const volumeRange = document.getElementById('volume-range');
+    const colorPicker = document.getElementById('color-picker');
 
-  if (!question || !answer) {
-    alert('Por favor, completa ambas preguntas y respuestas.');
-    return;
-  }
+    // ====== LocalStorage Keys ======
+    const LS_KEYS = {
+      videoSrc: 'videoSrc',
+      videoName: 'videoName',
+      volume: 'videoVolume',
+      bgColor: 'videoBgColor'
+    };
 
-  // Bloquear palabras ofensivas en pregunta y respuesta
-  if (containsBannedWords(question) || containsBannedWords(answer)) {
-    alert('No se permiten palabras ofensivas en la pregunta o respuesta.');
-    return;
-  }
-
-  const qa = loadQA();
-  if (qa.hasOwnProperty(question)) {
-    if (!confirm('La pregunta ya existe. ¿Quieres sobrescribir la respuesta?')) {
-      return;
+    // ====== Loading Screen Simulation ======
+    function simulateLoading() {
+      let progress = 0;
+      return new Promise(resolve => {
+        const interval = setInterval(() => {
+          progress += Math.random() * 20; // increment randomly
+          if (progress >= 100) {
+            progress = 100;
+            loadingProgress.style.width = progress + '%';
+            clearInterval(interval);
+            resolve();
+          } else {
+            loadingProgress.style.width = progress + '%';
+          }
+        }, 250);
+      });
     }
-  }
 
-  qa[question] = answer;
-  saveQA(qa);
+    // ====== Load settings from localStorage or defaults ======
+    function loadSettings() {
+      // Video src
+      const savedSrc = localStorage.getItem(LS_KEYS.videoSrc);
+      if (savedSrc) {
+        videoSource.src = savedSrc;
+        video.load();
+      }
+      // Video name
+      const savedName = localStorage.getItem(LS_KEYS.videoName);
+      if (savedName) {
+        videoNameInput.value = savedName;
+      } else {
+        videoNameInput.value = 'Video de ejemplo';
+      }
+      // Volume
+      const savedVolume = localStorage.getItem(LS_KEYS.volume);
+      if (savedVolume !== null) {
+        const vol = parseFloat(savedVolume);
+        video.volume = vol;
+        volumeRange.value = vol;
+        volumeRange.setAttribute('aria-valuenow', vol);
+      } else {
+        video.volume = 1;
+        volumeRange.value = 1;
+        volumeRange.setAttribute('aria-valuenow', 1);
+      }
+      // Background color
+      const savedColor = localStorage.getItem(LS_KEYS.bgColor);
+      if (savedColor) {
+        video.style.backgroundColor = savedColor;
+        colorPicker.value = savedColor;
+      } else {
+        video.style.backgroundColor = '#000000';
+        colorPicker.value = '#000000';
+      }
+    }
 
-  alert('Pregunta y respuesta añadidas correctamente.');
+    // ====== Save settings to localStorage ======
+    function saveSettings() {
+      localStorage.setItem(LS_KEYS.videoSrc, videoSource.src);
+      localStorage.setItem(LS_KEYS.videoName, videoNameInput.value);
+      localStorage.setItem(LS_KEYS.volume, video.volume.toString());
+      localStorage.setItem(LS_KEYS.bgColor, video.style.backgroundColor);
+    }
 
-  newQuestionInput.value = '';
-  newAnswerInput.value = '';
-});
+    // ====== Controls Handlers ======
+    btnPlayPause.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        btnPlayPause.innerHTML = '&#10074;&#10074;'; // Pause icon
+        btnPlayPause.title = 'Pausar';
+        btnPlayPause.setAttribute('aria-label', 'Pausar');
+      } else {
+        video.pause();
+        btnPlayPause.innerHTML = '&#9654;'; // Play icon
+        btnPlayPause.title = 'Reproducir';
+        btnPlayPause.setAttribute('aria-label', 'Reproducir');
+      }
+    });
 
-// Carga mensajes guardados al iniciar la página
-window.addEventListener('load', () => {
-  renderMessages();
-});
+    btnBackward.addEventListener('click', () => {
+      video.currentTime = Math.max(0, video.currentTime - 10);
+    });
 
-// Botón para volver al menú.html
-btnBack.addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
+    btnForward.addEventListener('click', () => {
+      video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    });
 
+    volumeRange.addEventListener('input', () => {
+      const vol = parseFloat(volumeRange.value);
+      video.volume = vol;
+      volumeRange.setAttribute('aria-valuenow', vol);
+      saveSettings();
+    });
 
-</script>
+    btnDownload.addEventListener('click', () => {
+      // Descargar video (el enlace está en videoSource.src)
+      // Crea un enlace temporal para descargar el video
+      const a = document.createElement('a');
+      a.href = videoSource.src;
+      // Nombre de archivo basado en nombre del video o default
+      let filename = videoNameInput.value.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      if (!filename) filename = 'video';
+      // Añade extensión mp4 o intenta extraerla de la URL
+      const urlExtMatch = videoSource.src.match(/\.(mp4|webm|ogg|mov|mkv|avi|flv)(\?|$)/i);
+      const ext = urlExtMatch ? urlExtMatch[1] : 'mp4';
+      a.download = filename + '.' + ext;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    colorPicker.addEventListener('input', () => {
+      video.style.backgroundColor = colorPicker.value;
+      saveSettings();
+    });
+
+    // ====== Video events ======
+    video.addEventListener('play', () => {
+      btnPlayPause.innerHTML = '&#10074;&#10074;'; // Pause icon
+      btnPlayPause.title = 'Pausar';
+      btnPlayPause.setAttribute('aria-label', 'Pausar');
+    });
+    video.addEventListener('pause', () => {
+      btnPlayPause.innerHTML = '&#9654;'; // Play icon
+      btnPlayPause.title = 'Reproducir';
+      btnPlayPause.setAttribute('aria-label', 'Reproducir');
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      // Guardar nombre basado en URL si no existe
+      if (!localStorage.getItem(LS_KEYS.videoName)) {
+        // Extraer nombre archivo de la URL
+        try {
+          const url = new URL(videoSource.src);
+          let pathname = url.pathname;
+          let fileName = pathname.substring(pathname.lastIndexOf('/') + 1);
+          videoNameInput.value = fileName || 'Video sin nombre';
+          saveSettings();
+        } catch {
+          videoNameInput.value = 'Video sin nombre';
+          saveSettings();
+        }
+      }
+    });
+
+    // Prevent input editing since must be manipulated only from code source
+    videoNameInput.addEventListener('keydown', e => {
+      e.preventDefault();
+    });
+
+    // ====== Initialization ======
+    async function init() {
+      await simulateLoading();
+      loadingScreen.style.display = 'none';
+      app.style.display = 'flex';
+      loadSettings();
+    }
+
+    // Run init on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <!-- Accessibility helper: hidden label for inputs -->
+  <style>
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0,0,0,0) !important;
+      border: 0 !important;
+    }
+  </style>
 </body>
 </html>
