@@ -1,361 +1,477 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Reproductor estilo Windows XP</title>
-<style>
-  /* Reset y estilos básicos */
-  body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Tahoma, Geneva, Verdana, sans-serif;
-    background: #008080; /* Fondo típico Windows XP */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Convertidor BRL a VES</title>
+    <style>
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+        }
 
-  /* Contenedor principal */
-  #app {
-    width: 90vw;
-    max-width: 600px;
-    background: #c0c0c0;
-    border: 2px solid #000080;
-    box-shadow: 4px 4px 0 #fff, 8px 8px 0 #000080;
-    padding: 10px;
-    box-sizing: border-box;
-    display: none; /* Oculto al inicio (se muestra tras carga) */
-    flex-direction: column;
-  }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-  /* Barra de título estilo Windows XP */
-  #titleBar {
-    background: linear-gradient(to bottom, #000080, #0000cd);
-    color: white;
-    font-weight: bold;
-    padding: 5px;
-    user-select: none;
-    border: 1px solid #000040;
-  }
+        header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            background: #f9f9f9;
+        }
 
-  /* Reproductor y controles */
-  #playerContainer {
-    background: #000;
-    margin-top: 10px;
-    position: relative;
-  }
-  iframe {
-    width: 100%;
-    height: 315px;
-    border: none;
-  }
+        header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0;
+            /* Gradiente verde y azul */
+            background: linear-gradient(90deg, #008000, #0000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  /* Controles estilo Windows XP */
-  #controls {
-    margin-top: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  button {
-    font-family: Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px;
-    padding: 5px 8px;
-    margin: 0 3px;
-    background: #c0c0c0;
-    border: 2px outset #fff;
-    cursor: pointer;
-    user-select: none;
-    box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #404040 inset;
-  }
-  button:active {
-    border-style: inset;
-    box-shadow: none;
-  }
+        header p {
+            font-size: 1.25rem;
+            margin: 0.5rem 0 0;
+            color: #555;
+        }
 
-  /* Input para nombre de video */
-  #videoName {
-    margin-top: 12px;
-    width: 95%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px inset #fff;
-    background: #e0e0e0;
-    color: #000080;
-    user-select: text;
-  }
+        main {
+            flex: 1;
+            max-width: 480px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
 
-  /* Selector de color */
-  #colorPicker {
-    margin-left: 10px;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    border: 2px inset #fff;
-    cursor: pointer;
-  }
+        /* Contenedor de inputs arriba (tasa y cantidad en bolívares) */
+        .top-inputs {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
 
-  /* Barra de carga centrada */
-  #loadingScreen {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-family: Tahoma, Geneva, Verdana, sans-serif;
-    color: #000080;
-  }
-  #loadingBar {
-    width: 300px;
-    height: 20px;
-    border: 2px solid #000080;
-    background: #c0c0c0;
-    box-shadow: inset 1px 1px 0 #fff;
-    margin: 0 auto 10px auto;
-    position: relative;
-  }
-  #loadingProgress {
-    height: 100%;
-    background: #000080;
-    width: 0%;
-    transition: width 0.3s;
-  }
+        .top-inputs label {
+            flex: 1 1 45%;
+            display: flex;
+            flex-direction: column;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #444;
+        }
 
-  /* Responsive para móvil */
-  @media(max-width: 480px){
-    iframe {
-      height: 200px;
+        .top-inputs input[type="number"] {
+            margin-top: 0.3rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 1.1rem;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        .top-inputs input[type="number"]:focus {
+            border-color: #008000;
+            outline: none;
+        }
+
+        form {
+            background: #f0f8ff;
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form label {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        form input[type="number"] {
+            padding: 0.5rem 0.7rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 2px solid #008000;
+            max-width: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        form input[type="number"]:focus {
+            border-color: #0000ff;
+            outline: none;
+        }
+
+        form button {
+            padding: 0.7rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #008000, #0000ff);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        form button:hover {
+            background: linear-gradient(90deg, #006400, #00008b);
+        }
+
+        /* Resultado con banderas y cantidades */
+        .resultado {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #e6f2ff;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 1.4rem;
+            font-weight: 600;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .moneda {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .moneda img {
+            width: 36px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0 0 3px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            color: #666;
+            background: #f9f9f9;
+            user-select: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .top-inputs label {
+                flex: 1 1 100%;
+            }
+
+            .resultado {
+                font-size: 1.1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .moneda img {
+                width: 28px;
+                height: 18px;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+           /* Estilos generales para el banner */
+    #banner-aviso {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6); /* fondo negro semi-transparente */
+      color: white;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      max-width: 600px;
+      width: 90%;
+      z-index: 9999;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      border: 2px solid white;
+      user-select: none;
     }
-    #app {
-      max-width: 100vw;
-      height: 100vh;
-      box-shadow: none;
+
+    /* Texto con borde negro para mejor legibilidad */
+    #banner-aviso p {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: white;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+      margin: 1rem 0 0 0;
+    }
+
+    /* Contenedor del mensaje y el icono */
+    #banner-content {
+      display: nome;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    /* Icono de aviso (SVG) */
+    #banner-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      fill: yellow;
+      filter: drop-shadow(0 0 2px black);
+    }
+
+    /* Botón cerrar */
+    #banner-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
       border: none;
-      padding: 5px;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+      user-select: none;
     }
-    #controls {
-      flex-wrap: wrap;
+
+    #banner-close:hover,
+    #banner-close:focus {
+      color: #ffeb3b;
+      outline: none;
     }
-    button {
-      flex: 1 1 40%;
-      margin: 4px 2px;
-      font-size: 12px;
-    }
-    #videoName {
-      font-size: 15px;
-    }
-  }
-</style>
+    </style>
 </head>
 <body>
+    <header>
+        <h1>Convertir monedas</h1>
+        <p>BRL 1.00 = <span id="tasa-display">80.758</span> VES</p>
+    </header>
 
-<!-- Pantalla de carga -->
-<div id="loadingScreen" aria-live="polite" aria-busy="true">
-  <div id="loadingBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-    <div id="loadingProgress"></div>
+    <main>
+        <div class="top-inputs">
+            <label for="tasa">
+                Tasa del día (VES por 1 BRL)
+                <input type="number" id="tasa" step="0.001" min="0" value="80.758" aria-label="Tasa de conversión BRL a VES">
+            </label>
+            <label for="cantidad-ves">
+                Cantidad en VES
+                <input type="number" id="cantidad-ves" step="0.01" min="0" value="80.758" aria-label="Cantidad en bolívares venezolanos">
+            </label>
+        </div>
+
+        <form id="form-convertir" aria-label="Formulario para convertir BRL a VES">
+            <label for="cantidad-brl">Cantidad a convertir (BRL Real brasileño):</label>
+            <input type="number" id="cantidad-brl" min="0" step="0.01" value="1.00" required aria-required="true" aria-describedby="ayuda-brl" />
+            <small id="ayuda-brl" style="color:#444;">Ingresa la cantidad en reales brasileños.</small>
+            <button type="submit" aria-label="Convertir cantidad de BRL a VES">Convertir</button>
+        </form>
+
+        <div class="resultado" aria-live="polite" aria-atomic="true">
+            <div class="moneda" id="brl-display" title="Real brasileño">
+                <img src="https://flagcdn.com/w40/br.png" alt="Bandera de Brasil" />
+                <span>BRL 1.00</span>
+            </div>
+            <div class="moneda" id="ves-display" title="Bolívar venezolano">
+                <img src="https://flagcdn.com/w40/ve.png" alt="Bandera de Venezuela" />
+                <span>VES 80.758</span>
+            </div>
+        </div>
+    </main>
+    
+    
+    
+      <!-- Banner -->
+  <div id="banner-aviso" role="alert" aria-live="assertive" aria-labelledby="banner-title" aria-describedby="banner-desc">
+    <button id="banner-close" aria-label="Cerrar aviso">&times;</button>
+    <div id="banner-content">
+      <!-- Icono de aviso temporal -->
+      <svg id="banner-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2v-6z"/>
+      </svg>
+      <div>
+        <h2 id="banner-title" style="margin: 0; font-size: 1.8rem; font-weight: 700; text-shadow: 2px 2px 4px black;">Aviso importante</h2>
+        <p id="banner-desc">
+          Este conversor está en modo prueba, viendo la eficiencia de uso será anexionada a la app. Por lo tanto estará temporal.
+        </p>
+      </div>
+    </div>
   </div>
-  <div>Cargando...</div>
-</div>
+  
 
-<!-- Aplicación -->
-<div id="app" role="main" aria-label="Reproductor de video estilo Windows XP">
+    <footer>
+        © Convierte tu moneda
+    </footer>
 
-  <div id="titleBar" aria-label="Barra de título"><Center>Reproductor clásico</div>
+    <script>
+        (() => {
+            const tasaInput = document.getElementById('tasa');
+            const cantidadBRLInput = document.getElementById('cantidad-brl');
+            const cantidadVESInput = document.getElementById('cantidad-ves');
+            const tasaDisplay = document.getElementById('tasa-display');
 
-  <div id="playerContainer" aria-label="Contenedor del video">
-   
-   
-   
-   
-   
-    <iframe width="360" height="202" src="https://www.youtube.com/embed/gOt96fYWlqg" title="Desaparecidos PELÍCULA COMPLETA | Películas de Suspenso | Pelis de Estrella" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    
-    
-    
-    
-    
-    
-    
-    
-  </div>
+            const brlDisplay = document.getElementById('brl-display').querySelector('span');
+            const vesDisplay = document.getElementById('ves-display').querySelector('span');
 
-  <div id="controls" aria-label="Controles del reproductor">
-    <button id="backBtn" aria-label="Retroceder 10 segundos" title="Retroceder 10 segundos">&laquo; Retroceder</button>
-    <button id="forwardBtn" aria-label="Adelantar 10 segundos" title="Adelantar 10 segundos">Adelantar &raquo;</button>
-    <label for="volumeRange" style="margin-left:10px;">Volumen:</label>
-    <input type="range" id="volumeRange" min="0" max="100" step="1" aria-valuemin="0" aria-valuemax="100" aria-label="Control de volumen" style="width: 100px" />
- <button id="downloadBtn" aria-label="Descargar video" title="Descargar video">Descargar</button>
-    <input type="color" id="colorPicker" aria-label="Selector de color de fondo" title="Cambiar color de fondo" />
-  </div>
+            const form = document.getElementById('form-convertir');
 
-  <input type="text" id="videoName" aria-label="Nombre del video" readonly value="Película completa (Desaparecidos)" />
+            // Función para formatear números con separador de miles y 2 decimales
+            function formatearNumero(num) {
+                return Number(num).toLocaleString('es-VE', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            }
 
-<p>
-   Disfruta de videos, Reproductor de prueba en la aplicación.
-</p>
-</div>
+            // Actualiza la tasa visible en encabezado y campos relacionados
+            function actualizarTasa(nuevaTasa) {
+                tasaDisplay.textContent = formatearNumero(nuevaTasa);
+                tasaInput.value = nuevaTasa;
+            }
 
-<script>
-  // Variables para almacenar referencias
-  const loadingScreen = document.getElementById('loadingScreen');
-  const loadingProgress = document.getElementById('loadingProgress');
-  const app = document.getElementById('app');
-  const videoPlayer = document.getElementById('videoPlayer');
-  const backBtn = document.getElementById('backBtn');
-  const forwardBtn = document.getElementById('forwardBtn');
-  const volumeRange = document.getElementById('volumeRange');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const colorPicker = document.getElementById('colorPicker');
-  const videoNameInput = document.getElementById('videoName');
+            // Actualiza la cantidad en bolívares (VES) basado en BRL y tasa
+            function actualizarCantidadVES(cantidadBRL, tasa) {
+                const ves = cantidadBRL * tasa;
+                cantidadVESInput.value = ves.toFixed(2);
+                vesDisplay.textContent = `VES ${formatearNumero(ves)}`;
+            }
 
-  // Nota importante:
-  // Debido a restricciones de YouTube, el iframe no permite controlar el volumen ni el tiempo directamente sin usar la API de YouTube.
-  // Para simplificar esta demo, la funcionalidad de adelantar/retroceder y volumen manipula el iframe con postMessage usando la API de YouTube.
-  // Si deseas cambiar el video, modifica el src del iframe y el valor del input videoName en el código fuente directamente.
+            // Actualiza la cantidad en reales (BRL) basado en VES y tasa
+            function actualizarCantidadBRL(cantidadVES, tasa) {
+                if (tasa === 0) return 0;
+                const brl = cantidadVES / tasa;
+                cantidadBRLInput.value = brl.toFixed(2);
+                brlDisplay.textContent = `BRL ${formatearNumero(brl)}`;
+            }
 
-  // Cargar la API de YouTube para iframe control
-  let player;
+            // Al enviar el formulario, calculamos la cantidad en bolívares actualizado
+            form.addEventListener('submit', e => {
+                e.preventDefault();
 
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('videoPlayer', {
-      events: {
-        'onReady': onPlayerReady,
-      }
+                let tasa = parseFloat(tasaInput.value);
+                if (isNaN(tasa) || tasa <= 0) {
+                    alert('Por favor ingresa una tasa válida mayor a 0.');
+                    tasaInput.focus();
+                    return;
+                }
+
+                let cantidadBRL = parseFloat(cantidadBRLInput.value);
+                if (isNaN(cantidadBRL) || cantidadBRL < 0) {
+                    alert('Por favor ingresa una cantidad válida en BRL.');
+                    cantidadBRLInput.focus();
+                    return;
+                }
+
+                actualizarTasa(tasa);
+                actualizarCantidadVES(cantidadBRL, tasa);
+                // Actualizar textos de display
+                brlDisplay.textContent = `BRL ${formatearNumero(cantidadBRL)}`;
+            });
+
+            // Cuando cambie la tasa manualmente, recalculamos la cantidad en bolívares basada en cantidad BRL actual
+            tasaInput.addEventListener('input', () => {
+                let tasa = parseFloat(tasaInput.value);
+                if (isNaN(tasa) || tasa <= 0) return;
+
+                actualizarTasa(tasa);
+
+                let cantidadBRL = parseFloat(cantidadBRLInput.value);
+                if (isNaN(cantidadBRL) || cantidadBRL < 0) cantidadBRL = 0;
+
+                actualizarCantidadVES(cantidadBRL, tasa);
+                brlDisplay.textContent = `BRL ${formatearNumero(cantidadBRL)}`;
+            });
+
+            // Cuando cambie la cantidad en bolívares (input arriba), actualizamos cantidad BRL y displays
+            cantidadVESInput.addEventListener('input', () => {
+                let ves = parseFloat(cantidadVESInput.value);
+                let tasa = parseFloat(tasaInput.value);
+                if (isNaN(ves) || ves < 0 || isNaN(tasa) || tasa <= 0) return;
+
+                actualizarCantidadBRL(ves, tasa);
+                vesDisplay.textContent = `VES ${formatearNumero(ves)}`;
+            });
+
+            // Cuando cambie la cantidad BRL en el formulario, actualizamos cantidad VES y displays
+            cantidadBRLInput.addEventListener('input', () => {
+                let cantidadBRL = parseFloat(cantidadBRLInput.value);
+                let tasa = parseFloat(tasaInput.value);
+                if (isNaN(cantidadBRL) || cantidadBRL < 0 || isNaN(tasa) || tasa <= 0) return;
+
+                actualizarCantidadVES(cantidadBRL, tasa);
+                brlDisplay.textContent = `BRL ${formatearNumero(cantidadBRL)}`;
+            });
+
+            // Inicialización - cargar valores por defecto
+            actualizarTasa(parseFloat(tasaInput.value));
+            actualizarCantidadVES(parseFloat(cantidadBRLInput.value), parseFloat(tasaInput.value));
+        })();
+        
+        
+        
+        
+        
+        
+          // Esperar a que el DOM esté cargado
+    document.addEventListener('DOMContentLoaded', () => {
+      const banner = document.getElementById('banner-aviso');
+      const closeBtn = document.getElementById('banner-close');
+
+      // Mostrar el banner (en caso que esté oculto por defecto)
+      banner.style.display = 'flex';
+
+      // Función para cerrar el banner
+      const cerrarBanner = () => {
+        banner.style.display = 'none';
+      };
+
+      closeBtn.addEventListener('click', cerrarBanner);
+
+      // Opcional: permitir cerrar con tecla ESC
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && banner.style.display !== 'none') {
+          cerrarBanner();
+        }
+      });
     });
-  }
-
-  // Mostrar barra carga y simular carga
-  function simulateLoading() {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      loadingProgress.style.width = progress + '%';
-      loadingProgress.setAttribute('aria-valuenow', progress);
-      if (progress >= 100) {
-        clearInterval(interval);
-        loadingScreen.style.display = 'none';
-        app.style.display = 'flex';
-        // Aplicar color guardado
-        const savedColor = localStorage.getItem('bgColor');
-        if(savedColor) {
-          app.style.background = savedColor;
-          colorPicker.value = rgbToHex(savedColor);
-        } else {
-          colorPicker.value = '#c0c0c0';
-        }
-        // Aplicar volumen guardado
-        const savedVolume = localStorage.getItem('volume');
-        if(savedVolume !== null) {
-          volumeRange.value = savedVolume;
-          setVolume(savedVolume);
-        } else {
-          volumeRange.value = 50;
-          setVolume(50);
-        }
-      }
-    }, 300);
-  }
-
-  // Ayuda para convertir rgb a hex (para el colorPicker)
-  function rgbToHex(rgb) {
-    const result = rgb.match(/\d+/g);
-    if (!result) return '#c0c0c0';
-    return '#' + result.map(x => {
-      const hex = parseInt(x).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    }).join('');
-  }
-
-  // Función para cambiar volumen (en iframe con API YouTube)
-  function setVolume(vol) {
-    if(player && player.setVolume) {
-      player.setVolume(vol);
-    }
-  }
-
-  // Adelantar y retroceder 10 segundos
-  function seekBy(seconds) {
-    if(player && player.getCurrentTime && player.seekTo) {
-      const current = player.getCurrentTime();
-      player.seekTo(current + seconds, true);
-    }
-  }
-
-  // Descargar video: como Youtube no permite descargar, aquí se abre el enlace en otra pestaña para "descargar" (usuario debe usar herramientas externas)
-  function downloadVideo() {
-    // Obtiene video ID del iframe src
-    const src = videoPlayer.getAttribute('src');
-    const videoIdMatch = src.match(/embed\/([^?&]+)/);
-    let videoId = videoIdMatch ? videoIdMatch[1] : null;
-    if(videoId) {
-      // Abrir enlace al video normal de YouTube para descargar con herramientas externas
-      const url = `https://www.youtube.com/watch?v=${videoId}`;
-      window.open(url, '_blank');
-    } else {
-      alert('No se pudo obtener el ID del video para descargar.');
-    }
-  }
-
-  // Cambio color fondo app
-  colorPicker.addEventListener('input', e => {
-    const color = e.target.value;
-    app.style.background = color;
-    localStorage.setItem('bgColor', color);
-  });
-
-  // Control volumen
-  volumeRange.addEventListener('input', e => {
-    const vol = parseInt(e.target.value, 10);
-    setVolume(vol);
-    localStorage.setItem('volume', vol);
-  });
-
-  // Botones adelantar y retroceder
-  backBtn.addEventListener('click', () => {
-    seekBy(-10);
-  });
-  forwardBtn.addEventListener('click', () => {
-    seekBy(10);
-  });
-
-  // Botón descargar
-  downloadBtn.addEventListener('click', () => {
-    downloadVideo();
-  });
-
-  // Carga la API de YouTube y luego simula carga
-  function loadYouTubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-  }
-
-  // Cuando la API está lista, asigna player y comienza simulación carga
-  window.onYouTubeIframeAPIReady = function() {
-    player = new YT.Player('videoPlayer', {
-      events: {
-        'onReady': function(event) {
-          // Aplica volumen guardado
-          const savedVolume = localStorage.getItem('volume');
-          if(savedVolume !== null) {
-            player.setVolume(savedVolume);
-            volumeRange.value = savedVolume;
-          } else {
-            player.setVolume(50);
-            volumeRange.value = 50;
-          }
-        }
-      }
-    });
-    simulateLoading();
-  };
-
-  // Iniciar carga al cargar DOM
-  document.addEventListener('DOMContentLoaded', () => {
-    loadYouTubeAPI();
-  });
-</script>
+        
+        
+        
+        
+        
+        
+    </script>
 </body>
 </html>
