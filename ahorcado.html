@@ -1,256 +1,393 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Calculadora de Ganancia %</title>
-    <style>
-        /* Estilo juvenil y moderno */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Visualizador Video Estilo TikTok</title>
+  <style>
+    /* Reset y estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+    #app {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    .video-slide {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 100%;
+      left: 0;
+      transition: top 0.5s ease;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .video-slide.active {
+      top: 0;
+      z-index: 10;
+    }
+    video {
+      max-height: 100vh;
+      max-width: 100vw;
+      object-fit: cover;
+    }
 
-        body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            font-family: 'Poppins', sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Contenedor de botones al lado derecho */
+    .side-buttons {
+      position: fixed;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 20;
+      user-select: none;
+    }
+    .btn {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-size: 14px;
+      transition: transform 0.2s ease;
+      width: 50px;
+    }
+    .btn svg {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 5px;
+      fill: #fff;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.7));
+    }
+    .btn.liked svg {
+      fill: #e0245e;
+      filter: none;
+    }
+    .btn:hover {
+      transform: scale(1.2);
+    }
 
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px 40px;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
+    /* Contador encima de botones */
+    .btn .count {
+      font-size: 12px;
+      user-select: none;
+    }
 
-        h1 {
-            margin-bottom: 25px;
-            font-weight: 600;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-        }
-
-        label {
-            display: block;
-            text-align: left;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 1rem;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: none;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            outline: none;
-            transition: background-color 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        input[type="number"]:focus {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        button {
-            background-color: #ff5f6d;
-            background-image: linear-gradient(45deg, #ff5f6d, #ffc371);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(255, 95, 109, 0.6);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            user-select: none;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 95, 109, 0.8);
-        }
-
-        .result {
-            margin-top: 30px;
-            font-size: 2.4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: #5a0e0e;
-            padding: 25px 20px;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(255, 105, 135, 0.5);
-            user-select: none;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s forwards;
-            min-height: 70px;
-            letter-spacing: 2px;
-        }
-
-        /* Animación de entrada */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Animación parpadeo verde */
-        @keyframes blinkGreen {
-            0%, 100% {
-                background-color: #d4edda;
-                color: #155724;
-                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.7);
-            }
-            50% {
-                background-color: #a8e6a3;
-                color: #0b3c13;
-                box-shadow: 0 8px 40px rgba(40, 167, 69, 1);
-            }
-        }
-
-        .blink-green {
-            animation: blinkGreen 1.5s ease-in-out 3;
-        }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            user-select: none;
-        }
-
-        /* Estilos para el modal de bienvenida */
-        .modal-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .modal {
-            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
-            padding: 25px 35px;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(255, 95, 109, 0.7);
-            max-width: 350px;
-            text-align: center;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1.2rem;
-            user-select: none;
-        }
-
-        .modal button {
-            margin-top: 20px;
-            background: #fff;
-            color: #ff5f6d;
-            font-weight: 700;
-            padding: 10px 25px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(255, 95, 109, 0.6);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .modal button:hover {
-            background-color: #ff5f6d;
-            color: #fff;
-            cursor: pointer;
-        }
-    </style>
+    /* Indicaciones de deslizar */
+    #swipe-hint {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      pointer-events: none;
+      z-index: 30;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Calculadora de Ganancia %</h1>
-        
-        <label for="payment">Ingresa tu pago:</label>
-        <input type="number" id="payment" placeholder="Ejemplo: 1000" min="0" step="any" />
+  <div id="app"></div>
 
-        <label for="percentage">Ingresa el porcentaje (%):</label>
-        <input type="number" id="percentage" placeholder="Ejemplo: 10" min="0" step="any" />
-
-        <button onclick="calcularGanancia()">Calcular Ganancia</button>
-        
-        <div class="result" id="result"></div>
-        <div class="footer">Calcula fácilmente cualquier porcentaje de ganancia.</div>
+  <div class="side-buttons" aria-label="Controles de video">
+    <div id="likeBtn" class="btn" role="button" tabindex="0" aria-pressed="false" aria-label="Me gusta">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 
+          4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 
+          16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 
+          11.54L12 21.35z" />
+      </svg>
+      <span class="count" id="likeCount">0</span>
     </div>
-
-    <!-- Modal de bienvenida -->
-    <div class="modal-bg" id="modal-bg">
-        <div class="modal">
-            ¡Bienvenido a la calculadora de ganancia!<br />
-            Aquí podrás calcular fácilmente el porcentaje que desees.<br />
-            <button onclick="cerrarModal()">Aceptar</button>
-        </div>
+    <div id="commentBtn" class="btn" role="button" tabindex="0" aria-label="Comentar">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 6h-2v9H7v2c0 1.1.9 2 2 2h7l4 4V8c0-1.1-.9-2-2-2zM3 
+          4h14c1.1 0 2 .9 2 2v12l-4-4H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 
+          2-2z"/>
+      </svg>
+      <span class="count" id="commentCount">0</span>
     </div>
+    <div id="shareBtn" class="btn" role="button" tabindex="0" aria-label="Compartir">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 16.08c-0.76 0-1.44 0.3-1.96 0.77L8.91 
+          12.7c0.05-0.23 0.09-0.46 0.09-0.7 0-0.24-0.03-0.47-0.09-0.7l7.02-4.11c0.53 
+          0.5 1.23 0.81 2.07 0.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 
+          1.34-3 3c0 0.24 0.03 0.47 0.09 0.7L8.91 9.81c-0.53-0.5-1.23-0.81-2.07-0.81-1.66 
+          0-3 1.34-3 3s1.34 3 3 3c0.84 0 1.54-0.31 2.07-0.81l7.12 4.17c-0.06 0.21-0.1 0.43-0.1 0.66 
+          0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z"/>
+      </svg>
+    </div>
+  </div>
 
-    <script>
-        function calcularGanancia() {
-            const paymentInput = document.getElementById('payment');
-            const percentageInput = document.getElementById('percentage');
-            const result = document.getElementById('result');
+  <div id="swipe-hint">Desliza hacia arriba para cambiar video</div>
 
-            const pago = parseFloat(paymentInput.value);
-            const porcentaje = parseFloat(percentageInput.value);
+  <script>
+    (function(){
+      // Lista de videos, se pueden agregar aquí. Soporta URLs absolutas y relativas.
+      // Soportados: mp4, webm, ogg
+      const videos = [
+        {
+          src:
+           'img/noticias.mp4',
+          
 
-            // Limpiar animación previa
-            result.classList.remove('blink-green');
-
-            if (isNaN(pago) || pago < 0) {
-                result.textContent = 'Por favor ingresa un pago válido mayor o igual a 0.';
-                result.style.color = '#ffdddd';
-                result.style.background = 'rgba(255, 0, 0, 0.3)';
-                result.style.boxShadow = '0 8px 25px rgba(255, 0, 0, 0.5)';
-                result.style.opacity = '1';
-                return;
-            }
-
-            if (isNaN(porcentaje) || porcentaje < 0) {
-                result.textContent = 'Por favor ingresa un porcentaje válido mayor o igual a 0.';
-                result.style.color = '#ffdddd';
-                result.style.background = 'rgba(255, 0, 0, 0.3)';
-                result.style.boxShadow = '0 8px 25px rgba(255, 0, 0, 0.5)';
-                result.style.opacity = '1';
-                return;
-            }
-
-            const ganancia = pago * (porcentaje / 100);
-            result.style.color = '#155724';  // Verde oscuro
-            result.style.background = '#d4edda';  // Verde claro
-            result.style.boxShadow = '0 8px 25px rgba(40, 167, 69, 0.7)';
-            result.textContent = `$${ganancia.toFixed(2)}`;
-            result.style.opacity = '1';
-
-            // Añadir clase para animación parpadeo
-            // Forzar reflow para reiniciar animación si se repite
-            void result.offsetWidth;
-            result.classList.add('blink-green');
+   
+          type: 'video/mp4',
+          likes: 0,
+          comments: 0
+        },
+        {
+          src:
+           'img/risa.mp4',
+          
+           
+          type: 'video/mp4',
+          likes: 0,
+          comments: 0
+        },
+        {
+          src: 
+          
+          'img/gato.mp4',
+          
+          
+          type: 'video/mp4',
+          likes: 0,
+          comments: 0
         }
+        
+      
+        
+      ];
 
-        function cerrarModal() {
-            const modalBg = document.getElementById('modal-bg');
-            modalBg.style.display = 'none';
+      const app = document.getElementById('app');
+      const likeBtn = document.getElementById('likeBtn');
+      const commentBtn = document.getElementById('commentBtn');
+      const shareBtn = document.getElementById('shareBtn');
+      const likeCountEl = document.getElementById('likeCount');
+      const commentCountEl = document.getElementById('commentCount');
+
+      let currentIndex = 0;
+      let isTransitioning = false;
+
+      // Cargar likes y comentarios de localStorage si existen
+      function loadStorage() {
+        const data = localStorage.getItem('videoData');
+        if(data){
+          try {
+            const parsed = JSON.parse(data);
+            // Solo actualizamos si tiene la misma cantidad de videos para no desordenar
+            if(Array.isArray(parsed) && parsed.length === videos.length){
+              parsed.forEach((item, i) => {
+                videos[i].likes = item.likes || 0;
+                videos[i].comments = item.comments || 0;
+              });
+            }
+          } catch(e) {
+            console.error('Error parseando localStorage', e);
+          }
         }
-    </script>
+      }
+
+      // Guardar en localStorage
+      function saveStorage() {
+        localStorage.setItem('videoData', JSON.stringify(videos));
+      }
+
+      // Crear slides de video
+      function createSlides() {
+        videos.forEach((video, i) => {
+          const slide = document.createElement('div');
+          slide.classList.add('video-slide');
+          if(i === 0) slide.classList.add('active');
+
+          const videoEl = document.createElement('video');
+          videoEl.setAttribute('playsinline', '');
+          videoEl.setAttribute('webkit-playsinline', '');
+          videoEl.setAttribute('muted', ''); // Silenciar para autoplay
+          videoEl.setAttribute('loop', '');
+          videoEl.src = video.src;
+          videoEl.type = video.type;
+          videoEl.autoplay = true;
+          videoEl.controls = false;
+
+          slide.appendChild(videoEl);
+          app.appendChild(slide);
+        });
+      }
+
+      // Actualizar contador y estado botones
+      function updateUI() {
+        likeCountEl.textContent = videos[currentIndex].likes;
+        commentCountEl.textContent = videos[currentIndex].comments;
+        if(videos[currentIndex].liked){
+          likeBtn.classList.add('liked');
+          likeBtn.setAttribute('aria-pressed', 'true');
+        } else {
+          likeBtn.classList.remove('liked');
+          likeBtn.setAttribute('aria-pressed', 'false');
+        }
+      }
+
+      // Manejar cambio de video deslizando hacia arriba
+      function nextVideo() {
+        if(isTransitioning) return;
+        isTransitioning = true;
+
+        const slides = document.querySelectorAll('.video-slide');
+        const currentSlide = slides[currentIndex];
+        currentIndex = (currentIndex + 1) % videos.length;
+        const nextSlide = slides[currentIndex];
+
+        // Mostrar siguiente slide desde abajo
+        nextSlide.style.top = '100%';
+        nextSlide.classList.add('active');
+
+        // Forzar reflow para animar
+        nextSlide.offsetHeight;
+
+        // Animar deslizar hacia arriba
+        currentSlide.style.top = '-100%';
+        nextSlide.style.top = '0';
+
+        // Cuando termina animación, limpiar clases
+        setTimeout(() => {
+          currentSlide.classList.remove('active');
+          currentSlide.style.top = '100%';
+          isTransitioning = false;
+          updateUI();
+          playCurrentVideo();
+        }, 500);
+      }
+
+      // Reproducir video actual y pausar los demás
+      function playCurrentVideo() {
+        const slides = document.querySelectorAll('.video-slide');
+        slides.forEach((slide, i) => {
+          const video = slide.querySelector('video');
+          if(i === currentIndex){
+            video.play().catch(e => {
+              // Puede fallar si usuario no interactuó aún
+              console.warn('No se pudo reproducir autoplay:', e);
+            });
+          } else {
+            video.pause();
+            video.currentTime = 0;
+          }
+        });
+      }
+
+      // Manejar like
+      function toggleLike() {
+        const videoData = videos[currentIndex];
+        if(videoData.liked){
+          videoData.liked = false;
+          videoData.likes = Math.max(0, videoData.likes - 1);
+        } else {
+          videoData.liked = true;
+          videoData.likes++;
+        }
+        updateUI();
+        saveStorage();
+      }
+
+      // Manejar comment (simulado para demo)
+      function addComment() {
+        // Aquí puedes abrir modal o implementar funcionalidad real - demo simple:
+        const comment = prompt('Escribe un comentario:');
+        if(comment && comment.trim().length > 0){
+          videos[currentIndex].comments++;
+          updateUI();
+          saveStorage();
+          alert('Comentario agregado (simulado).');
+        }
+      }
+
+      // Manejar share
+      function shareVideo() {
+        const url = videos[currentIndex].src;
+        if(navigator.clipboard){
+          navigator.clipboard.writeText(url).then(() => {
+            alert('Enlace copiado al portapapeles!');
+          }).catch(() => {
+            prompt('Copia el enlace:', url);
+          });
+        } else {
+          prompt('Copia el enlace:', url);
+        }
+      }
+
+      // Eventos touch para deslizar
+      let startY = 0;
+      let endY = 0;
+
+      function touchStart(e){
+        if(e.touches && e.touches.length === 1){
+          startY = e.touches[0].clientY;
+        }
+      }
+      function touchMove(e){
+        if(e.touches && e.touches.length === 1){
+          endY = e.touches[0].clientY;
+        }
+      }
+      function touchEnd(){
+        if(startY - endY > 50){ // Deslizar hacia arriba
+          nextVideo();
+        }
+        startY = 0;
+        endY = 0;
+      }
+
+      // Eventos mouse para desktop (scroll o rueda)
+      function wheelHandler(e){
+        if(e.deltaY > 30){
+          nextVideo();
+        }
+      }
+
+      // Inicialización
+      function init(){
+        loadStorage();
+        createSlides();
+        updateUI();
+        playCurrentVideo();
+
+        likeBtn.addEventListener('click', toggleLike);
+        likeBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') toggleLike(); });
+
+        commentBtn.addEventListener('click', addComment);
+        commentBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') addComment(); });
+
+        shareBtn.addEventListener('click', shareVideo);
+        shareBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') shareVideo(); });
+
+        app.addEventListener('touchstart', touchStart, {passive:true});
+        app.addEventListener('touchmove', touchMove, {passive:true});
+        app.addEventListener('touchend', touchEnd);
+
+        window.addEventListener('wheel', wheelHandler, {passive:true});
+      }
+
+      init();
+    })();
+  </script>
 </body>
 </html>
