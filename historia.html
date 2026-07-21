@@ -207,7 +207,7 @@
       if (seconds < 60) return seconds + 's';
       const m = Math.floor(seconds / 60);
       const s = seconds % 60;
-      return `mm{m}mmm{s}s`;
+      return `${m}:${s}s`;
     };
 
     // Actualizar elementos DOM con stats
