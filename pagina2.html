@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estamos fritos.com</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #007980;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px; /* Reducido para pantallas pequeñas */
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 400px; /* Más compacto */
+            background: linear-gradient(135deg, #00686d, #008890);
+            border-radius: 20px;
+            padding: 15px; /* Menos espacio interno */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 1.6rem; /* Texto más pequeño */
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .date-box {
+            background-color: #319ba1;
+            padding: 5px; /* Más plano */
+            border-radius: 10px;
+            font-size: 0.85rem; /* Texto reducido */
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .time-box {
+            font-size: 1.5rem; /* Compactado */
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .rates-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .rate-card {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 6px;
+        }
+        .rate-card .title { 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            margin-bottom: 3px; 
+            min-height: 28px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .rate-card .value { font-size: 0.85rem; font-weight: bold; }
+
+        .language-selector {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .language-selector select {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .language-selector select option {
+            background-color: #00686d;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px; /* Botones más juntos */
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 10px 5px; /* Botones menos altos */
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .menu-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .menu-btn:active { transform: scale(0.97); }
+
+        .btn-text {
+            font-size: 0.8rem; /* Letras de botones optimizadas para móvil */
+            font-weight: bold;
+            margin-bottom: 4px;
+            min-height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.1;
+        }
+
+        .btn-icon {
+            font-size: 1.4rem; /* Iconos sutilmente más pequeños */
+        }
+
+        .footer-text {
+            margin-top: 12px;
+            font-size: 0.65rem;
+            opacity: 0.5;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header-title">Estamos fritos.com</div>
+    
+    <!-- Fecha y Hora Dinámica y Automática -->
+    <div class="date-box" id="date-display">...</div>
+    <div class="time-box" id="time-display">...</div>
+
+    <!-- Bloques de Tasas -->
+    <div class="rates-container">
+        <div class="rate-card">
+            <div class="title" id="lbl-rate-daily">Dólar de hoy 🪙</div>
+            <div class="value">$ 1  =   756.70 Bs</div>
+        </div>
+        <div class="rate-card">
+            <div class="title" id="lbl-rate-weekend">Dólar lunes 10-08-2026 ⬆️</div>
+            <div class="value">$ 1  = 757.54 Bs</div>
+        </div>
+    </div>
+
+    <!-- Selector de Idioma -->
+    <div class="language-selector">
+        <span id="lbl-lang">Idioma:</span>
+        <select id="lang-select" onchange="changeLanguage(this.value)">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+        </select>
+    </div>
+
+    <!-- Menú Reducido de 8 Botones -->
+    <div class="menu-grid">
+        <a href="usd_bs.html" class="menu-btn">
+            <div class="btn-text" id="btn-usd-bs">USD <-> Bs</div>
+            <div class="btn-icon">🇺🇸 🇻🇪</div>
+        </a>
+
+        <a href="conversor_real.html" class="menu-btn">
+            <div class="btn-text" id="btn-real">Conversor a Real</div>
+            <div class="btn-icon">🇧🇷 🇻🇪</div>
+        </a>
+
+        <a href="calculadora.html" class="menu-btn">
+            <div class="btn-text" id="btn-calc">Calculadora de Divisas</div>
+            <div class="btn-icon">🔢</div>
+        </a>
+
+        <a href="conversor_euro.html" class="menu-btn">
+            <div class="btn-text" id="btn-euro">Conversor a Euro</div>
+            <div class="btn-icon">💶 🇻🇪</div>
+        </a>
+
+        <a href="notas.html" class="menu-btn">
+            <div class="btn-text" id="btn-notes">Mis Notas Financieras</div>
+            <div class="btn-icon">📝</div>
+        </a>
+
+        <a href="analiticas.html" class="menu-btn">
+            <div class="btn-text" id="btn-charts">Analíticas y Gráficos</div>
+            <div class="btn-icon">📊</div>
+        </a>
+
+        <a href="privacidad.html" class="menu-btn">
+            <div class="btn-text" id="btn-privacy">Centro de Privacidad</div>
+            <div class="btn-icon">🔒</div>
+        </a>
+
+        <a href="videos.html" class="menu-btn">
+            <div class="btn-text" id="btn-videos">Centro Multimedia de Videos</div>
+            <div class="btn-icon">🎬</div>
+        </a>
+    </div>
+
+    <div class="footer-text" id="footer-version">Model v2.1.2026</div>
+</div>
+
+<script>
+    const translations = {
+        es: {
+            rateDaily: "Tasa de Cambio Diaria Actual 🪙",
+            rateWeekend: "Tasa de Cambio de Fin de Semana 🪙",
+            langLabel: "Idioma:",
+            btnUsdBs: "USD <-> Bs",
+            btnReal: "Conversor a Real",
+            btnCalc: "Calculadora de Divisas",
+            btnEuro: "Conversor a Euro",
+            btnNotes: "Mis Notas Financieras",
+            btnCharts: "Analíticas y Gráficos",
+            btnPrivacy: "Centro de Privacidad",
+            btnVideos: "Centro Multimedia de Videos",
+            days: ["DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"]
+        },
+        en: {
+            rateDaily: "Current Daily Exchange Rate 🪙",
+            rateWeekend: "Weekend Exchange Rate 🪙",
+            langLabel: "Language:",
+            btnUsdBs: "USD <-> Bs",
+            btnReal: "Real Converter",
+            btnCalc: "Currency Calculator",
+            btnEuro: "Euro Converter",
+            btnNotes: "My Financial Notes",
+            btnCharts: "Analytics & Charts",
+            btnPrivacy: "Privacy Center",
+            btnVideos: "Video Multimedia Center",
+            days: ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
+        },
+        pt: {
+            rateDaily: "Taxa de Câmbio Diária Atual 🪙",
+            rateWeekend: "Taxa de Câmbio de Fim de Semana 🪙",
+            langLabel: "Idioma:",
+            btnUsdBs: "USD <-> Bs",
+            btnReal: "Conversor para Real",
+            btnCalc: "Calculadora de Divisas",
+            btnEuro: "Conversor para Euro",
+            btnNotes: "Minhas Notas Financeiras",
+            btnCharts: "Análises e Gráficos",
+            btnPrivacy: "Centro de Privacidade",
+            btnVideos: "Centro Multimídia de Vídeos",
+            days: ["DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO"]
+        }
+    };
+
+    let currentLang = 'es';
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        const t = translations[lang];
+        
+        document.getElementById('lbl-rate-daily').innerText = t.rateDaily;
+        document.getElementById('lbl-rate-weekend').innerText = t.rateWeekend;
+        document.getElementById('lbl-lang').innerText = t.langLabel;
+        document.getElementById('btn-usd-bs').innerText = t.btnUsdBs;
+        document.getElementById('btn-real').innerText = t.btnReal;
+        document.getElementById('btn-calc').innerText = t.btnCalc;
+        document.getElementById('btn-euro').innerText = t.btnEuro;
+        document.getElementById('btn-notes').innerText = t.btnNotes;
+        document.getElementById('btn-charts').innerText = t.btnCharts;
+        document.getElementById('btn-privacy').innerText = t.btnPrivacy;
+        document.getElementById('btn-videos').innerText = t.btnVideos;
+        
+        updateClock();
+    }
+
+    function updateClock() {
+        const now = new Date();
+        
+               // Fecha Real Automática basada en el sistema local
+        const dayName = translations[currentLang].days[now.getDay()];
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = now.getFullYear();
+        document.getElementById('date-display').innerText = `${dayName} ${day}-${month}-${year} BCV`;
+
+        // Ajustar pie de página con el año real actual dinámicamente
+        document.getElementById('footer-version').innerText = `Model v2.1.${year}`;
+
+        // Hora 12 Horas AM/PM
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        const strHours = String(hours).padStart(2, '0');
+
+        document.getElementById('time-display').innerText = `${strHours} : ${minutes} : ${seconds} ${ampm}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body>
+</html>

@@ -1,600 +1,257 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Conversor Green</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #007acc, #00d4ff);
-    color: white;
-    display: flex;
-    justify-content: center;
-  }
-  .container {
-    max-width: 400px;
-    width: 90vw;
-    background: rgba(0, 128, 128, 0.85);
-    border-radius: 15px;
-    padding: 15px 20px 40px;
-    box-shadow: 0 0 20px #00ffffaa;
-  }
-  header {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.8rem;
-    padding: 10px 0;
-    border-bottom: 2px solid #00ffffaa;
-  }
-  .date-time {
-    text-align: center;
-    margin: 10px 0 5px;
-    font-weight: 600;
-    background: rgba(255 255 255 / 0.3);
-    border-radius: 15px;
-    padding: 6px 10px;
-    font-size: 0.9rem;
-  }
-  .clock {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    text-shadow:
-      0 0 5px #00ffffaa,
-      0 0 10px #00ffffaa,
-      0 0 15px #00ffffaa;
-  }
-  .input-dolar {
-    background: #009999cc;
-    border-radius: 15px;
-    padding: 10px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: 600;
-    box-shadow: 0 0 10px #00ffffaa;
-  }
-  .input-dolar input {
-    width: 100px;
-    font-size: 1.1rem;
-    border-radius: 10px;
-    border: none;
-    padding: 6px 10px;
-    text-align: center;
-    font-weight: 700;
-  }
-  .input-dolar .label {
-    margin-left: 15px;
-    flex-grow: 1;
-  }
-  .input-dolar .coin {
-    width: 40px;
-    height: 40px;
-    border-radius: 70%;
-    background: url('img/moneda.png') no-repeat center center;
-    background-size: contain;
-    box-shadow: 0 0 8px #ffd700cc;
-  }
-  nav {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-  nav a {
-    background: #009999cc;
-    border-radius: 15px;
-    padding: 18px 10px 40px;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 0 12px #00ffffaa;
-    transition: background 0.3s ease;
-  }
-  nav a:hover {
-    background: #00bbbbcc;
-  }
-  nav a .icon {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.7rem;
-    opacity: 0.8;
-  }
-  .language-select {
-    margin: 10px auto 20px;
-    width: fit-content;
-    background: #00cccccc;
-    border-radius: 10px;
-    padding: 5px 10px;
-    box-shadow: 0 0 8px #00ffffcc;
-  }
-  select {
-    background: transparent;
-    border: none;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    outline: none;
-  }
-  
-  
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenidos | Estamos fritos.com</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  #cookieConsent {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(100%);
-    background: rgba(0, 123, 255, 0.85);
-    color: white;
-    padding: 20px 30px;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
-    font-size: 16px;
-    max-width: 480px;
-    width: 90%;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    z-index: 9999;
-  }
+        body {
+            /* Animación profesional de gradiente de colores en movimiento */
+            background: linear-gradient(-45deg, #004d51, #00686d, #008890, #319ba1);
+            background-size: 400% 400%;
+            animation: gradientMovement 12s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+        }
 
-  #cookieConsent.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
+        @keyframes gradientMovement {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-  #cookieConsent button {
-    background: white;
-    color: #007bff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 25px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    margin-left: 15px;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.7);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+        .welcome-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            text-align: center;
+            color: white;
+            animation: fadeInCard 1s ease-out;
+        }
 
-  #cookieConsent button:hover {
-    background-color: #0056b3;
-    color: white;
-  }
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  #cookieConsent a {
-    color: #cce5ff;
-    text-decoration: underline;
-  }
+        /* TÍTULO PRINCIPAL CON EFECTO DE LUZ */
+        .main-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+            animation: pulseGlow 2s infinite alternate;
+        }
 
-  #cookieConsent button.reject {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    box-shadow: none;
-    margin-left: 0;
-    margin-right: 10px;
-  }
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 8px rgba(0, 255, 204, 0.4); }
+            to { text-shadow: 0 0 18px rgba(0, 255, 204, 0.9), 0 0 5px white; }
+        }
 
-  #cookieConsent button.reject:hover {
-    background-color: white;
-    color: #007bff;
-  }
-  
-  
-  
-  
-   /* Contenedor del banner */
-  .ad-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(90deg, rgba(255, 165, 0, 0.85), rgba(0, 0, 255, 0.6)); /* naranja con azul transparente */
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 9999;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
+        /* CONTENEDOR DE PRESENTACIÓN DE FUNCIONES */
+        .features-carousel {
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-  /* Contenido dentro del banner */
-  .ad-content {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+        .feature-slide {
+            display: none;
+            animation: slideEffect 0.5s ease-in-out;
+        }
 
-  /* Imagen del banner */
-  .ad-image {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-  }
+        .feature-slide.active {
+            display: block;
+        }
 
-  /* Mensaje del banner */
-  .ad-message {
-    flex: 1;
-    font-weight: 700;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-  }
+        @keyframes slideEffect {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-  /* Botón aceptar */
-  .ad-button {
-    background-color: rgba(0, 0, 255, 0.8); /* azul sólido con opacidad */
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
+        .slide-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
 
-  .ad-button:hover {
-    background-color: rgba(0, 0, 255, 1);
-  }
+        .slide-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #00ffcc;
+            margin-bottom: 6px;
+        }
 
-  /* Animación para ocultar el banner */
-  .ad-banner.hide {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-  }
+        .slide-desc {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            line-height: 1.4;
+        }
 
-  /* Responsive: texto más pequeño en pantallas pequeñas */
-  @media (max-width: 480px) {
-    .ad-message {
-      font-size: 0.9rem;
-    }
+        /* INDICADORES DE PUNTOS */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
 
-    .ad-button {
-      padding: 8px 24px;
-      font-size: 0.9rem;
-    }
-  }
-</style>
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: #00ffcc;
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* BOTÓN DE ACCESO PROFESIONAL */
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: #00ffcc;
+            color: #004d51;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-enter:hover {
+            background: white;
+            color: #00686d;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-enter:active {
+            transform: scale(0.98);
+        }
+    </style>
 </head>
-
- <!-- Banner Publicitario -->
-<div id="adBanner" class="ad-banner">
-  <div class="ad-content">
-    <img src="img/lupa.jpeg" alt="Publicidad" class="ad-image" />
-    <span class="ad-message">Oremos por Venezuela 🇻🇪 cristo viene </span>
-    <button id="acceptBtn" class="ad-button">Ocultar</button>
-  </div>
-</div>
-
-
 <body>
-  <div class="container">
-    <header>Estamos fritos.com</header>
-    
-    <div class="date-time" id="date-display">VIERNES 20 -06 -2025 BCV 104,00</div>
-    <div class="clock" id="clock">01 : 01 : 53 AM</div>
-    
-    <div class="input-dolar">
-      <input type="number" step="0.01" id="dolar-next" value="757.54" aria-label="Dólar del día siguiente" />
-      <div class="label" id="label-dolar-next">Dólar del día siguiente</div>
-      <div class="coin" title="Moneda Bolívar"></div>
+
+<div class="welcome-card">
+    <!-- Mensaje Central Solicitado -->
+    <div class="main-title">Bienvenidos app<br>estamos fritos.com</div>
+
+    <!-- Carrusel de Presentación de Funciones -->
+    <div class="features-carousel">
+        
+        <!-- Función 1 -->
+        <div class="feature-slide active">
+            <div class="slide-icon">📊</div>
+            <div class="slide-title">Monitoreo Comercial</div>
+            <div class="slide-desc">Visualiza las tasas de cambio de divisas en tiempo real de forma limpia y exacta.</div>
+        </div>
+
+        <!-- Función 2 -->
+        <div class="feature-slide">
+            <div class="slide-icon">🔢</div>
+            <div class="slide-title">Calculadora Inteligente</div>
+            <div class="slide-desc">Convierte USD, Euros y Reales al instante con nuestro teclado numérico integrado.</div>
+        </div>
+
+        <!-- Función 3 -->
+        <div class="feature-slide">
+            <div class="slide-icon">🎬</div>
+            <div class="slide-title">Módulo Multimedia</div>
+            <div class="slide-desc">Disfruta de un feed dinámico de videos financieros interactivos con estilo vertical.</div>
+        </div>
+
+        <!-- Función 4 -->
+        <div class="feature-slide">
+            <div class="slide-icon">🔒</div>
+            <div class="slide-title">Privacidad Local</div>
+            <div class="slide-desc">Tus notas y datos financieros se guardan de forma 100% segura en tu dispositivo.</div>
+        </div>
+
+
+<!-- Función 5 -->
+        <div class="feature-slide">
+            <div class="slide-icon">💰</div>
+            <div class="slide-title">Conversor</div>
+            <div class="slide-desc">Podrás convertir más rápido y sencillo dólar a bolivares y diseversa</div>
+        </div>
+
+
+
+
     </div>
 
-    <div class="language-select">
-      <label for="language" style="margin-right:8px;">Idioma:</label>
-      <select id="language">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="pt">Português</option>
-        <option value="jp">日本語</option>
-      </select>
+    <!-- Puntos de Navegación del Carrusel -->
+    <div class="dots-container">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
 
-    <nav>
-      <a href="Dolarbolivar.html" id="btn-dolar-bolivar" aria-label="Dólar a bolívar">
-        <span class="text">Dolar a bolívar</span>
-        <div class="icon">🇺🇸🇻🇪</div>
-      </a>
-      <a href="bolivardolar.html" id="btn-bolivar-dolar" aria-label="Bolívar a dólar">
-        <span class="text">Bolívar a dólar</span>
-        <div class="icon">🇧🇷🇻🇪</div>
-      </a>
-      <a href="calculadora.html" id="btn-calculadora" aria-label="Calculadora">
-        <span class="text">Calculadora</span>
-        <div class="icon">🔢#</div>
-      </a>
-      <a href="calendario.html" id="btn-calendario" aria-label="Calendario">
-        <span class="text">Calendario</span>
-        <div class="icon">💶🇻🇪</div>
-      </a>
-      <a href="bloc.html" id="btn-notas" aria-label="Notas">
-        <span class="text">Notas</span>
-        <div class="icon">📝🅰️</div>
-      </a>
-      <a href="historia.html" id="btn-historia" aria-label="Historia">
-        <span class="text">Historia</span>
-        <div class="icon">📊📈</div>
-      </a>
-      <a href="politica.html" id="btn-privacidad" aria-label="Política de privacidad">
-        <span class="text">política de privacidad</span>
-        <div class="icon">🔒</div>
-      </a>
-      <a href="ahorcado.html" id="btn-juegos" aria-label="Juegos">
-        <span class="text">Juegos</span>
-        <div class="icon">🎬📺</div>
-      </a>
-    </nav>
-  </div>
-  
-  <div id="cookieConsent" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
-  <span id="cookieMessage"></span>
-  <br />
-  <a href="política.html" target="_blank" rel="noopener" id="cookieLink" aria-label="Privacy Policy"></a>
-  <br /><br />
-  <button id="rejectCookies" class="reject"></button>
-  <button id="acceptCookies"></button>
+    <!-- Botón para pasar a Página 2 (index.html) -->
+    <a href="pagina2.html" class="btn-enter">
+        Ingresar a la Aplicación 🚀
+    </a>
 </div>
 
 <script>
-  // Idiomas para los textos
-  const translations = {
-    es: {
-      dolarNextLabel: "Para el día lunes 10-08-2026",
-      btnDolarBolivar: "USD a Bs + bs a USD",
-      btnBolivarDolar: "Conversor a Real",
-      btnCalculadora: "Calculadora",
-      btnCalendario: " Conversor a Euro",
-      btnNotas: "Notas",
-      btnHistoria: "Estadisticas",
-      btnPrivacidad: "política de privacidad",
-      btnJuegos: "Visualizador de videos",
-      weekday: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 756,70",
-    },
-    
-    
-    
-    en: {
-      dolarNextLabel: "Para el día lunes 02-02-1026",
-      btnDolarBolivar: "Conversor",
-      btnBolivarDolar: "=======",
-      btnCalculadora: "Calculator",
-      btnCalendario: "Calendar",
-      btnNotas: "Notes",
-      btnHistoria: "History",
-      btnPrivacidad: "Privacy policy",
-      btnJuegos: "Calculadora de porcentaje",
-      weekday: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 000.00",
-    },
-    pt: {
-      dolarNextLabel: "Dólar do dia seguinte",
-      btnDolarBolivar: "Dólar para bolívar",
-      btnBolivarDolar: "Bolívar para dólar",
-      btnCalculadora: "Calculadora",
-      btnCalendario: "Calendário",
-      btnNotas: "Notas",
-      btnHistoria: "História",
-      btnPrivacidad: "política de privacidade",
-      btnJuegos: "Calculadora de porcentagem",
-      weekday: ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"],
-      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 000,00",
-    },
-    jp: {
-      dolarNextLabel: "翌日のドル",
-      btnDolarBolivar: "ドルからボリバルへ",
-      btnBolivarDolar: "ボリバルからドルへ",
-      btnCalculadora: "計算機",
-      btnCalendario: "カレンダー",
-      btnNotas: "メモ",
-      btnHistoria: "履歴",
-      btnPrivacidad: "プライバシーポリシー",
-      btnJuegos: "ゲーム",
-      weekday: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-      months: ["01","02","03","04","05","06","07","08","09","10","11","12"],
-      bcvRate: "BCV 000.00",
-    }
-  };
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.feature-slide');
+    const dots = document.querySelectorAll('.dot');
+    const totalSlides = slides.length;
 
-  function updateDateTime(language) {
-    const now = new Date();
-    const dayOfWeek = translations[language].weekday[now.getDay()];
-    const day = now.getDate().toString().padStart(2, '0');
-    const month = translations[language].months[now.getMonth()];
-    const year = now.getFullYear();
-    const bcv = translations[language].bcvRate;
-    const dateStr = `${dayOfWeek.toUpperCase()} ${day} -${month} -${year} ${bcv}`;
-    document.getElementById('date-display').textContent = dateStr;
-
-    let hours = now.getHours();
-    let ampm = 'AM';
-    if (hours >= 12) {
-      ampm = 'PM';
-      if (hours > 12) hours -= 12;
-    }
-    if (hours === 0) hours = 12;
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    const timeStr = `${hours.toString().padStart(2,'0')} : ${minutes} : ${seconds} ${ampm}`;
-    document.getElementById('clock').textContent = timeStr;
-  }
-
-  function changeLanguage() {
-    const lang = document.getElementById('language').value;
-    localStorage.setItem('selectedLanguage', lang); // Guardar idioma en localStorage
-    const t = translations[lang];
-
-    document.getElementById('label-dolar-next').textContent = t.dolarNextLabel;
-    document.getElementById('btn-dolar-bolivar').querySelector('.text').textContent = t.btnDolarBolivar;
-    document.getElementById('btn-bolivar-dolar').querySelector('.text').textContent = t.btnBolivarDolar;
-    document.getElementById('btn-calculadora').querySelector('.text').textContent = t.btnCalculadora;
-    document.getElementById('btn-calendario').querySelector('.text').textContent = t.btnCalendario;
-    document.getElementById('btn-notas').querySelector('.text').textContent = t.btnNotas;
-    document.getElementById('btn-historia').querySelector('.text').textContent = t.btnHistoria;
-    document.getElementById('btn-privacidad').querySelector('.text').textContent = t.btnPrivacidad;
-    document.getElementById('btn-juegos').querySelector('.text').textContent = t.btnJuegos;
-
-    updateDateTime(lang);
-  }
-
-  // Al cargar la página, establecer idioma guardado o por defecto "es"
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('selectedLanguage') || 'es';
-    document.getElementById('language').value = savedLang;
-    changeLanguage();
-  });
-
-  setInterval(() => {
-    const lang = document.getElementById('language').value;
-    updateDateTime(lang);
-  }, 1000);
-
-  document.getElementById('language').addEventListener('change', changeLanguage);
-  
-  
-  // Deshabilitar clic derecho
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// Deshabilitar teclas comunes de herramientas de desarrollador
-document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault();
-    }
-    // Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-    }
-    // Ctrl+U (ver código fuente)
-    if (e.ctrlKey && e.key.toLowerCase() === 'u') {
-        e.preventDefault();
-    }
-});
-
-// Código ofuscado básico (ejemplo)
-(function(){
-    var _0x1a2b = ['mensaje secreto', 'log'];
-    console[_0x1a2b[1]](_0x1a2b[0]);
-})();
-
-document.addEventListener('DOMContentLoaded', () => {
-    const consentKey = 'cookieConsentDecision';
-    const cookieConsent = document.getElementById('cookieConsent');
-    const acceptBtn = document.getElementById('acceptCookies');
-    const rejectBtn = document.getElementById('rejectCookies');
-    const cookieMessage = document.getElementById('cookieMessage');
-    const cookieLink = document.getElementById('cookieLink');
-
-    // Texts in supported languages
-    const texts = {
-      es: {
-        message: 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestras',
-        policy: 'Políticas de Privacidad',
-        accept: 'Aceptar',
-        reject: 'Rechazar'
-      },
-      en: {
-        message: 'We use cookies to improve your experience. By continuing, you accept our',
-        policy: 'Privacy Policy',
-        accept: 'Accept',
-        reject: 'Reject'
-      }
-    };
-
-    // Detect language (default to 'es' if not supported)
-    const userLang = navigator.language || navigator.userLanguage || 'es';
-    const langCode = userLang.toLowerCase().startsWith('en') ? 'en' : 'es';
-    const text = texts[langCode];
-
-    // Set text content
-    cookieMessage.textContent = text.message + ' ';
-    cookieLink.textContent = text.policy;
-    cookieLink.href = 'politica.html'; // Cambia a la URL real de la política
-    acceptBtn.textContent = text.accept;
-    rejectBtn.textContent = text.reject;
-
-    // Show banner only if no decision
-    if (!localStorage.getItem(consentKey)) {
-      setTimeout(() => {
-        cookieConsent.classList.add('show');
-      }, 200);
+    // Transición automática de las diapositivas cada 3 segundos
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        
+        currentSlide = (currentSlide + 1) % totalSlides;
+        
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
     }
 
-    function hideBanner() {
-      cookieConsent.style.transform = 'translateX(-50%) translateY(100%)';
-      cookieConsent.style.opacity = '0';
-      cookieConsent.style.pointerEvents = 'none';
-      setTimeout(() => {
-        cookieConsent.remove();
-      }, 500);
-    }
-
-    acceptBtn.addEventListener('click', () => {
-      localStorage.setItem(consentKey, 'accepted');
-      hideBanner();
-    });
-
-    rejectBtn.addEventListener('click', () => {
-      localStorage.setItem(consentKey, 'rejected');
-      hideBanner();
-    });
-  });
-  
-  
-   const banner = document.getElementById('adBanner');
-  const acceptBtn = document.getElementById('acceptBtn');
-
-  // Tiempo en milisegundos para que reaparezca el banner (2 minutos)
-  const REAPPEAR_TIME = 2 * 60 * 1000; // 120000 ms
-
-  let reapearTimeoutId = null;
-
-  acceptBtn.addEventListener('click', () => {
-    // Oculta el banner
-    banner.classList.add('hide');
-
-    // Limpia cualquier timeout previo por si se oculta varias veces
-    if (reapearTimeoutId) {
-      clearTimeout(reapearTimeoutId);
-    }
-
-    // Programa que reaparezca el banner tras 2 minutos
-    reapearTimeoutId = setTimeout(() => {
-      banner.classList.remove('hide');
-    }, REAPPEAR_TIME);
-  });
+    setInterval(nextSlide, 3000);
 </script>
+
 </body>
 </html>
