@@ -2,309 +2,284 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Fácil de Divisas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora Móvil - Estamos Fritos</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
+        /* Ajuste exacto para la pantalla del móvil */
         body {
-            background: linear-gradient(rgba(0, 104, 109, 0.9), rgba(0, 121, 128, 0.9)), 
-                        url('https://unsplash.com') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #047575; /* Fondo del mismo color del menú */
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            height: 100vh;
+            overflow: hidden;
+            padding: 15px;
         }
 
-        .calc-box {
+        /* Contenedor estirado óptimo para dispositivos móviles */
+        .calculadora-container {
+            background-color: #047575; 
             width: 100%;
+            height: 100%;
             max-width: 400px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-            color: white;
+            max-height: 750px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .titulo {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
             text-align: center;
         }
 
-        .title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        /* Bloque de visualización del dinero */
-        .screen-container {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .display-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .display-row:last-child {
-            margin-bottom: 0;
-            padding-top: 8px;
-            border-top: 1px dashed rgba(255,255,255,0.2);
-        }
-
-        .currency-label {
-            font-size: 1rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .num-input {
-            background: transparent;
-            border: none;
-            color: #00ffcc;
-            font-size: 1.6rem;
-            font-weight: bold;
-            text-align: right;
-            width: 70%;
-            outline: none;
-        }
-
-        .result-text {
-            color: #ffffff;
-            font-size: 1.6rem;
-            font-weight: bold;
-            text-align: right;
-            width: 70%;
-        }
-
-        /* Selector de operación claro */
-        .direction-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .dir-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .dir-btn.active {
-            background: #00ffcc;
-            color: #00686d;
-            border-color: #00ffcc;
-        }
-
-        /* Teclado numérico comercial integrado */
-        .keyboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .key {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1.3rem;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.1s;
-        }
-
-        .key:active {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .key.clear {
-            background: rgba(255, 85, 85, 0.3);
-            color: #ff9999;
-        }
-        
-        .key.clear:active {
-            background: rgba(255, 85, 85, 0.5);
-        }
-
-        /* Botón de Retorno */
-        .btn-menu {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        /* Pantalla doble optimizada */
+        .pantalla-container {
             width: 100%;
-            background-color: #319ba1;
-            color: white;
-            border: none;
-            border-radius: 12px;
+            background-color: #025757; 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 110px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Parte superior: Operación en curso */
+        .pantalla-operacion {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            text-align: right;
+            overflow-x: auto;
+            white-space: nowrap;
+            height: 28px;
+        }
+
+        /* Parte inferior: Resultado automático */
+        .pantalla-resultado {
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: right;
+            overflow-x: auto;
+            white-space: nowrap;
+            height: 45px;
+            line-height: 45px;
+        }
+
+        /* Rejilla de botones flexible para rellenar el espacio móvil */
+        .botones-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.1s ease, transform 0.05s ease;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-operador {
+            font-size: 1.9rem; 
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.14);
+        }
+
+        .btn:active {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(0.95);
+        }
+
+        .btn-igual {
+            background-color: #0b9e9e;
+            border-color: rgba(255, 255, 255, 0.3);
+            font-size: 1.9rem;
+        }
+
+        .btn-borrar {
+            color: #ff8a8a;
+        }
+
+        .btn-volver {
+            display: block;
+            width: 100%;
             padding: 12px;
+            background-color: transparent;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
             font-size: 1rem;
             font-weight: bold;
             text-decoration: none;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .btn-menu:active {
-            transform: scale(0.98);
-        }
-
-        /* Tasas de referencia estables abajo */
-        .rate-footer {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-bottom: 12px;
             text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver:active {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
 
-<div class="calc-box">
-    <div class="title">Calculadora Comercial</div>
-
-    <!-- Selector de sentido de Cambio Claro -->
-    <div class="direction-selector">
-        <button class="dir-btn active" id="btn-usd-to-bs" onclick="setDirection('USD_TO_BS')">
-            💵 Cambiar Dólares a Bs
-        </button>
-        <button class="dir-btn" id="btn-bs-to-usd" onclick="setDirection('BS_TO_USD')">
-            🇻🇪 Cambiar Bs a Dólares
-        </button>
-    </div>
-
-    <!-- Pantalla de Montos -->
-    <div class="screen-container">
-        <div class="display-row">
-            <span class="currency-label" id="label-input">🇺🇸 USD:</span>
-            <!-- Input de solo lectura para ser controlado por los botones del teclado -->
-            <input type="text" id="amount-input" class="num-input" value="0" readonly>
+    <div class="calculadora-container">
+        <div class="titulo">Calculadora</div>
+        
+        <!-- Contenedor con la doble pantalla -->
+        <div class="pantalla-container">
+            <div id="pantalla-operacion" class="pantalla-operacion"></div>
+            <div id="pantalla-resultado" class="pantalla-resultado">0</div>
         </div>
-        <div class="display-row">
-            <span class="currency-label" id="label-output">🇻🇪 Bs:</span>
-            <div id="amount-output" class="result-text">0.00</div>
+        
+        <div class="botones-grid">
+            <!-- Fila 1 -->
+            <button class="btn btn-borrar" onclick="limpiarTodo()">C</button>
+            <button class="btn btn-borrar" onclick="borrarUltimo()">⌫</button>
+            <button class="btn btn-operador" onclick="agregarOperador('%')">%</button>
+            <button class="btn btn-operador" onclick="agregarOperador('/')">÷</button>
+            
+            <!-- Fila 2 -->
+            <button class="btn" onclick="agregarNumero('7')">7</button>
+            <button class="btn" onclick="agregarNumero('8')">8</button>
+            <button class="btn" onclick="agregarNumero('9')">9</button>
+            <button class="btn btn-operador" onclick="agregarOperador('*')">×</button>
+            
+            <!-- Fila 3 -->
+            <button class="btn" onclick="agregarNumero('4')">4</button>
+            <button class="btn" onclick="agregarNumero('5')">5</button>
+            <button class="btn" onclick="agregarNumero('6')">6</button>
+            <button class="btn btn-operador" onclick="agregarOperador('-')">−</button>
+            
+            <!-- Fila 4 -->
+            <button class="btn" onclick="agregarNumero('1')">1</button>
+            <button class="btn" onclick="agregarNumero('2')">2</button>
+            <button class="btn" onclick="agregarNumero('3')">3</button>
+            <button class="btn btn-operador" onclick="agregarOperador('+')">+</button>
+            
+            <!-- Fila 5 -->
+            <button class="btn" onclick="agregarNumero('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="agregarNumero('.')">.</button>
+            <button class="btn btn-igual" onclick="fijarResultado()">=</button>
         </div>
+
+        <a href="pagina2.html" class="btn-volver">← Volver al Menú</a>
     </div>
 
-    <div class="rate-footer">
-        Tasa de conversión fija: <b id="current-rate-text">1 USD = 757.54 Bs</b>
-    </div>
+    <script>
+        const pantallaOperacion = document.getElementById('pantalla-operacion');
+        const pantallaResultado = document.getElementById('pantalla-resultado');
+        let operacionActual = '';
 
-    <!-- Teclado Numérico Directo para el Cliente -->
-    <div class="keyboard">
-        <div class="key" onclick="pressNum('1')">1</div>
-        <div class="key" onclick="pressNum('2')">2</div>
-        <div class="key" onclick="pressNum('3')">3</div>
-        <div class="key" onclick="pressNum('4')">4</div>
-        <div class="key" onclick="pressNum('5')">5</div>
-        <div class="key" onclick="pressNum('6')">6</div>
-        <div class="key" onclick="pressNum('7')">7</div>
-        <div class="key" onclick="pressNum('8')">8</div>
-        <div class="key" onclick="pressNum('9')">9</div>
-        <div class="key clear" onclick="pressClear()">C</div>
-        <div class="key" onclick="pressNum('0')">0</div>
-        <div class="key" onclick="pressNum('.')">.</div>
-    </div>
-
-    <!-- Botón Volver -->
-    <a href="pagina2.html" class="btn-menu">
-        ⬅️ Volver al Menú Principal
-    </a>
-</div>
-
-<script>
-    // Tasa base oficial de tu pantalla de inicio
-    const TASA_DIARIA = 757.54; 
-    let currentDirection = 'USD_TO_BS'; // Sentido inicial
-
-    function setDirection(direction) {
-        currentDirection = direction;
-        
-        // Cambiar estados visuales de los dos botones superiores
-        document.getElementById('btn-usd-to-bs').classList.remove('active');
-        document.getElementById('btn-bs-to-usd').classList.remove('active');
-        
-        if(direction === 'USD_TO_BS') {
-            document.getElementById('btn-usd-to-bs').classList.add('active');
-            document.getElementById('label-input').innerText = "🇺🇸 USD:";
-            document.getElementById('label-output').innerText = "🇻🇪 Bs:";
-        } else {
-            document.getElementById('btn-bs-to-usd').classList.add('active');
-            document.getElementById('label-input').innerText = "🇻🇪 Bs:";
-            document.getElementById('label-output').innerText = "🇺🇸 USD:";
-        }
-        
-        // Limpiar pantallas al cambiar de sentido para evitar confusiones
-        pressClear();
-    }
-
-    function pressNum(num) {
-        const inputElement = document.getElementById('amount-input');
-        let currentVal = inputElement.value;
-
-        // Evitar múltiples puntos decimales
-        if (num === '.' && currentVal.includes('.')) return;
-
-        // Reemplazar el cero inicial por el nuevo número
-        if (currentVal === '0' && num !== '.') {
-            currentVal = num;
-        } else {
-            currentVal += num;
+        function agregarNumero(numero) {
+            if (numero === '.' && operacionActual.split(/[\+\-\*\/%]/).pop().includes('.')) return;
+            
+            if (operacionActual === '0' && numero !== '.') {
+                operacionActual = numero;
+            } else {
+                operacionActual += numero;
+            }
+            pantallaOperacion.textContent = operacionActual;
+            calcularAutomatico();
         }
 
-        inputElement.value = currentVal;
-        autoConvert(parseFloat(currentVal));
-    }
-
-    function pressClear() {
-        document.getElementById('amount-input').value = '0';
-        document.getElementById('amount-output').innerText = '0.00';
-    }
-
-    // Lógica Matemática de conversión automática e instantánea
-    function autoConvert(val) {
-        if (isNaN(val) || val <= 0) {
-            document.getElementById('amount-output').innerText = '0.00';
-            return;
+        function agregarOperador(operador) {
+            if (operacionActual === '') return;
+            
+            const ultimoCaracter = operacionActual.slice(-1);
+            if (['+', '-', '*', '/', '%'].includes(ultimoCaracter)) {
+                operacionActual = operacionActual.slice(0, -1) + operador;
+            } else {
+                operacionActual += operador;
+            }
+            pantallaOperacion.textContent = operacionActual;
+            calcularAutomatico();
         }
 
-        let result = 0;
-        if (currentDirection === 'USD_TO_BS') {
-            result = val * TASA_DIARIA;
-        } else {
-            result = val / TASA_DIARIA;
+        function limpiarTodo() {
+            operacionActual = '';
+            pantallaOperacion.textContent = '';
+            pantallaResultado.textContent = '0';
         }
 
-        // Mostrar el resultado limpio con formato monetario de 2 decimales
-        document.getElementById('amount-output').innerText = result.toFixed(2);
-    }
-</script>
+        function borrarUltimo() {
+            operacionActual = operacionActual.toString().slice(0, -1);
+            pantallaOperacion.textContent = operacionActual;
+            calcularAutomatico();
+        }
 
+        // Calcula el resultado en tiempo real sin borrar la línea de arriba
+        function calcularAutomatico() {
+            if (operacionActual === '') {
+                pantallaResultado.textContent = '0';
+                return;
+            }
+
+            const ultimoCaracter = operacionActual.slice(-1);
+            // Si termina en un operador básico, no calcula hasta recibir el siguiente número
+            if (['+', '-', '*', '/'].includes(ultimoCaracter)) return;
+
+            try {
+                let expresion = operacionActual;
+
+                // Lógica de porcentaje corregida para casos estándar y de comercio:
+                // Ejemplo: "100 * 10 %" -> lo convierte en "100 * (10 / 100)" arrojando 10 de manera limpia
+                if (expresion.includes('%')) {
+                    const regexSumaResta = /(\d+(?:\.\d+)?)\s*([\+\-])\s*(\d+(?:\.\d+)?)%/g;
+                    if (regexSumaResta.test(expresion)) {
+                        expresion = expresion.replace(regexSumaResta, function(match, base, operador, porcentaje) {
+                            return `${base} ${operador} (${base} * ${porcentaje} / 100)`;
+                        });
+                    } else {
+                        expresion = expresion.replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
+                    }
+                }
+
+                let resultado = Function(`"use strict"; return (${expresion})`)();
+                
+                if (resultado % 1 !== 0) {
+                    resultado = parseFloat(resultado.toFixed(6));
+                }
+
+                pantallaResultado.textContent = resultado;
+            } catch (error) {
+                // Falla en silencio mientras el usuario sigue escribiendo la fórmula
+            }
+        }
+
+              // Al presionar el botón "=" pasa el resultado arriba para poder seguir operando sobre él
+        function fijarResultado() {
+            if (pantallaResultado.textContent !== 'Error' && pantallaResultado.textContent !== '0') {
+                operacionActual = pantallaResultado.textContent;
+                pantallaOperacion.textContent = operacionActual;
+            }
+        }
+    </script>
 </body>
 </html>
