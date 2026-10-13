@@ -176,7 +176,9 @@
 <div class="calc-box">
     <!-- Bloque de última actualización automatizado -->
     <div class="update-box">
-        Última actualización: <span id="live-update-date">Cargando...</span>
+        <!-- Busca tu texto de actualización y déjalo con este ID -->
+<div id="fecha-actualizacion-calc">Última actualización: Cargando...</div>
+
     </div>
 
     <!-- Indicador visual interactivo de moneda -->
@@ -213,12 +215,44 @@
 </div>
 
 <script>
-    // Tasa diaria establecida en tu menú frontal
-    const TASA_DIARIA = 876.79;
+     
+         // 1. COLOCA AQUÍ TU URL DE EXEC DE APPS SCRIPT
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzw87Jb3Dlhj9ykvHyw51mNNoN1W8wAjITNmKk4QWtGtExwiIakuCy61NY9lyYio_wv/exec";
+    
+    // Valor base que se actualizará automáticamente desde Google Sheets
+    let TASA_DIARIA = 756.70; 
     let currentMode = 'USD_TO_BS'; // Modo por defecto
 
-    // Colocar fecha y hora del sistema de forma automática e inmediata al entrar
-    function initUpdateDate() {
+    // 2. Conectar con la URL de Apps Script para jalar la tasa y la fecha real
+    window.addEventListener('DOMContentLoaded', () => {
+        fetch(`${APPS_SCRIPT_URL}?action=read`)
+        .then(response => response.json())
+        .then(data => {
+            const config = data.config;
+            
+            // Asignar la tasa del dólar de hoy de la base de datos
+            TASA_DIARIA = parseFloat(config.dolar_hoy) || 756.70;
+            
+            // Inyectar de forma inmediata la fecha guardada en la base de datos
+            if (config.fecha_actualizacion) {
+                document.getElementById('live-update-date').innerText = "Última actualización: " + config.fecha_actualizacion;
+            } else {
+                // Si la base de datos no tiene fecha, usa la función del sistema de respaldo
+                initUpdateDateBackup();
+            }
+            
+            // Si el usuario ya digitó un número antes de cargar la tasa, recalcular
+            executeAutoConversion();
+        })
+        .catch(error => {
+            console.error("Error conectando con Apps Script por URL:", error);
+            // Respaldo por si falla la conexión a internet
+            initUpdateDateBackup();
+        });
+    });
+
+    // Función de respaldo para colocar fecha del sistema si la base de datos está vacía
+    function initUpdateDateBackup() {
         const now = new Date();
         const months = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
         
@@ -231,7 +265,7 @@
         const ampm = hours >= 12 ? 'p. m.' : 'a. m.';
         
         hours = hours % 12;
-        hours = hours ? hours : 12; // Formato de 12 horas
+        hours = hours ? hours : 12;
         
         const finalString = `${day} ${monthName} ${year}, ${hours}:${minutes} ${ampm}`;
         document.getElementById('live-update-date').innerText = finalString;
@@ -260,10 +294,13 @@
         clearFields();
     }
 
-    // Conversor automático inmediato en tiempo real
+    // Conversor automático inmediato en tiempo real con la tasa de Google Sheets
     function executeAutoConversion() {
         const inputField = document.getElementById('primary-input');
         const outputField = document.getElementById('secondary-output');
+        
+        if (!inputField || !outputField) return;
+        
         const val = parseFloat(inputField.value);
 
         if (isNaN(val) || val <= 0) {
@@ -286,7 +323,7 @@
         document.getElementById('secondary-output').value = '';
     }
 
-     // Compartir por WhatsApp con formato comercial limpio
+    // Compartir por WhatsApp con formato comercial limpio (Corregido y sincronizado)
     function sendViaWhatsApp(event) {
         const inputVal = document.getElementById('primary-input').value;
         const outputVal = document.getElementById('secondary-output').value;
@@ -299,20 +336,17 @@
 
         let message = "";
         if (currentMode === 'USD_TO_BS') {
-            message = `*Estamos fritos.com* 📊%0A%0A*Conversión:*%0A💵 Cantidad: *${inputVal} USD*%0A👉 Resultado: *${outputVal}*%0A📌 Tasa: ${TASA_DIARIA} Bs`;
+            message = `*Estamos fritos.com* 📊%0A%0A*Conversión:*%0A💵 Cantidad: *${inputVal} USD*%0A👉 Resultado: *${outputVal}*%0A📌 Tasa: ${TASA_DIARIA.toFixed(2)} Bs`;
         } else {
-            message = `*Estamos fritos.com* 📊%0A%0A*Conversión:*%0A👉 Cantidad: *${inputVal} Bs*%0A💵 Resultado: *${outputVal}*%0A📌 Tasa: ${TASA_DIARIA} Bs`;
+            message = `*Estamos fritos.com* 📊%0A%0A*Conversión:*%0A👉 Cantidad: *${inputVal} Bs*%0A💵 Resultado: *${outputVal}*%0A📌 Tasa: ${TASA_DIARIA.toFixed(2)} Bs`;
         }
 
-        document.getElementById('whatsapp-btn').href = `https://whatsapp.com{message}`;
+        // Corrección de la sintaxis del enlace de WhatsApp
+        document.getElementById('whatsapp-btn').href = `https://wa.me{message}`;
     }
     
-    
- 
-    
-
-    // Arrancar fecha al cargar
-    initUpdateDate();
+     
+     
 </script>
 
 </body>

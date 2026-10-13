@@ -139,9 +139,99 @@
             opacity: 0.5;
             text-align: right;
         }
+        
+        
+        /* Capa de fondo con efecto vidrio/cristalizado esmerilado */
+.mantenimiento-overlay {
+    display: none; /* Se activa dinámicamente con JavaScript */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(33, 58, 61, 0.65); /* Fondo base traslúcido tono verde esmerilado */
+    backdrop-filter: blur(15px); /* Desenfoque de cristal premium */
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 99999; /* Se superpone a todo el menú y botones */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Tarjeta Central Flotante */
+.mantenimiento-card {
+    background: rgba(42, 83, 86, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 35px 25px;
+    border-radius: 24px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: aparecer 0.4s ease-out;
+}
+
+.icono-alerta {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    animation: pulso 2s infinite;
+}
+
+.mantenimiento-card h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.mantenimiento-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Animación de barra de carga inferior */
+.loader-linea {
+    height: 4px;
+    width: 60%;
+    background: #1abc9c;
+    margin: 0 auto;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+.loader-linea::after {
+    content: '';
+    position: absolute;
+    left: -50%;
+    height: 100%;
+    width: 50%;
+    background: #2ecc71;
+    animation: carga-infinita 1.5s infinite linear;
+}
+
+@keyframes aparecer {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+@keyframes pulso {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+@keyframes carga-infinita {
+    from { left: -50%; }
+    to { left: 100%; }
+}
+
+        
+        
     </style>
 </head>
+
 <body>
+    
 
 <div class="app-container">
     <div class="header-title">Estamos fritos.com</div>
@@ -150,17 +240,21 @@
     <div class="date-box" id="date-display">...</div>
     <div class="time-box" id="time-display">...</div>
 
-    <!-- Bloques de Tasas -->
+       <!-- Bloques de Tasas -->
     <div class="rates-container">
         <div class="rate-card">
             <div class="title" id="lbl-rate-daily">Dólar de hoy 🪙</div>
-            <div class="value">$ 1  =   876.79 Bs</div>
+            <!-- Se agregó el ID tasa-hoy al precio -->
+            <div class="value">$ 1  =   <span id="tasa-hoy">000.00</span> Bs</div>
         </div>
         <div class="rate-card">
-            <div class="title" id="lbl-rate-weekend">Feliz inicio de semana ⬆️</div>
-            <div class="value">$ 1  = 000.00 Bs</div>
+            <!-- Se agregó el ID fecha-actualizacion al título dinámico de mañana/lunes -->
+            <div class="title" id="fecha-actualizacion">Dólar lunes 12-10-2026 ⬆️</div>
+            <!-- Se agregó el ID tasa-manana al precio -->
+            <div class="value">$ 1  = <span id="tasa-manana">000.00</span> Bs</div>
         </div>
     </div>
+    
 
     <!-- Selector de Idioma -->
     <div class="language-selector">
@@ -179,13 +273,13 @@
             <div class="btn-icon">🇺🇸 🇻🇪</div>
         </a>
 
-        <a href="conversor_real.html" class="menu-btn">
-            <div class="btn-text" id="btn-real">Conversor a Real</div>
-            <div class="btn-icon">🇧🇷 🇻🇪</div>
+        <a href="Historial.html" class="menu-btn">
+            <div class="btn-text" id="btn-real">Historial</div>
+            <div class="btn-icon">📚⏳</div>
         </a>
 
         <a href="calculadora.html" class="menu-btn">
-            <div class="btn-text" id="btn-calc">Calculadora básica</div>
+            <div class="btn-text" id="btn-calc">Calculadora de Divisas</div>
             <div class="btn-icon">🔢</div>
         </a>
 
@@ -218,15 +312,29 @@
     <div class="footer-text" id="footer-version">Model v2.1.2026</div>
 </div>
 
+
+<!-- CAPA DE BLOQUEO CRISTALIZADO (MANTENIMIENTO) -->
+<div id="pantalla-mantenimiento" class="mantenimiento-overlay" style="display: none;">
+    <div class="mantenimiento-card">
+        <div class="icono-alerta">⚠️</div>
+        <h2>SISTEMA EN MANTENIMIENTO</h2>
+        <p>Disculpen las molestias, en breve la página se activará nuevamente.</p>
+        <div class="loader-linea"></div>
+    </div>
+</div>
+
+
+
 <script>
-    const translations = {
+ 
+     const translations = {
         es: {
             rateDaily: "Tasa de Cambio Diaria Actual 🪙",
             rateWeekend: "Tasa de Cambio de Fin de Semana 🪙",
             langLabel: "Idioma:",
             btnUsdBs: "USD <-> Bs",
             btnReal: "Conversor a Real",
-            btnCalc: "Calculadora basica",
+            btnCalc: "Calculadora de Divisas",
             btnEuro: "Conversor a Euro",
             btnNotes: "Mis Notas Financieras",
             btnCharts: "Analíticas y Gráficos",
@@ -240,7 +348,7 @@
             langLabel: "Language:",
             btnUsdBs: "USD <-> Bs",
             btnReal: "Real Converter",
-            btnCalc: "basic Calculator",
+            btnCalc: "Currency Calculator",
             btnEuro: "Euro Converter",
             btnNotes: "My Financial Notes",
             btnCharts: "Analytics & Charts",
@@ -254,7 +362,7 @@
             langLabel: "Idioma:",
             btnUsdBs: "USD <-> Bs",
             btnReal: "Conversor para Real",
-            btnCalc: "Calculadora basica",
+            btnCalc: "Calculadora de Divisas",
             btnEuro: "Conversor para Euro",
             btnNotes: "Minhas Notas Financeiras",
             btnCharts: "Análises e Gráficos",
@@ -288,7 +396,7 @@
     function updateClock() {
         const now = new Date();
         
-               // Fecha Real Automática basada en el sistema local
+        // Fecha Real Automática basada en el sistema local
         const dayName = translations[currentLang].days[now.getDay()];
         const day = String(now.getDate()).padStart(2, '0');
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -313,6 +421,47 @@
 
     setInterval(updateClock, 1000);
     updateClock();
+    
+    // URL de conexión directa con tu Google Sheets
+    const API_URL = "https://script.google.com/macros/s/AKfycbzw87Jb3Dlhj9ykvHyw51mNNoN1W8wAjITNmKk4QWtGtExwiIakuCy61NY9lyYio_wv/exec";
+
+    // Ejecución automática al abrir la aplicación principal
+    window.addEventListener('DOMContentLoaded', () => {
+        obtenerTasaYEstado();
+    });
+
+    function obtenerTasaYEstado() {
+        fetch(`${API_URL}?action=read`)
+        .then(response => response.json())
+        .then(data => {
+            const config = data.config;
+
+            // 1. PRIMERO: Inyectar y actualizar los textos en tu interfaz pública
+            if(document.getElementById('tasa-hoy')) document.getElementById('tasa-hoy').innerText = config.dolar_hoy;
+            if(document.getElementById('tasa-manana')) document.getElementById('tasa-manana').innerText = config.dolar_manana;
+            if(document.getElementById('fecha-actualizacion')) document.getElementById('fecha-actualizacion').innerText = "Última actualización: " + config.fecha_actualizacion;
+
+            // 2. SEGUNDO: Respaldar las tasas en memoria para mantener estables los conversores
+            localStorage.setItem('dolar_hoy', config.dolar_hoy);
+            localStorage.setItem('euro_hoy', config.euro_hoy);
+            localStorage.setItem('fecha_actualizacion', config.fecha_actualizacion);
+
+            // 3. TERCERO: Evaluar bloqueo de pantalla sin interrumpir la carga de datos
+            const capaBloqueo = document.getElementById('pantalla-mantenimiento');
+            if (capaBloqueo) {
+                if (config.mantenimiento == "1") {
+                    capaBloqueo.style.display = 'flex'; // Activa el cristalizado si el switch es 1
+                } else {
+                    capaBloqueo.style.display = 'none'; // Desactiva el cristalizado si el switch es 0
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error cargando la base de datos:", error);
+        });
+    }
+    
+ 
 </script>
 
 </body>
