@@ -274,7 +274,7 @@
             const config = data.config;
             
             // Sincronizar la variable matemática con el Euro de tu Google Sheets
-            TASA_EURO = parseFloat(config.euro_hoy) || 871.89;
+            TASA_EURO = parseFloat(config.euro_hoy) || 0.00;
             
             // Actualizar la etiqueta del precio de referencia en tu HTML
             const lblTasaRef = document.getElementById('tasa-referencia-eur');
