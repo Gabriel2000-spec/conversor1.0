@@ -220,7 +220,7 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzw87Jb3Dlhj9ykvHyw51mNNoN1W8wAjITNmKk4QWtGtExwiIakuCy61NY9lyYio_wv/exec";
     
     // Valor base que se actualizará automáticamente desde Google Sheets
-    let TASA_DIARIA = 756.70; 
+    let TASA_DIARIA = 0.00; 
     let currentMode = 'USD_TO_BS'; // Modo por defecto
 
     // 2. Conectar con la URL de Apps Script para jalar la tasa y la fecha real
@@ -231,7 +231,7 @@
             const config = data.config;
             
             // Asignar la tasa del dólar de hoy de la base de datos
-            TASA_DIARIA = parseFloat(config.dolar_hoy) || 756.70;
+            TASA_DIARIA = parseFloat(config.dolar_hoy) || 0.00;
             
             // Inyectar de forma inmediata la fecha guardada en la base de datos
             if (config.fecha_actualizacion) {
